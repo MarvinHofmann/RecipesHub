@@ -1,10 +1,8 @@
-<script>
-</script>
-
 <template>
-
+  <router-view></router-view>
 </template>
 
-<style scoped>
+<script></script>
 
+<style>
 </style>
