@@ -1,9 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand fs-3 me-0" href="#">
-        RecipesHub
-      </a>
+      <a class="navbar-brand fs-3 me-0" href="#"> RecipesHub </a>
       <button
         class="navbar-toggler toggle-button"
         type="button"
@@ -35,7 +33,7 @@
             <li class="nav-item">
               <a role="button" id="btn" class="nav-link"> Marvin </a>
             </li>
-            <a href="#" class="mt-2 d-block link-dark text-decoration-none dropdown-toggle avatar" >
+            <a href="#" class="mt-2 d-block link-dark text-decoration-none dropdown-toggle avatar">
               <img src="../assets/vue.svg" alt="avatar" width="32" height="32" class="rounded-circle bg-success p-0" />
             </a>
             <ul class="dropdown-menu py-1" aria-labelledby="navbarDropdownMenuLink">
@@ -52,7 +50,10 @@
                 <hr class="dropdown-divider m-0" />
               </li>
               <li>
-                <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-gear"></i> Einstellungen</div>
+                <div class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
+                  <i class="dropdown-icon bi bi-gear"></i>
+                  Einstellungen
+                </div>
               </li>
               <li>
                 <a id="btn" class="dropdown-item" type="button" @click="onLogout"><i class="dropdown-icon bi bi-box-arrow-in-left"></i> Ausloggen </a>
@@ -63,25 +64,27 @@
       </div>
     </div>
   </nav>
+  <Settings></Settings>
 </template>
 
 <script>
+import Settings from "./Settings.vue";
 export default {
-  components: {},
+  components: { Settings },
   data() {
     return {};
   },
   methods: {
-    onLogout(){
-      this.$router.push("/login")
-    }
+    onLogout() {
+      this.$router.push("/login");
+    },
   },
   mounted() {},
 };
 </script>
 
 <style scoped>
-.dropdown-area{
+.dropdown-area {
   cursor: pointer;
 }
 
