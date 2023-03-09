@@ -41,7 +41,7 @@
                 <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen</div>
               </li>
               <li>
-                <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-file-plus"></i> Rezept erstellen</div>
+                <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="dropdown-item" type="button"><i class="dropdown-icon bi bi-file-plus"></i> Rezept erstellen</div>
               </li>
               <li>
                 <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-patch-plus"></i> Tag erstellen</div>
@@ -64,13 +64,17 @@
       </div>
     </div>
   </nav>
+  <Alert ref="alert" :message="'Alert Message'"></Alert>
   <Settings></Settings>
+  <AddRecipe @save="this.onAddRecipe()" id="addRecipeModal"></AddRecipe>
 </template>
 
 <script>
+import Alert from './Alert.vue'
 import Settings from "./Settings.vue";
+import AddRecipe from "./Modals/AddRecipe.vue";
 export default {
-  components: { Settings },
+  components: { Settings, AddRecipe, Alert },
   data() {
     return {};
   },
@@ -78,6 +82,9 @@ export default {
     onLogout() {
       this.$router.push("/login");
     },
+    onAddRecipe(){
+      this.$refs.alert.showAlert();
+    }
   },
   mounted() {},
 };

@@ -19,7 +19,7 @@
           </button>
         </div>
       </div>
-      <Transition>
+      <Transition name="fade">
         <form v-if="this.edit_data">
           <hr class="mb-2" />
           <div class="mb-3">
@@ -91,21 +91,33 @@
           </div>
         </form>
       </Transition>
-      <Transition>
+      <Transition name="fade">
         <div v-if="this.edit_data">
           <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">Speichern</button>
           <hr />
         </div>
       </Transition>
-      <button :disabled="this.edit_data" class="stickBottom btn btn-outline-danger mb-3 mx-3">Account löschen</button>
+      <button
+        :disabled="this.edit_data"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteAccountModal"
+        class="stickBottom btn btn-outline-danger mb-3 mx-3"
+      >
+        Account löschen
+      </button>
     </div>
   </div>
+  <DeleteAccount id="deleteAccountModal" @delete="this.onDeleteAccount()"></DeleteAccount>
 </template>
 
 <script>
+import DeleteAccount from "./Modals/DeleteAccount.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 export default {
+  components: {
+    DeleteAccount,
+  },
   setup() {
     return { v$: useVuelidate() };
   },
@@ -131,8 +143,20 @@ export default {
     };
   },
   methods: {
+    /**
+     * If the user saves his changes diable edit mode and store changes
+     */
     onSaveSettings() {
-      setTimeout(2000, (this.edit_data = false));
+      this.edit_data = false;
+      // Change data at Backend
+    },
+    /**
+     * Gets called if the user surely deletes it after pressing
+     * Löschen in the Modal
+     */
+    onDeleteAccount() {
+      //Delete Account from Backend
+      console.log("DELETE Account");
     },
   },
 };
