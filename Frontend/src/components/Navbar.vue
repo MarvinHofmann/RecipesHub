@@ -36,7 +36,7 @@
             <a href="#" class="mt-2 d-block link-dark text-decoration-none dropdown-toggle avatar">
               <img src="../assets/vue.svg" alt="avatar" width="32" height="32" class="rounded-circle bg-success p-0" />
             </a>
-            <ul class="dropdown-menu py-1" aria-labelledby="navbarDropdownMenuLink">
+            <ul class="dropdown-menu dropdown-menu-end py-1" aria-labelledby="navbarDropdownMenuLink">
               <li>
                 <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen</div>
               </li>

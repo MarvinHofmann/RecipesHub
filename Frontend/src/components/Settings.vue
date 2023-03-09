@@ -1,46 +1,152 @@
 <template>
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettingsLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettingsLabel" data-bs-backdrop="static">
     <div class="offcanvas-header">
       <h5 id="offcanvasSettingsLabel">Einstellungen</h5>
-      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      <button @click="this.edit_data = false" type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-      <div class="row px-5">
+      <div class="row">
         <div class="col-6 d-flex justify-content-center">
           <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0" />
         </div>
-        <div class="col-6 mt-3">
+        <div class="col-6">
           <div>Marvin Hofmann <span class="text-muted">(21)</span></div>
-          <div>
-            Mitglied seit:
-            <div class="float-end">1.1.1889</div>
-          </div>
-          <button class="btn btn-outline-dark mt-2 w-100">Daten ändern</button>
+          <div>Mitglied seit: 1.1.1889</div>
+          <div>E-Mail: marvin@raithweg15.de</div>
+          <button class="btn btn-outline-dark mt-2" @click="this.edit_data = !this.edit_data">
+            <div v-if="!this.edit_data">Daten Ändern</div>
+            <div v-else>Abbrechen</div>
+          </button>
         </div>
       </div>
-      <hr />
-      <button class="stickBottom btn btn-outline-danger mb-3 mx-3">Account löschen</button>
+      <Transition>
+        <form v-if="this.edit_data">
+          <hr class="mb-2" />
+          <div class="mb-3">
+            <!-- Row Vorname / Nachname -->
+            <div class="row">
+              <div class="col-lg-6">
+                <label for="name" class="form-label">Vorname</label>
+                <div class="input-group">
+                  <input
+                    class="form-control"
+                    type="text"
+                    v-model="v$.userdata.vorname.$model"
+                    id="name"
+                    :class="{ 'is-invalid': v$.userdata.vorname.$error }"
+                  />
+                </div>
+                <!-- error message -->
+                <div class="text-danger" v-if="v$.userdata.vorname.$error">Vorname Benötigt</div>
+              </div>
+              <div class="col-lg-6">
+                <label for="nachname" class="form-label">Nachname</label>
+                <div class="input-group">
+                  <input
+                    :class="{ 'is-invalid': v$.userdata.nachname.$error }"
+                    v-model="v$.userdata.nachname.$model"
+                    type="text"
+                    class="form-control"
+                    id="nachname"
+                  />
+                </div>
+                <!-- error message -->
+                <div class="text-danger" v-if="v$.userdata.nachname.$error">Nachname Benötigt</div>
+              </div>
+            </div>
+
+            <!-- Row Email / Geburtsdatum -->
+            <div class="row mt-3">
+              <div class="col-lg-6">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                  <input
+                    :class="{ 'is-invalid': v$.userdata.email.$error }"
+                    v-model="this.userdata.email"
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    @blur="v$.userdata.email.$touch"
+                  />
+                </div>
+                <!-- error message -->
+                <div class="text-danger" v-if="v$.userdata.email.$error">Email Benötigt</div>
+              </div>
+              <div class="col-lg-6">
+                <label for="birthdate" class="form-label">Geburtsdatum</label>
+                <div class="input-group">
+                  <input
+                    v-model="this.userdata.geburtsdatum"
+                    @blur="v$.userdata.geburtsdatum.$touch"
+                    type="date"
+                    class="form-control"
+                    id="birthdate"
+                    :class="{ 'is-invalid': v$.userdata.geburtsdatum.$error }"
+                  />
+                </div>
+                <!-- error message -->
+                <div class="text-danger" v-if="v$.userdata.geburtsdatum.$error">Geburtsdatum Benötigt</div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </Transition>
+      <Transition>
+        <div v-if="this.edit_data">
+          <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">Speichern</button>
+          <hr />
+        </div>
+      </Transition>
+      <button :disabled="this.edit_data" class="stickBottom btn btn-outline-danger mb-3 mx-3">Account löschen</button>
     </div>
   </div>
 </template>
 
 <script>
+import { useVuelidate } from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
   data() {
-    return {};
+    return {
+      edit_data: false,
+      userdata: {
+        vorname: null,
+        nachname: null,
+        email: null,
+        geburtsdatum: null,
+      },
+    };
+  },
+  validations() {
+    return {
+      userdata: {
+        vorname: { required },
+        nachname: { required },
+        email: { required, email },
+        geburtsdatum: { required },
+      },
+    };
+  },
+  methods: {
+    onSaveSettings() {
+      setTimeout(2000, (this.edit_data = false));
+    },
   },
 };
 </script>
 
 <style scoped>
 .offcanvas {
-  width: 600px !important;
+  width: 650px !important;
 }
 
-.stickBottom{
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
+.stickBottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 }
 </style>

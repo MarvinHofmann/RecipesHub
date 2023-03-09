@@ -9,3 +9,14 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+
+
+/* Basic Transition styling */
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease-out;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
