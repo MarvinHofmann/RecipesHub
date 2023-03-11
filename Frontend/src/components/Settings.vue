@@ -1,6 +1,12 @@
 <template>
-  <div ref="offcanvas" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSettings"
-    aria-labelledby="offcanvasSettingsLabel" data-bs-backdrop="static">
+  <div
+    ref="offcanvas"
+    class="offcanvas offcanvas-end"
+    tabindex="-1"
+    id="offcanvasSettings"
+    aria-labelledby="offcanvasSettingsLabel"
+    data-bs-backdrop="static"
+  >
     <div class="offcanvas-header">
       <h5 id="offcanvasSettingsLabel">Einstellungen</h5>
       <button type="button" class="btn-close text-reset" @click="this.closeSettings()" aria-label="Close"></button>
@@ -29,8 +35,13 @@
               <div class="col-lg-6">
                 <label for="name" class="form-label">Vorname</label>
                 <div class="input-group">
-                  <input class="form-control" type="text" v-model="v$.userdata.vorname.$model" id="name"
-                    :class="{ 'is-invalid': v$.userdata.vorname.$error }" />
+                  <input
+                    class="form-control"
+                    type="text"
+                    v-model="v$.userdata.vorname.$model"
+                    id="name"
+                    :class="{ 'is-invalid': v$.userdata.vorname.$error }"
+                  />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.userdata.vorname.$error">Vorname Benötigt</div>
@@ -38,8 +49,13 @@
               <div class="col-lg-6">
                 <label for="nachname" class="form-label">Nachname</label>
                 <div class="input-group">
-                  <input :class="{ 'is-invalid': v$.userdata.nachname.$error }" v-model="v$.userdata.nachname.$model"
-                    type="text" class="form-control" id="nachname" />
+                  <input
+                    :class="{ 'is-invalid': v$.userdata.nachname.$error }"
+                    v-model="v$.userdata.nachname.$model"
+                    type="text"
+                    class="form-control"
+                    id="nachname"
+                  />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.userdata.nachname.$error">Nachname Benötigt</div>
@@ -51,8 +67,14 @@
               <div class="col-lg-6">
                 <label for="email" class="form-label">Email</label>
                 <div class="input-group">
-                  <input :class="{ 'is-invalid': v$.userdata.email.$error }" v-model="this.userdata.email" type="text"
-                    class="form-control" id="email" @blur="v$.userdata.email.$touch" />
+                  <input
+                    :class="{ 'is-invalid': v$.userdata.email.$error }"
+                    v-model="this.userdata.email"
+                    type="text"
+                    class="form-control"
+                    id="email"
+                    @blur="v$.userdata.email.$touch"
+                  />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.userdata.email.$error">Email Benötigt</div>
@@ -60,8 +82,14 @@
               <div class="col-lg-6">
                 <label for="username" class="form-label">Username</label>
                 <div class="input-group">
-                  <input v-model="this.userdata.username" @blur="v$.userdata.username.$touch" type="text"
-                    class="form-control" id="username" :class="{ 'is-invalid': v$.userdata.username.$error }" />
+                  <input
+                    v-model="this.userdata.username"
+                    @blur="v$.userdata.username.$touch"
+                    type="text"
+                    class="form-control"
+                    id="username"
+                    :class="{ 'is-invalid': v$.userdata.username.$error }"
+                  />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.userdata.username.$error">Username Benötigt</div>
@@ -72,13 +100,16 @@
       </Transition>
       <Transition name="fade">
         <div v-if="this.edit_data">
-          <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100"
-            @click="this.onSaveSettings()">Speichern</button>
+          <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">Speichern</button>
           <hr />
         </div>
       </Transition>
-      <button :disabled="this.edit_data" data-bs-toggle="modal" data-bs-target="#deleteAccountModal"
-        class="stickBottom btn btn-outline-danger mb-3 mx-3">
+      <button
+        :disabled="this.edit_data"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteAccountModal"
+        class="stickBottom btn btn-outline-danger mb-3 mx-3"
+      >
         Account löschen
       </button>
     </div>
@@ -96,7 +127,7 @@ import { Offcanvas, Modal } from "bootstrap";
 export default {
   components: {
     DeleteAccount,
-    SaveModal
+    SaveModal,
   },
   setup() {
     return { v$: useVuelidate() };
@@ -143,36 +174,36 @@ export default {
     closeSettings() {
       if (!this.edit_data || JSON.stringify(this.userdata) == JSON.stringify(this.getInitialUserdata())) {
         this.edit_data = false;
-        this.bsOffcanvas.hide()
-        return
+        this.bsOffcanvas.hide();
+        return;
       }
-      this.bsModal.show()
+      this.bsModal.show();
     },
     emitCloseSettings() {
       this.$refs.changeData.reset();
       this.edit_data = false;
-      this.bsOffcanvas.hide()
-      this.userdata = this.getInitialUserdata()
+      this.bsOffcanvas.hide();
+      this.userdata = this.getInitialUserdata();
       console.log(this.userdata);
-      this.v$.$reset()
+      this.v$.$reset();
     },
     getInitialUserdata() {
-      return { vorname: null, nachname: null, email: null, username: null }
+      return { vorname: null, nachname: null, email: null, username: null };
     },
     setupOffcanvasListener(myOffcanvas) {
-      myOffcanvas.addEventListener('hidePrevented.bs.offcanvas', event => {
-        this.closeSettings()
-      })
-    }
+      myOffcanvas.addEventListener("hidePrevented.bs.offcanvas", (event) => {
+        this.closeSettings();
+      });
+    },
   },
   mounted() {
-    this.bsOffcanvas = new Offcanvas(this.$refs.offcanvas)
-    const myOffcanvas = document.getElementById('offcanvasSettings')
-    this.setupOffcanvasListener(myOffcanvas)
-    const saveModal = document.getElementById('saveModal')
-    const modal = new Modal(saveModal)
-    this.bsModal = modal
-  }
+    this.bsOffcanvas = new Offcanvas(this.$refs.offcanvas);
+    const myOffcanvas = document.getElementById("offcanvasSettings");
+    this.setupOffcanvasListener(myOffcanvas);
+    const saveModal = document.getElementById("saveModal");
+    const modal = new Modal(saveModal);
+    this.bsModal = modal;
+  },
 };
 </script>
 
