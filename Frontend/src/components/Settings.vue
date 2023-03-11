@@ -11,7 +11,7 @@
           <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0" />
         </div>
         <div class="col-6">
-          <div>Marvin Hofmann <span class="text-muted">(21)</span></div>
+          <div>Marvin Hofmann</div>
           <div>Mitglied seit: 1.1.1889</div>
           <div>E-Mail: marvin@raithweg15.de</div>
           <button class="btn btn-outline-dark mt-2" @click="this.edit_data = !this.edit_data">
@@ -46,7 +46,7 @@
               </div>
             </div>
 
-            <!-- Row Email / Geburtsdatum -->
+            <!-- Row Email / Username -->
             <div class="row mt-3">
               <div class="col-lg-6">
                 <label for="email" class="form-label">Email</label>
@@ -58,13 +58,13 @@
                 <div class="text-danger" v-if="v$.userdata.email.$error">Email Benötigt</div>
               </div>
               <div class="col-lg-6">
-                <label for="birthdate" class="form-label">Geburtsdatum</label>
+                <label for="username" class="form-label">Username</label>
                 <div class="input-group">
-                  <input v-model="this.userdata.geburtsdatum" @blur="v$.userdata.geburtsdatum.$touch" type="date"
-                    class="form-control" id="birthdate" :class="{ 'is-invalid': v$.userdata.geburtsdatum.$error }" />
+                  <input v-model="this.userdata.username" @blur="v$.userdata.username.$touch" type="text"
+                    class="form-control" id="username" :class="{ 'is-invalid': v$.userdata.username.$error }" />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.geburtsdatum.$error">Geburtsdatum Benötigt</div>
+                <div class="text-danger" v-if="v$.userdata.username.$error">Username Benötigt</div>
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@ export default {
         vorname: null,
         nachname: null,
         email: null,
-        geburtsdatum: null,
+        username: null,
       },
     };
   },
@@ -120,7 +120,7 @@ export default {
         vorname: { required },
         nachname: { required },
         email: { required, email },
-        geburtsdatum: { required },
+        username: { required },
       },
     };
   },
@@ -140,7 +140,6 @@ export default {
       //Delete Account from Backend
       console.log("DELETE Account");
     },
-
     closeSettings() {
       if (!this.edit_data || JSON.stringify(this.userdata) == JSON.stringify(this.getInitialUserdata())) {
         this.edit_data = false;
@@ -158,7 +157,7 @@ export default {
       this.v$.$reset()
     },
     getInitialUserdata() {
-      return { vorname: null, nachname: null, email: null, geburtsdatum: null }
+      return { vorname: null, nachname: null, email: null, username: null }
     },
     setupOffcanvasListener(myOffcanvas) {
       myOffcanvas.addEventListener('hidePrevented.bs.offcanvas', event => {

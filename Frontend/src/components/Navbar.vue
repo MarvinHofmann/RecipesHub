@@ -1,7 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand fs-3 me-0" href="#"> RecipesHub </a>
+      <a class="navbar-brand fs-3 me-0" href="#">
+        <img src="../assets/logo.png" height="30">
+         RecipesHub
+      </a>
       <button
         class="navbar-toggler toggle-button"
         type="button"
@@ -41,7 +44,9 @@
                 <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen</div>
               </li>
               <li>
-                <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="dropdown-item" type="button"><i class="dropdown-icon bi bi-file-plus"></i> Rezept erstellen</div>
+                <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="dropdown-item" type="button">
+                  <i class="dropdown-icon bi bi-file-plus"></i> Rezept erstellen
+                </div>
               </li>
               <li>
                 <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-patch-plus"></i> Tag erstellen</div>
@@ -50,7 +55,13 @@
                 <hr class="dropdown-divider m-0" />
               </li>
               <li>
-                <div class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
+                <div
+                  class="dropdown-item"
+                  type="button"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasSettings"
+                  aria-controls="offcanvasSettings"
+                >
                   <i class="dropdown-icon bi bi-gear"></i>
                   Einstellungen
                 </div>
@@ -70,7 +81,7 @@
 </template>
 
 <script>
-import Alert from './Alert.vue'
+import Alert from "./Alert.vue";
 import Settings from "./Settings.vue";
 import AddRecipe from "./Modals/AddRecipe.vue";
 export default {
@@ -82,9 +93,9 @@ export default {
     onLogout() {
       this.$router.push("/login");
     },
-    onAddRecipe(){
+    onAddRecipe() {
       this.$refs.alert.showAlert();
-    }
+    },
   },
   mounted() {},
 };
