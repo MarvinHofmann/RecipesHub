@@ -19,9 +19,9 @@ async function registerUser(userdata) {
             return { error: null, data: response.data }
         })
         .catch((error) => {
-            if (error.response) {
+            if (error.response && error.response.data.code == "E1") {
                 // The request was made and the server responded with a status code
-                console.log(error.response.data);
+                return { error: "Der User mit dem angegebenen Usernamen existiert bereits.", data: null }
             }
             return { error: "Beim Registrieren ist ein Fehler aufgetreten", data: null }
         })

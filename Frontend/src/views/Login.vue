@@ -60,14 +60,14 @@
                 type="submit"
                 role="button"
                 class="btn btn-outline-dark my-2"
-                @click="sign_in()"
+                @click="this.onSignIn()"
                 v-if="!this.loading"
                 :disabled="v$.formLogin.$invalid"
               >
                 Anmelden
               </button>
             </div>
-            <p class="text-muted text-center mt-2">Oder mit Google anmelden</p>
+            <p class="text-muted text-center my-2">Oder mit Google anmelden</p>
             <div class="d-flex justify-content-center">
               <i class="bi bi-google text-center"></i>
             </div>
@@ -88,7 +88,6 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 export default {
-  components: {},
   setup() {
     return { v$: useVuelidate() };
   },
@@ -103,7 +102,7 @@ export default {
     };
   },
   methods: {
-    async sign_in() {
+    async onSignIn() {
       this.loading = true;
       this.error_text = "";
       this.loading = false;
