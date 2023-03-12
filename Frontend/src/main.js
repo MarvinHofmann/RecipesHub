@@ -9,6 +9,7 @@ import App from './App.vue'
 
 import router from './router/router'
 
-createApp(App)
-.use(router)
-.mount('#app')
+const recipesHub = createApp(App);
+recipesHub.use(router);
+recipesHub.mount('#app');
+

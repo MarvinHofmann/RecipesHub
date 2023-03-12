@@ -11,12 +11,14 @@
             <h2 class="fw-bold">Registrieren</h2>
             <p class="text-muted">Registirere dich bei RecipesHub.</p>
           </div>
-          <div v-if="this.showAlertMessage" class="alert alert-danger d-flex align-items-center" role="alert">
+          <div v-if="this.showValidationError" class="alert alert-danger d-flex align-items-center" role="alert">
             <i class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" role="img" aria-label="Danger:"></i>
             <div>Bitte überprüfen Sie ihre eingaben und versuchen Sie es erneut.</div>
           </div>
+          <Alert ref="alert" :message="this.alert.alertMessage" :type="this.alert.type"></Alert>
+
+          <!-- User Data form -->
           <form>
-            <!-- User Data form -->
             <!-- Row1 Vorname | Name -->
             <div class="row">
               <div class="col-lg-6 mb-3">
@@ -95,7 +97,7 @@
                   <input
                     type="password"
                     class="form-control"
-                    id="vorname"
+                    id="password"
                     placeholder=""
                     v-model="this.formRegister.password"
                     @blur="v$.formRegister.password.$touch"
@@ -108,27 +110,30 @@
               </div>
 
               <div class="col-lg-6 mb-3">
-                <label for="password" class="form-label">Passwort Wiederholen</label>
+                <label for="passwordre" class="form-label">Passwort Wiederholen</label>
                 <div class="input-group">
                   <input
                     type="password"
                     class="form-control"
-                    id="nachname"
+                    id="passwordre"
                     placeholder=""
-                    @blur="v$.formRegister.passwortWiederholen.$touch"
-                    v-model="this.formRegister.passwortWiederholen"
-                    :class="{ 'is-invalid': v$.formRegister.passwortWiederholen.$error }"
+                    @blur="v$.formRegister.repeatPassword.$touch"
+                    v-model="this.formRegister.repeatPassword"
+                    :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error }"
                   />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.formRegister.passwortWiederholen.$error">Passwörter stimmen nicht überein</div>
+                <div class="text-danger" v-if="v$.formRegister.repeatPassword.$error">Passwörter stimmen nicht überein</div>
               </div>
             </div>
 
             <!-- Register Button and Google sign in -->
             <div class="d-flex justify-content-center">
-              <button type="button" role="button" class="btn btn-outline-dark my-2" @click="onRegister" :class="{ shake: showAlertMessage }">
-                Registrieren
+              <button type="button" role="button" class="btn btn-outline-dark my-2" @click="onRegister" :class="{ shake: this.showValidationError }">
+                <div v-if="this.loadingSpinner" class="spinner-border text-dark" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div v-else>Registrieren</div>
               </button>
             </div>
             <p class="text-muted text-center mt-2">Oder mit Google anmelden</p>
@@ -149,14 +154,16 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, sameAs, minLength } from "@vuelidate/validators";
+import { registerUser } from "../api/userHandling";
+import Alert from "../components/Alert.vue";
 export default {
-  components: {},
+  components: { Alert },
   setup() {
     return { v$: useVuelidate() };
   },
   data() {
     return {
-      showAlertMessage: false,
+      showValidationError: false,
       formRegister: {
         firstName: null,
         lastName: null,
@@ -165,17 +172,40 @@ export default {
         password: null,
         repeatPassword: null,
       },
+      loadingSpinner: false,
+      alert: {
+        alertMessage: null,
+        type: "alert-danger",
+      },
     };
   },
   methods: {
-    onRegister() {
+    /**
+     *  This function handles the registration of a user by validating user inputs and sending them to the server for registration.
+     *  It first checks if the form input is valid, and if not, it displays a validation error.
+     *  Then it sends the registration data to the server using the registerUser function.
+     *  If the server returns an error, an alert message is displayed to the user.
+     *  If registration is successful, a success message is displayed and the user is redirected to the login page after 3 seconds.
+     */
+    async onRegister() {
       this.v$.$touch();
-      if (this.v$.$anyDirty) {
-        this.showAlertMessage = true;
-      } else {
-        this.showAlertMessage = false;
-        // Create User In Backend
+      if (this.v$.$invalid) {
+        this.showValidationError = true;
+        return;
       }
+      this.loadingSpinner = true;
+      let response = await registerUser(this.formRegister);
+      if (response.error) {
+        this.alert.type = "alert-danger";
+        this.alert.alertMessage = response.error;
+        this.$refs.alert.showAlert();
+      } else {
+        this.alert.alertMessage = "Erfolgreich Regisriert. Sie werden automatisch weitergeleitet.";
+        this.alert.type = "alert-success";
+        this.$refs.alert.showAlert();
+        setTimeout(() => this.$router.push("/login"), 3000);
+      }
+      this.loadingSpinner = false;
     },
   },
   validations() {
@@ -185,7 +215,7 @@ export default {
         lastName: { required },
         email: { required, email },
         username: { required },
-        password: { required, minLengthValue: minLength(6) },
+        password: { required, minLengthValue: minLength(2) },
         repeatPassword: { required, sameaspass: sameAs(this.formRegister.password) },
       },
     };
@@ -197,7 +227,5 @@ export default {
 .shake {
   animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
   transform: translate3d(0, 0, 0);
-  border-color: #dc3545;
-  color: #dc3545;
 }
 </style>

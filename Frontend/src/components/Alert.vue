@@ -1,11 +1,9 @@
 <template>
   <Transition name="fade">
-    <div class="container mt-3">
-      <div :class="['alert', this.type]" role="alert" v-if="this.show">
-        {{ this.message }}
-        <hr v-if="this.show_expanded" />
-        <p v-if="this.show_expanded" class="mb-0">{{ this.message_expand }}</p>
-      </div>
+    <div :class="['alert', this.type]" role="alert" v-if="this.show">
+      {{ this.message }}
+      <hr v-if="this.show_expanded" />
+      <p v-if="this.show_expanded" class="mb-0">{{ this.message_expand }}</p>
     </div>
   </Transition>
 </template>
@@ -23,7 +21,7 @@ export default {
     },
     ttl: {
       type: Number,
-      default: 2000,
+      default: 5000,
     },
     show_expanded: {
       type: Boolean,
@@ -53,7 +51,6 @@ export default {
      * Shows the alert for the given amount of time
      */
     showAlert() {
-      console.log("SHOW ALERT");
       this.show = true;
       setTimeout(() => (this.show = false), this.ttl);
     },
@@ -62,6 +59,4 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -12,6 +12,11 @@ app.use(bodyParser.json());
 const dotenv = require("dotenv");
 dotenv.config();
 
+//Init Cors
+let cors = require('cors');
+app.options('*', cors())
+app.use(cors())
+
 // Import Routes
 const authRoute = require('./routes/auth');
 
