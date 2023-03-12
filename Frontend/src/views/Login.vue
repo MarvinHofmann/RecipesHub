@@ -57,7 +57,7 @@
             <div v-if="this.error_text != ''" class="alert alert-danger" role="alert">{{ this.error_text }}</div>
             <div class="d-flex justify-content-center">
               <button
-                type="submit"
+                type="button"
                 role="button"
                 class="btn btn-outline-dark my-2"
                 @click="this.onSignIn()"
@@ -85,9 +85,13 @@
 </template>
 
 <script>
+import { useAuthStore } from "../stores/auth.store";
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 export default {
+  components: {
+    userStore: null,
+  },
   setup() {
     return { v$: useVuelidate() };
   },
@@ -105,8 +109,16 @@ export default {
     async onSignIn() {
       this.loading = true;
       this.error_text = "";
+      this.userStore = useAuthStore();
+      let res = await this.userStore.login(this.formLogin.username, this.formLogin.password);
+      if (res.error) {
+        console.log(res.error);
+        this.error_text = res.error
+      }else {
+        console.log(res.data);
+      }
       this.loading = false;
-      this.$router.push("/home");
+      //this.$router.push("/home");
     },
   },
   validations() {

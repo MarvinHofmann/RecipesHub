@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
-import axios from "axios"
 import { useStorage } from "@vueuse/core"
 const IP = "http://localhost";
+import { loginUser } from '../api/userHandling';
 
 export const useAuthStore = defineStore('store', {
     id: 'auth',
@@ -20,6 +20,8 @@ export const useAuthStore = defineStore('store', {
     actions: {
         async login(username, password) {
             // Load Userdata from backend store it pagewide
+            let response = await loginUser(username, password)
+            return response
         },
         logout() {
             // Remove User Credentials
