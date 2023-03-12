@@ -2,8 +2,8 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a class="navbar-brand fs-3 me-0" href="#">
-        <img src="../assets/logo.png" height="30">
-         RecipesHub
+        <img src="../assets/logo.png" height="30" />
+        RecipesHub
       </a>
       <button
         class="navbar-toggler toggle-button"
@@ -86,9 +86,6 @@ import Settings from "./Settings.vue";
 import AddRecipe from "./Modals/AddRecipe.vue";
 export default {
   components: { Settings, AddRecipe, Alert },
-  data() {
-    return {};
-  },
   methods: {
     onLogout() {
       this.$router.push("/login");
@@ -97,7 +94,6 @@ export default {
       this.$refs.alert.showAlert();
     },
   },
-  mounted() {},
 };
 </script>
 
