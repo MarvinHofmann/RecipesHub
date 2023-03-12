@@ -38,27 +38,27 @@
                   <input
                     class="form-control"
                     type="text"
-                    v-model="v$.userdata.vorname.$model"
+                    v-model="v$.userdata.firstName.$model"
                     id="name"
-                    :class="{ 'is-invalid': v$.userdata.vorname.$error }"
+                    :class="{ 'is-invalid': v$.userdata.firstName.$error }"
                   />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.vorname.$error">Vorname Benötigt</div>
+                <div class="text-danger" v-if="v$.userdata.firstName.$error">Vorname Benötigt</div>
               </div>
               <div class="col-lg-6">
                 <label for="nachname" class="form-label">Nachname</label>
                 <div class="input-group">
                   <input
-                    :class="{ 'is-invalid': v$.userdata.nachname.$error }"
-                    v-model="v$.userdata.nachname.$model"
+                    :class="{ 'is-invalid': v$.userdata.lastName.$error }"
+                    v-model="v$.userdata.lastName.$model"
                     type="text"
                     class="form-control"
                     id="nachname"
                   />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.nachname.$error">Nachname Benötigt</div>
+                <div class="text-danger" v-if="v$.userdata.lastName.$error">Nachname Benötigt</div>
               </div>
             </div>
 
@@ -138,8 +138,8 @@ export default {
       bsModal: null,
       edit_data: false,
       userdata: {
-        vorname: null,
-        nachname: null,
+        firstName: null,
+        lastName: null,
         email: null,
         username: null,
       },
@@ -148,8 +148,8 @@ export default {
   validations() {
     return {
       userdata: {
-        vorname: { required },
-        nachname: { required },
+        firstName: { required },
+        lastName: { required },
         email: { required, email },
         username: { required },
       },
@@ -171,6 +171,10 @@ export default {
       //Delete Account from Backend
       console.log("DELETE Account");
     },
+    /**
+     * If userdata isnt in edit mode or nothing changed the offcanvas settings
+     * gets closed. Otherwise a Modal is shown that there are unsaved changes
+     */
     closeSettings() {
       if (!this.edit_data || JSON.stringify(this.userdata) == JSON.stringify(this.getInitialUserdata())) {
         this.edit_data = false;
@@ -187,15 +191,26 @@ export default {
       console.log(this.userdata);
       this.v$.$reset();
     },
+    /**
+     * Stores and returns the initial userdata in a json
+     */
     getInitialUserdata() {
-      return { vorname: null, nachname: null, email: null, username: null };
+      return { firstName: null, lastName: null, email: null, username: null };
     },
+    /**
+     * Initializes the eventlistener for the Offcanvas. It checks if the user
+     * wants to close the offcanvas with a click next to the canvas
+     */
     setupOffcanvasListener(myOffcanvas) {
       myOffcanvas.addEventListener("hidePrevented.bs.offcanvas", (event) => {
         this.closeSettings();
       });
     },
   },
+  /**
+   * While Settings get mounted in vue LifeCycle init the Modal and the
+   * offcanvas
+   */
   mounted() {
     this.bsOffcanvas = new Offcanvas(this.$refs.offcanvas);
     const myOffcanvas = document.getElementById("offcanvasSettings");

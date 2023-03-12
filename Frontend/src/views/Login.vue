@@ -20,12 +20,12 @@
                   class="form-control"
                   id="username"
                   placeholder=""
-                  v-model="v$.form_login.username.$model"
-                  :class="{ 'is-invalid': v$.form_login.username.$error }"
+                  v-model="v$.formLogin.username.$model"
+                  :class="{ 'is-invalid': v$.formLogin.username.$error }"
                 />
               </div>
               <!-- error message -->
-              <div class="text-danger" v-if="v$.form_login.username.$error">Username fehlt</div>
+              <div class="text-danger" v-if="v$.formLogin.username.$error">Username fehlt</div>
             </div>
             <div class="mb-3">
               <label for="pass" class="form-label">Passwort</label>
@@ -34,12 +34,12 @@
                   type="password"
                   class="form-control"
                   id="pass"
-                  v-model="v$.form_login.password.$model"
-                  :class="{ 'is-invalid': v$.form_login.password.$error }"
+                  v-model="v$.formLogin.password.$model"
+                  :class="{ 'is-invalid': v$.formLogin.password.$error }"
                 />
               </div>
               <!-- error message -->
-              <div class="text-danger" v-if="v$.form_login.password.$error">Passwort fehlt</div>
+              <div class="text-danger" v-if="v$.formLogin.password.$error">Passwort fehlt</div>
             </div>
 
             <div class="mb-3 form-check">
@@ -62,7 +62,7 @@
                 class="btn btn-outline-dark my-2"
                 @click="sign_in()"
                 v-if="!this.loading"
-                :disabled="v$.form_login.$invalid"
+                :disabled="v$.formLogin.$invalid"
               >
                 Anmelden
               </button>
@@ -94,7 +94,7 @@ export default {
   },
   data() {
     return {
-      form_login: {
+      formLogin: {
         username: null,
         password: null,
       },
@@ -112,7 +112,7 @@ export default {
   },
   validations() {
     return {
-      form_login: {
+      formLogin: {
         username: { required },
         password: { required },
       },

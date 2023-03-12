@@ -27,12 +27,12 @@
                     class="form-control"
                     id="vorname"
                     placeholder=""
-                    v-model="this.formRegister.vorname"
-                    :class="{ 'is-invalid': v$.formRegister.vorname.$error }"
+                    v-model="this.formRegister.firstName"
+                    :class="{ 'is-invalid': v$.formRegister.firstName.$error }"
                   />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.formRegister.vorname.$error">Vorname fehlt</div>
+                <div class="text-danger" v-if="v$.formRegister.firstName.$error">Vorname fehlt</div>
               </div>
 
               <div class="col-lg-6 mb-3">
@@ -43,12 +43,12 @@
                     class="form-control"
                     id="nachname"
                     placeholder=""
-                    v-model="this.formRegister.nachname"
-                    :class="{ 'is-invalid': v$.formRegister.nachname.$error }"
+                    v-model="this.formRegister.lastName"
+                    :class="{ 'is-invalid': v$.formRegister.lastName.$error }"
                   />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.formRegister.nachname.$error">Nachname fehlt</div>
+                <div class="text-danger" v-if="v$.formRegister.lastName.$error">Nachname fehlt</div>
               </div>
             </div>
 
@@ -97,14 +97,14 @@
                     class="form-control"
                     id="vorname"
                     placeholder=""
-                    v-model="this.formRegister.passwort"
-                    @blur="v$.formRegister.passwort.$touch"
-                    :class="{ 'is-invalid': v$.formRegister.passwortWiederholen.$error, 'is-invalid': v$.formRegister.passwort.$error }"
+                    v-model="this.formRegister.password"
+                    @blur="v$.formRegister.password.$touch"
+                    :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error, 'is-invalid': v$.formRegister.password.$error }"
                   />
                 </div>
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.formRegister.passwort.$error">Passwort muss mindestens 6 Zeichen lang sein.</div>
-                <div class="text-danger" v-else-if="v$.formRegister.passwortWiederholen.$error">Passwörter stimmen nicht überein</div>
+                <div class="text-danger" v-if="v$.formRegister.password.$error">Passwort muss mindestens 6 Zeichen lang sein.</div>
+                <div class="text-danger" v-else-if="v$.formRegister.repeatPassword.$error">Passwörter stimmen nicht überein</div>
               </div>
 
               <div class="col-lg-6 mb-3">
@@ -158,12 +158,12 @@ export default {
     return {
       showAlertMessage: false,
       formRegister: {
-        vorname: null,
-        nachname: null,
+        firstName: null,
+        lastName: null,
         email: null,
         username: null,
-        passwort: null,
-        passwortWiederholen: null,
+        password: null,
+        repeatPassword: null,
       },
     };
   },
@@ -181,12 +181,12 @@ export default {
   validations() {
     return {
       formRegister: {
-        vorname: { required },
-        nachname: { required },
+        firstName: { required },
+        lastName: { required },
         email: { required, email },
         username: { required },
-        passwort: { required, minLengthValue: minLength(6) },
-        passwortWiederholen: { required, sameaspass: sameAs(this.formRegister.passwort) },
+        password: { required, minLengthValue: minLength(6) },
+        repeatPassword: { required, sameaspass: sameAs(this.formRegister.password) },
       },
     };
   },
