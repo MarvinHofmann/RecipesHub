@@ -7,6 +7,7 @@ import login from '../views/Login.vue'
 import register from '../views/Register.vue'
 import weekPlaner from '../views/WeekPlaner.vue'
 import browse from '../views/Browse.vue'
+import p404 from '../views/PageNotFound.vue'
 
 const router =
     createRouter({
@@ -19,6 +20,7 @@ const router =
             { path: '/registrieren', name: 'registrieren', component: register },
             { path: '/wochenPlan', name: 'wochenPlan', component: weekPlaner },
             { path: '/browse', name: 'browse', component: browse },
+            { path: '/:pathMatch(.*)*', component: p404 },
         ],
         scrollBehavior(to, from, savedPosition) {
             // always scroll to top

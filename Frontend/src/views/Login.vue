@@ -49,7 +49,7 @@
 
             <!--Loading Spinner-->
             <div class="text-center">
-              <div class="spinner-border text-primary mt-2" role="status" v-if="this.loading">
+              <div class="spinner-border text-dark mt-2" role="status" v-if="this.loading">
                 <span class="visually-hidden">Loading...</span>
               </div>
             </div>
@@ -113,12 +113,12 @@ export default {
       let res = await this.userStore.login(this.formLogin.username, this.formLogin.password);
       if (res.error) {
         console.log(res.error);
-        this.error_text = res.error
-      }else {
+        this.error_text = res.error;
+      } else {
         console.log(res.data);
       }
       this.loading = false;
-      //this.$router.push("/home");
+      this.$router.push("/home");
     },
   },
   validations() {
