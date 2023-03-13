@@ -27,7 +27,7 @@ router.post("/register", async function (req, res) {
         password: hashPassword
     }).catch((err) => {
         console.error(err);
-        return res.status(500).send({message: "Error while creating User", code: "E2"})
+        return res.status(500).send({ message: "Error while creating User", code: "E2" })
     })
     res.status(201).send(username)
 });
@@ -37,17 +37,18 @@ router.post("/login", async (req, res) => {
 
     //check if user exists
     const user = await User.findOne({ username: username }).exec();
-    if (!user) return res.status(400).send({message: "Username or password is wrong", code: "E1"});
+    if (!user) return res.status(400).send({ message: "Username or password is wrong", code: "E1" });
 
     //check if password is correct
     const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) return res.status(400).send({message: "Username or password is wrong", code: "E1"});
+    if (!validPassword) return res.status(400).send({ message: "Username or password is wrong", code: "E1" });
 
     //create token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
     res.cookie("jwt", token, {
         httpOnly: true,
-      });
+    });
+    user.password = undefined
     res.status(200).send(user)
 })
 
