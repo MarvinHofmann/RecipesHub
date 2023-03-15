@@ -2,6 +2,24 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const User = require('../models/userSchema')
 const jwt = require('jsonwebtoken')
+// Cookie parser
+const cookieParser = require("cookie-parser");
+router.use(cookieParser());
+
+// Authorization Middleware
+const authorization = (req, res, next) => {
+    const token = req.cookies.access_token;
+    if (!token) return res.status(403).send("Not Authorized");
+
+    try {
+        const data = jwt.verify(token, process.env.JWT_SECRET);
+        req.userID = data._id; // Store User DB id in request, id is transfered via cookie
+        return next();
+    } catch {
+        // On every error return 403
+        return res.status(403).send("Not Authorized");
+    }
+};
 
 router.post("/register", async function (req, res) {
     const { username, firstName, lastName, email, password } = req.body
@@ -45,12 +63,22 @@ router.post("/login", async (req, res) => {
 
     //create token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
-    res.cookie("jwt", token, {
+    res.cookie("access_token", token, {
         httpOnly: true,
+        secure: process.env.NODE_ENV === "production"
     });
     user.password = undefined
     res.status(200).send(user)
 })
+
+
+router.get("/update", authorization, (req, res) => {
+    res.status(200).send("Access Granted")
+});
+
+router.delete("/user", authorization, (req, res) => {
+    res.status(200).send("Access Granted")
+});
 
 module.exports = router
 
