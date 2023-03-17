@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import {useAuthStore} from '../stores/auth.store'
 
 import home from '../views/Home.vue'
 import about from '../views/About.vue'
@@ -27,5 +28,15 @@ const router =
             return { top: -10 }
         },
     })
+
+router.beforeEach(async (to) => {
+    const userStore = useAuthStore();
+    const publicPages = ["/login", "/:pathMatch(.*)*"];
+    const authRequired = !publicPages.includes(to.path); // Check for public pages
+    //const auth = "token"  // Get token from cookies and to check if already signed in
+    //if (authRequired && !auth) {
+    //    //return "/login";
+    //}
+})
 
 export default router;

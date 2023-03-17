@@ -116,9 +116,9 @@ export default {
         this.error_text = res.error;
       } else {
         console.log(res.data);
+        this.$router.push("/home");
       }
       this.loading = false;
-      this.$router.push("/home");
     },
   },
   validations() {

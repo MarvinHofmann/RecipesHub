@@ -7,8 +7,10 @@ export const useAuthStore = defineStore('store', {
     id: 'auth',
     state: () => {
         return {
-            user: useStorage('USER', {}),
-            token: useStorage('TOKEN', "")
+            user: {
+                username: "Marvin"
+            },
+            token: ""
         }
     },
     getters: {
