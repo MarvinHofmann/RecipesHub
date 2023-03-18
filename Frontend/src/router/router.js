@@ -16,7 +16,7 @@ const router =
         routes: [
             { path: '/home', name: 'home', component: home },
             { path: '/about', name: 'about', component: about },
-            { path: '/rezept', name: 'rezept', component: detailRecipe },
+            { path: '/rezept/:id', name: 'rezept', component: detailRecipe },
             { path: '/login', name: 'login', component: login },
             { path: '/registrieren', name: 'registrieren', component: register },
             { path: '/wochenPlan', name: 'wochenPlan', component: weekPlaner },

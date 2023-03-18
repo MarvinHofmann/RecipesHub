@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { useStorage } from "@vueuse/core"
-const IP = "http://localhost";
 import { loginUser } from '../api/userHandling';
 
 export const useAuthStore = defineStore('store', {
