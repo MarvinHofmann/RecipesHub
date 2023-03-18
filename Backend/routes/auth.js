@@ -2,24 +2,9 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const User = require('../models/userSchema')
 const jwt = require('jsonwebtoken')
-// Cookie parser
-const cookieParser = require("cookie-parser");
-router.use(cookieParser());
 
 // Authorization Middleware
-const authorization = (req, res, next) => {
-    const token = req.cookies.access_token;
-    if (!token) return res.status(403).send("Not Authorized");
-
-    try {
-        const data = jwt.verify(token, process.env.JWT_SECRET);
-        req.userID = data._id; // Store User DB id in request, id is transfered via cookie
-        return next();
-    } catch {
-        // On every error return 403
-        return res.status(403).send("Not Authorized");
-    }
-};
+const authorization = require("./verifyToken")
 
 router.post("/register", async function (req, res) {
     const { username, firstName, lastName, email, password } = req.body

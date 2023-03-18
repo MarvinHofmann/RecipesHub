@@ -8,6 +8,10 @@ const port = 3443;
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
+// Init Cookie Parser
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
+
 //Init dotenv
 const dotenv = require("dotenv");
 dotenv.config();
@@ -19,9 +23,11 @@ app.use(cors())
 
 // Import Routes
 const authRoute = require('./routes/auth');
+const recipesRoute = require('./routes/recipes');
 
 // Routes Middleware
 app.use('/api/user', authRoute)
+app.use('/api/recipes', recipesRoute)
 
 // Init MongoDB
 const mongoose = require('mongoose');
