@@ -4,7 +4,7 @@ const User = require('../models/userSchema')
 const jwt = require('jsonwebtoken')
 
 // Authorization Middleware
-const authorization = require("./verifyToken")
+const authorization = require("../middleware/verifyToken")
 
 router.post("/register", async function (req, res) {
     const { username, firstName, lastName, email, password } = req.body

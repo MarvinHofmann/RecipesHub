@@ -3,7 +3,7 @@
   <div class="container mt-3">
     <!-- Hero Section, visible if user just Logged In-->
     <Transition name="fade">
-      <div class="row" v-if="this.justLoggedIn">
+      <div class="row mx-0" v-if="this.justLoggedIn">
         <div class="alert alert-light border text-center alert-dismissible fade show">
           <h1 class="text-dark">Hallo {{ this.userStore.user.username }}, schön dich zu sehen.</h1>
           <button type="button" class="btn-close text-reset" @click="this.justLoggedIn = false" aria-label="Close"></button>
