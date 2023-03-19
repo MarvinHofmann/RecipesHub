@@ -17,9 +17,9 @@
           <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0" />
         </div>
         <div class="col-6">
-          <div>Marvin Hofmann</div>
-          <div>Mitglied seit: 1.1.1889</div>
-          <div>E-Mail: marvin@raithweg15.de</div>
+          <div>{{this.userStore.user.firstName}} {{this.userStore.user.lastName}}</div>
+          <div>Mitglied seit: {{this.userStore.user.registrationDate}}</div>
+          <div>E-Mail: {{this.userStore.user.email}}</div>
           <button class="btn btn-outline-dark mt-2" @click="this.edit_data = !this.edit_data">
             <div v-if="!this.edit_data">Daten Ändern</div>
             <div v-else>Abbrechen</div>
@@ -124,13 +124,15 @@ import DeleteAccount from "./Modals/DeleteAccount.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { Offcanvas, Modal } from "bootstrap";
+import { deleteUser } from "../api/userHandling";
+import { useAuthStore } from "../stores/auth.store";
 export default {
   components: {
     DeleteAccount,
     SaveModal,
   },
   setup() {
-    return { v$: useVuelidate() };
+    return { v$: useVuelidate(), userStore: useAuthStore() };
   },
   data() {
     return {
@@ -167,9 +169,16 @@ export default {
      * Gets called if the user surely deletes it after pressing
      * Löschen in the Modal
      */
-    onDeleteAccount() {
+    async onDeleteAccount() {
       //Delete Account from Backend
-      console.log("DELETE Account");
+      let serverResponse = await deleteUser();
+      if (serverResponse.error) {
+        console.log(error);
+      }else{
+        this.bsOffcanvas.hide();
+        this.userStore.deleteUser()
+        this.$router.push("/login")
+      }
     },
     /**
      * If userdata isnt in edit mode or nothing changed the offcanvas settings

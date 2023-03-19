@@ -1,15 +1,12 @@
 import { defineStore } from 'pinia'
 import { useStorage } from "@vueuse/core"
-import { loginUser } from '../api/userHandling';
+import { loginUser, logoutUser } from '../api/userHandling';
 
 export const useAuthStore = defineStore('store', {
     id: 'auth',
     state: () => {
         return {
-            user: {
-                username: "Marvin"
-            },
-            token: ""
+            user: useStorage('USER', {}),
         }
     },
     getters: {
@@ -22,10 +19,26 @@ export const useAuthStore = defineStore('store', {
         async login(username, password) {
             // Load Userdata from backend store it pagewide
             let response = await loginUser(username, password)
+            if (response.data) {
+                // Change iso date string to locale date string (German)
+                response.data.registrationDate = new Date(response.data.registrationDate).toLocaleDateString("de-DE")
+                localStorage.setItem('USER', JSON.stringify(this.user));
+                this.user = response.data
+            }
             return response
         },
-        logout() {
+        async logout() {
             // Remove User Credentials
+            let response = await logoutUser()
+            if (!response.error) {
+                this.user = null
+                localStorage.removeItem('USER');
+                setTimeout(() => { location.reload() }, 500)
+            }
         },
+        deleteUser() {
+            this.user = null;
+            localStorage.removeItem('USER');
+        }
     },
 });

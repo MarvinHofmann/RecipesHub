@@ -114,8 +114,7 @@ export default {
       if (res.error) {
         console.log(res.error);
         this.error_text = res.error;
-      } else {
-        console.log(res.data);
+      }else{
         this.$router.push("/home");
       }
       this.loading = false;

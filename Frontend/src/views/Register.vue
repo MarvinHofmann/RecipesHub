@@ -188,6 +188,7 @@ export default {
      *  If registration is successful, a success message is displayed and the user is redirected to the login page after 3 seconds.
      */
     async onRegister() {
+      this.showValidationError = false;
       this.v$.$touch();
       if (this.v$.$invalid) {
         this.showValidationError = true;
@@ -203,7 +204,7 @@ export default {
         this.alert.alertMessage = "Erfolgreich Regisriert. Sie werden automatisch weitergeleitet.";
         this.alert.type = "alert-success";
         this.$refs.alert.showAlert();
-        setTimeout(() => this.$router.push("/login"), 3000);
+        setTimeout(() => this.$router.push("/login"), 2000);
       }
       this.loadingSpinner = false;
     },

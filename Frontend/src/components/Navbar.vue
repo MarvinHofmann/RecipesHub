@@ -1,7 +1,7 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-      <a class="navbar-brand fs-3 me-0" href="#">
+      <a @click="this.$router.push('/home')" class="navbar-brand fs-3 me-0" href="#">
         <img src="../assets/logo.png" height="30" />
         RecipesHub
       </a>
@@ -34,7 +34,7 @@
         <div class="d-flex dropdown dropdown-area" data-bs-toggle="dropdown" aria-expanded="false">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a role="button" id="btn" class="nav-link"> Marvin </a>
+              <a role="button" id="btn" class="nav-link"> {{ this.userStore.user.username }} </a>
             </li>
             <a href="#" class="mt-2 d-block link-dark text-decoration-none dropdown-toggle avatar">
               <img src="../assets/vue.svg" alt="avatar" width="32" height="32" class="rounded-circle bg-success p-0" />
@@ -84,11 +84,16 @@
 import Alert from "./Alert.vue";
 import Settings from "./Settings.vue";
 import AddRecipe from "./Modals/AddRecipe.vue";
+import { useAuthStore } from "../stores/auth.store";
 export default {
+  setup() {
+    return { userStore: useAuthStore() };
+  },
   components: { Settings, AddRecipe, Alert },
   methods: {
     onLogout() {
       this.$router.push("/login");
+      this.userStore.logout()
     },
     onAddRecipe() {
       this.$refs.alert.showAlert();

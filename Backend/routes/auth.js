@@ -56,13 +56,29 @@ router.post("/login", async (req, res) => {
     res.status(200).send(user)
 })
 
+router.delete("/logout", authorization, async (req, res) => {
+    const user = await User.findOne({ "_id": req.userID }).exec();
+    if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
 
-router.get("/update", authorization, (req, res) => {
+    res.clearCookie("access_token")
+    res.status(200).send({ message: "Logout successful" })
+});
+
+
+router.get("/update", authorization, async (req, res) => {
     res.status(200).send("Access Granted")
 });
 
-router.delete("/user", authorization, (req, res) => {
-    res.status(200).send("Access Granted")
+router.delete("/delete", authorization, async (req, res) => {
+    const user = await User.findOne({ "_id": req.userID }).exec();
+    if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
+
+    await User.deleteOne({ "_id": req.userID }).then(function () {
+        res.clearCookie("access_token")
+        res.status(200).send({ message: "User deleted" })
+    }).catch(function (error) {
+        return res.status(400).send({ message: "Cant delete User", code: "E2", error: error });
+    });
 });
 
 module.exports = router

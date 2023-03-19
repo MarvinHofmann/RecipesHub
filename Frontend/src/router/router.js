@@ -31,12 +31,12 @@ const router =
 
 router.beforeEach(async (to) => {
     const userStore = useAuthStore();
-    const publicPages = ["/login", "/:pathMatch(.*)*"];
+    const publicPages = ["/login", "/registrieren"];
     const authRequired = !publicPages.includes(to.path); // Check for public pages
-    //const auth = "token"  // Get token from cookies and to check if already signed in
-    //if (authRequired && !auth) {
-    //    //return "/login";
-    //}
+    const auth = userStore.user.username  // Get token from cookies and to check if already signed in
+    if (authRequired && !auth) {
+        return "/login";
+    }
 })
 
 export default router;
