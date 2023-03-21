@@ -31,7 +31,7 @@
             <div class="col-lg-6">
               <h6 class="mb-1">Tags</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="tag in userStore.user.tags">
+                <div class="form-check form-check-inline mb-2" v-for="tag in userStore.user.tags" @change="this.filterByTag()">
                   <input class="form-check-input" type="checkbox" :value="tag" v-model="this.filter.tags" :id="tag" />
                   <label class="form-check-label" :for="tag"> {{ tag }} </label>
                 </div>
@@ -54,7 +54,7 @@
     <!-- Collapse Region of the Filter-->
     <div class="row">
       <RecipeCard
-        v-for="item in recipesList"
+        v-for="item in filteredList"
         :recipe-name="item.title"
         :category="item.category"
         :tags="item.tags"
@@ -83,13 +83,33 @@ export default {
   },
   data() {
     return {
-      numberOfRecipes: 5,
+      numberOfRecipes: 0,
       filter: {
         tags: [],
         categories: [],
       },
       recipesList: [],
+      filteredList: [],
     };
+  },
+  methods: {
+    filterByTag() {
+      this.filteredList = []
+      if (this.filter.tags.length == 0) {
+        this.filteredList = this.recipesList
+        return
+      }
+      for (let i = 0; i < this.recipesList.length; i++) {
+        const element = this.recipesList[i];
+        for (let j = 0; j < this.filter.tags.length; j++) {
+          const filterElement = this.filter.tags[j];
+          console.log(element, filterElement);
+          if (element.tags.includes(filterElement)) {
+            this.filteredList.push(element);
+          }
+        }
+      }
+    },
   },
   async mounted() {
     let res = await getAllRecipes();
@@ -98,6 +118,8 @@ export default {
       return;
     }
     this.recipesList = res.data;
+    this.filteredList = res.data;
+    this.numberOfRecipes = res.data.length;
   },
 };
 </script>
