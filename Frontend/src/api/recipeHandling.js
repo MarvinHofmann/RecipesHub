@@ -16,7 +16,8 @@ async function postAddRecipe(recipeData) {
         category: recipeData.category,
         tags: recipeData.tags,
         steps: recipeData.steps,
-        ingredients: recipeData.ingredients
+        ingredients: recipeData.ingredients,
+        portions: recipeData.portions
     }, { withCredentials: true })
         .then((response) => { // Return Code 2xx
             return { error: null, data: response.data }

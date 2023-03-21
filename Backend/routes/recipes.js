@@ -15,7 +15,8 @@ router.post("/addRecipe", authorization, async (req, res) => {
         category: req.body.category,
         tags: req.body.tags,
         ingredients: req.body.ingredients,
-        steps: req.body.steps
+        steps: req.body.steps,
+        portions: req.body.portions
     }).catch((err) => {
         console.error(err);
         return res.status(500).send({ message: "Error while creating Recipe", code: "E2", error: err })

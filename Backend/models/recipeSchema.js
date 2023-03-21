@@ -23,7 +23,8 @@ const recipeSchema = new mongoose.Schema({
             amount: { type: Number, required: true },
             unit: { type: String, required: true, default: "gramm" },
         }], required: true, _id: false
-    }
+    },
+    portions: { type: Number, required: true, default: 1 }
 });
 
 const Recipe = mongoose.model("recipe", recipeSchema)

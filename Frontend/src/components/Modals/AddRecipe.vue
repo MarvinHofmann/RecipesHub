@@ -99,6 +99,26 @@
 
               <h5 class="mt-3">Zutaten</h5>
               <div class="mt-2">
+                <!-- Portionsangaben -->
+                <div class="row g-3 align-items-center">
+                  <div class="col-1 me-2">
+                    <label id="portionsInline"> Portionen: </label>
+                  </div>
+                  <div class="col-1" :class="{ 'col-2': v$.recipeData.portions.$error }">
+                    <input
+                      type="number"
+                      min="1"
+                      v-model="this.recipeData.portions"
+                      id="portions"
+                      class="form-control"
+                      :class="{ 'is-invalid': v$.recipeData.portions.$error }"
+                    />
+                  </div>
+                  <div class="col-5">
+                    <div class="text-danger" v-if="v$.recipeData.portions.$error">Die Minimale menge an Portionen muss 1 sein</div>
+                  </div>
+                </div>
+
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.recipeData.ingredients.$error">Bitte überprüfe die Zutaten auf vollständigkeit</div>
                 <div v-for="(ingredient, index) in this.recipeData.ingredients" :key="index">
@@ -186,7 +206,7 @@
 
 <script>
 import { useVuelidate } from "@vuelidate/core";
-import { minLength, helpers, required } from "@vuelidate/validators";
+import { minLength, helpers, required, minValue } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
 import { postAddRecipe } from "../../api/recipeHandling";
 export default {
@@ -217,6 +237,7 @@ export default {
           },
         ],
         tags: [],
+        portions: 1,
       },
       failed: false,
       success: false,
@@ -246,6 +267,7 @@ export default {
           }),
         },
         tags: { required },
+        portions: { required, minValue: minValue(1) },
       },
     };
   },
