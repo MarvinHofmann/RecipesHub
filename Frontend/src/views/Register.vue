@@ -216,7 +216,7 @@ export default {
         lastName: { required },
         email: { required, email },
         username: { required },
-        password: { required, minLengthValue: minLength(2) },
+        password: { required, minLengthValue: minLength(6) },
         repeatPassword: { required, sameaspass: sameAs(this.formRegister.password) },
       },
     };

@@ -7,19 +7,18 @@ router.get("/randomRecipes", authorization, (req, res) => {
 });
 
 router.post("/addRecipe", authorization, async (req, res) => {
-    if (!req.body.recipe) return res.status(400).send({ message: "No information send", code: "E1" })
-
+    if (!req.body) return res.status(400).send({ message: "No information send", code: "E1" })
     // Create final recipe
     await Recipe.create({
-        title: req.body.recipe.title,
-        description: req.body.recipe.description,
-        source: req.body.recipe.source,
-        images: req.body.recipe.images,
-        processingTime: req.body.recipe.processingTime,
-        category: req.body.recipe.category,
-        tags: req.body.recipe.tags,
-        ingredients: req.body.recipe.ingredients,
-        steps: req.body.recipe.steps
+        title: req.body.title,
+        description: req.body.description,
+        source: req.body.source,
+        images: req.body.images,
+        processingTime: req.body.processingTime,
+        category: req.body.category,
+        tags: req.body.tags,
+        ingredients: req.body.ingredients,
+        steps: req.body.steps
     }).catch((err) => {
         console.error(err);
         return res.status(500).send({ message: "Error while creating Recipe", code: "E2", error: err })
