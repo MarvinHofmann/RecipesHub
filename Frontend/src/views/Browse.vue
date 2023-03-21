@@ -1,12 +1,12 @@
 <template>
   <Navbar></Navbar>
 
-  <div class="container mt-4">
+  <div class="container">
     <div class="row">
-      <div class="col-sm-6 mt-2">
+      <div class="col-sm-6 mt-3">
         <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addRecipeModal" type="button">Rezept erstellen</button>
       </div>
-      <div class="col-sm-6 mt-2">
+      <div class="col-sm-6 mt-3">
         <div class="float-sm-end">
           <p class="d-sm-inline-block me-2 p-0 m-0">{{ this.numberOfRecipes }} Rezepte</p>
           <button
@@ -24,8 +24,8 @@
     </div>
 
     <!-- Collapse Region of the Filter-->
-    <div class="row mt-2">
-      <div class="collapse" id="filterCollapse">
+    <div class="row">
+      <div class="collapse mt-2" id="filterCollapse">
         <div class="card card-body">
           <div class="row">
             <div class="col-lg-6">
@@ -52,7 +52,7 @@
     </div>
 
     <!-- Recipes Card dynamically created -->
-    <div class="row">
+    <div class="row mt-3">
       <RecipeCard
         v-for="item in filteredList"
         :recipe-name="item.title"

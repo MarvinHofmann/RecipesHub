@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xxl-3 col-lg-4 col-md-6 mt-1 mt-4">
+  <div class="col-xxl-3 col-lg-4 col-md-6 mb-4">
     <div class="card h-100" @click="this.onClickRecipe">
       <img class="card-img-top" :src="this.image" alt="..." />
       <div class="card-body">

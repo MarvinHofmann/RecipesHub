@@ -30,7 +30,7 @@
       <hr class="mt-0 mb-0" />
     </div>
 
-    <div class="row">
+    <div class="row mt-4">
       <RecipeCard
         v-for="item in randomRecipes"
         :recipe-name="item.title"
@@ -41,7 +41,7 @@
       ></RecipeCard>
     </div>
 
-    <div class="float-end mt-3">
+    <div class="float-end mt-0">
       <button class="btn btn-outline-dark" @click="this.$router.push('/browse')">Alle Browse</button>
     </div>
   </div>

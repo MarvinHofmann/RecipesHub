@@ -9,7 +9,7 @@
         </div>
         <div class="modal-body">
           <form ref="recipeData">
-            <div class="container px-5 mt-2">
+            <div class="container px-lg-5 mt-2">
               <h5>Informationen</h5>
               <!-- Row Name / Quelle -->
               <div class="row mt-2">
@@ -128,7 +128,9 @@
                 </div>
                 <div class="row">
                   <div class="col-12 d-flex justify-content-center">
-                    <button type="button" class="btn btn-outline-dark mt-2 mb-0" @click="addIngredient()"><i class="bi bi-plus-lg"></i></button>
+                    <button type="button" class="btn btn-outline-dark btn-sm mt-2 mb-0" @click="addIngredient()">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
                   </div>
                   <small class="text-muted pt-0 text-center">Weitere Zutat hinzufügen</small>
                 </div>
@@ -140,20 +142,20 @@
                 <div class="text-danger" v-if="v$.recipeData.steps.$error">Bitte überprüfe die Schritte auf vollständigkeit</div>
                 <div v-for="(step, index) in this.recipeData.steps" :key="index">
                   <div class="row">
-                    <div class="col-lg-11 pe-lg-1 mt-3 titleTop">
-                      <input v-model="step.title" placeholder="Names des Schrittes" class="form-control rounded-0 rounded-top" type="text" />
-                    </div>
-                    <div class="col-lg-1 mt-3 ps-lg-1">
+                    <div class="col-lg-1 pe-0 mt-3">
                       <button type="button" class="btn btn-danger" @click="removeStep(index)"><i class="bi bi-x-lg"></i></button>
                     </div>
-                    <div class="col-lg-11 pe-lg-1 mt-1">
+                    <div class="col-lg-11 ps-lg-1 pe-lg-1 mt-lg-3 mt-2 titleTop">
+                      <input v-model="step.title" placeholder="Names des Schrittes" class="form-control rounded-0 rounded-top" type="text" />
+                    </div>
+                    <div class="col-lg-12 pe-lg-1 mt-1">
                       <textarea rows="2" v-model="step.description" placeholder="Beschreibung" class="form-control rounded-0 rounded-bottom" />
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 d-flex justify-content-center">
-                    <button type="button" class="btn btn-outline-dark mt-2 mb-0" @click="addStep()"><i class="bi bi-plus-lg"></i></button>
+                    <button type="button" class="btn btn-outline-dark btn-sm mt-2 mb-0" @click="addStep()"><i class="bi bi-plus-lg"></i></button>
                   </div>
                   <small class="text-muted pt-0 text-center">Weiteren Schritt hinzufügen</small>
                 </div>
@@ -292,6 +294,10 @@ export default {
   .ingredientCol {
     padding-left: 5px;
     padding-right: 5px;
+  }
+
+  .btn-danger {
+    width: 100%;
   }
 }
 </style>

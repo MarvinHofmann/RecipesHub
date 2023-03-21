@@ -36,7 +36,7 @@ router.get("/randomRecipes", authorization, async (req, res) => {
 
 router.get("/recipe/:id", authorization, async (req, res) => {
     // Validate given Object ID
-    if(!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
+    if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
 
     const query = Recipe.findOne({ "_id": req.params.id })
     await query.exec().then(function (recipe) {
@@ -48,7 +48,7 @@ router.get("/recipe/:id", authorization, async (req, res) => {
 });
 
 router.get("/allRecipes", authorization, async (req, res) => {
-    const query = Recipe.find({}, {title: 1, _id: 1, category: 1, tags: 1, processingTime: 1})
+    const query = Recipe.find({}, { title: 1, _id: 1, category: 1, tags: 1, processingTime: 1 })
     await query.exec().then(function (recipes) {
         if (!recipes) return res.status(404).send({ message: "No Recipes in the DB", code: "E1" });
         return res.status(200).send(recipes)
@@ -56,4 +56,19 @@ router.get("/allRecipes", authorization, async (req, res) => {
         return res.status(500).send({ message: "Error while searching for Recipes", code: "E2", error: err });
     });
 });
+
+router.delete("/recipe/:id", authorization, async (req, res) => {
+    // Validate given Object ID
+    if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
+
+    const query = Recipe.deleteOne({ "_id": req.params.id })
+    await query.exec().then(function (result) {
+        if (result.deletedCount < 1) return res.status(404).send({ message: "Recipe not found, nothing deleted", code: "E1" });
+        return res.status(200).send("Recipe succesfully deleted")
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while deleting Recipe", code: "E2", error: err });
+    });
+});
+
+
 module.exports = router

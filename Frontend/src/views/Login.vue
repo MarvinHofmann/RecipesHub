@@ -20,7 +20,7 @@
                   class="form-control"
                   id="username"
                   placeholder=""
-                  v-model="v$.formLogin.username.$model"
+                  v-model="this.formLogin.username"
                   :class="{ 'is-invalid': v$.formLogin.username.$error }"
                 />
               </div>
@@ -34,7 +34,7 @@
                   type="password"
                   class="form-control"
                   id="pass"
-                  v-model="v$.formLogin.password.$model"
+                  v-model="this.formLogin.password"
                   :class="{ 'is-invalid': v$.formLogin.password.$error }"
                 />
               </div>
@@ -62,7 +62,6 @@
                 class="btn btn-outline-dark my-2"
                 @click="this.onSignIn()"
                 v-if="!this.loading"
-                :disabled="v$.formLogin.$invalid"
               >
                 Anmelden
               </button>
@@ -107,6 +106,10 @@ export default {
   },
   methods: {
     async onSignIn() {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
+        return;
+      }
       this.loading = true;
       this.error_text = "";
       this.userStore = useAuthStore();
