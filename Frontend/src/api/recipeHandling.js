@@ -27,4 +27,38 @@ async function postAddRecipe(recipeData) {
         })
 }
 
-export { postAddRecipe }
+
+/**
+ * It sends a GET request to the server, and returns the response data if the request was successful,
+ * or an error message if it wasn't
+ * @param id - the id of the recipe
+ * @returns a promise.
+ */
+async function getRecipeWithID(id) {
+    return await axios.get(IP + "/api/recipes/recipe/" + id, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim Laden des Rezepts", data: null }
+        })
+}
+
+
+/**
+ * It gets all recipes from the database and returns them.
+ * @returns { error: null, data: response.data }
+ */
+async function getAllRecipes() {
+    return await axios.get(IP + "/api/recipes/allRecipes/", { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim Laden der Rezepts", data: null }
+        })
+}
+
+export { postAddRecipe, getRecipeWithID, getAllRecipes }

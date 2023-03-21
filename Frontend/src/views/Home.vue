@@ -26,8 +26,8 @@
 
     <!-- Divider -->
     <div>
-      <h3 class="mt-3">Wie wäre es mit?</h3>
-      <hr class="mt-0" />
+      <h3 class="mt-4">Wie wäre es mit?</h3>
+      <hr class="mt-0 mb-0" />
     </div>
 
     <div class="row">
