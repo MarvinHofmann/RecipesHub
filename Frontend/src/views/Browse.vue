@@ -31,7 +31,7 @@
             <div class="col-lg-6">
               <h6 class="mb-1">Tags</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="tag in userStore.user.tags" @change="this.filterByTag()">
+                <div class="form-check form-check-inline mb-2" v-for="tag in userStore.user.tags" @change="this.filterList()">
                   <input class="form-check-input" type="checkbox" :value="tag" v-model="this.filter.tags" :id="tag" />
                   <label class="form-check-label" :for="tag"> {{ tag }} </label>
                 </div>
@@ -40,7 +40,7 @@
             <div class="col-lg-6 border-left">
               <h6 class="mb-1">Kategorie</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="category in userStore.user.categories">
+                <div class="form-check form-check-inline mb-2" v-for="category in userStore.user.categories" @change="this.filterList()">
                   <input class="form-check-input" type="checkbox" :value="category.name" v-model="this.filter.categories" :id="category" />
                   <label class="form-check-label" :for="category"> {{ category.name }} </label>
                 </div>
@@ -93,18 +93,24 @@ export default {
     };
   },
   methods: {
-    filterByTag() {
-      this.filteredList = []
-      if (this.filter.tags.length == 0) {
-        this.filteredList = this.recipesList
-        return
+    // Filtering the recipesList and putting the filtered results into filteredList.
+    filterList() {
+      this.filteredList = [];
+      if (this.filter.tags.length == 0 && this.filter.categories.length == 0) {
+        this.filteredList = this.recipesList;
+        return;
       }
       for (let i = 0; i < this.recipesList.length; i++) {
         const element = this.recipesList[i];
+        // Filter for tags
         for (let j = 0; j < this.filter.tags.length; j++) {
-          const filterElement = this.filter.tags[j];
-          console.log(element, filterElement);
-          if (element.tags.includes(filterElement)) {
+          if (element.tags.length > 0 && element.tags.includes(this.filter.tags[j])) {
+            this.filteredList.push(element);
+          }
+        }
+        // Filter for category
+        for (let k = 0; k < this.filter.categories.length; k++) {
+          if (element.category == this.filter.categories[k] && !this.filteredList.includes(element)) {
             this.filteredList.push(element);
           }
         }
