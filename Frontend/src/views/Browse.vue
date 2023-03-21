@@ -51,7 +51,7 @@
       </div>
     </div>
 
-    <!-- Collapse Region of the Filter-->
+    <!-- Recipes Card dynamically created -->
     <div class="row">
       <RecipeCard
         v-for="item in filteredList"

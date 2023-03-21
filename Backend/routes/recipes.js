@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const authorization = require("../middleware/verifyToken")
 const { Recipe } = require("../models/recipeSchema")
+const ObjectId = require('mongoose').Types.ObjectId;
 
 router.post("/addRecipe", authorization, async (req, res) => {
     if (!req.body) return res.status(400).send({ message: "No information send", code: "E1" })
@@ -23,19 +24,36 @@ router.post("/addRecipe", authorization, async (req, res) => {
 })
 
 
-router.get("/randomRecipes", authorization, (req, res) => {
-    res.status(200).send("Random")
+router.get("/randomRecipes", authorization, async (req, res) => {
+    const query = Recipe.aggregate([{ $sample: { size: 4 } }])
+    await query.exec().then(function (randomRecipes) {
+        if (!randomRecipes) return res.status(404).send({ message: "No Recipes found", code: "E1" });
+        return res.status(200).send(randomRecipes)
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while searching for random Document", code: "E2", error: err });
+    });
 });
 
 router.get("/recipe/:id", authorization, async (req, res) => {
-    const recipe = await Recipe.findOne({ "_id": req.params.id }).exec();
-    if (!recipe) return res.status(400).send({ message: "No Recipe with that id", code: "E1" });
-    res.status(200).send(recipe)
+    // Validate given Object ID
+    if(!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
+
+    const query = Recipe.findOne({ "_id": req.params.id })
+    await query.exec().then(function (recipe) {
+        if (!recipe) return res.status(404).send({ message: "No Recipe with that id", code: "E2" });
+        return res.status(200).send(recipe)
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while searching for Document", code: "E3", error: err });
+    });
 });
 
 router.get("/allRecipes", authorization, async (req, res) => {
-    const recipes = await Recipe.find().exec();
-    if (!recipes) return res.status(400).send({ message: "No Recipes in the DB", code: "E1" });
-    res.status(200).send(recipes)
+    const query = Recipe.find({}, {title: 1, _id: 1, category: 1, tags: 1, processingTime: 1})
+    await query.exec().then(function (recipes) {
+        if (!recipes) return res.status(404).send({ message: "No Recipes in the DB", code: "E1" });
+        return res.status(200).send(recipes)
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while searching for Recipes", code: "E2", error: err });
+    });
 });
 module.exports = router

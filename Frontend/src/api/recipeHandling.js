@@ -61,4 +61,21 @@ async function getAllRecipes() {
         })
 }
 
-export { postAddRecipe, getRecipeWithID, getAllRecipes }
+
+/**
+ * It gets up to four random recipes from the DB
+ * @returns { error: null, data: response.data }
+ */
+async function getRandomRecipes() {
+    return await axios.get(IP + "/api/recipes/randomRecipes/", { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim Laden der Rezepte", data: null }
+        })
+}
+
+
+export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes }

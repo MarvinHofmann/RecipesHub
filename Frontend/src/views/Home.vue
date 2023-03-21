@@ -31,10 +31,14 @@
     </div>
 
     <div class="row">
-      <RecipeCard :category="'Kategorie 1'" :recipeName="'Rezept 1'" :duration="30" :tags="['tags1', 'tags2']"></RecipeCard>
-      <RecipeCard :image="'http://via.placeholder.com/640x560'"></RecipeCard>
-      <RecipeCard></RecipeCard>
-      <RecipeCard></RecipeCard>
+      <RecipeCard
+        v-for="item in randomRecipes"
+        :recipe-name="item.title"
+        :category="item.category"
+        :tags="item.tags"
+        :duration="item.processingTime"
+        :recipeID="item._id"
+      ></RecipeCard>
     </div>
 
     <div class="float-end mt-3">
@@ -47,6 +51,7 @@
 import Navbar from "../components/Navbar.vue";
 import { useAuthStore } from "../stores/auth.store";
 import RecipeCard from "../components/RecipeCard.vue";
+import { getRandomRecipes } from "../api/recipeHandling";
 export default {
   setup() {
     return { userStore: useAuthStore() };
@@ -58,10 +63,18 @@ export default {
   data() {
     return {
       justLoggedIn: false,
+      randomRecipes: [],
     };
   },
-  mounted() {
+  async mounted() {
     this.justLoggedIn = this.$router.options.history.state.back == "/login";
+    let res = await getRandomRecipes();
+    if (res.error) {
+      // Show error
+      return;
+    }
+    this.randomRecipes = res.data;
+
     setTimeout(() => {
       this.justLoggedIn = false;
     }, 7500);
