@@ -11,6 +11,11 @@
             <h2 class="fw-bold">Anmelden</h2>
             <p class="text-muted">Bitte melde dich mit deinen Daten an.</p>
           </div>
+
+          <div v-if="this.$route.query.sessionExpired" class="alert alert-warning">
+            Deine Sitzung ist abgelaufen, bitte melde dich erneut an.
+          </div>
+
           <form>
             <div class="mb-3">
               <label for="username" class="form-label">Benutzername</label>

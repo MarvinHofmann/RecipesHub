@@ -56,10 +56,7 @@ router.post("/login", async (req, res) => {
     res.status(200).send(user)
 })
 
-router.delete("/logout", authorization, async (req, res) => {
-    const user = await User.findOne({ "_id": req.userID }).exec();
-    if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
-
+router.delete("/logout", async (req, res) => {
     res.clearCookie("access_token")
     res.status(200).send({ message: "Logout successful" })
 });

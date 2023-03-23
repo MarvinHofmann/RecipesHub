@@ -17,7 +17,7 @@ const router =
             { path: '/home', name: 'home', component: home },
             { path: '/about', name: 'about', component: about },
             { path: '/rezept/:id', name: 'rezept', component: detailRecipe },
-            { path: '/login', name: 'login', component: login },
+            { path: '/login', name: 'login', component: login, props: route => ({ query: route.query.q }) },
             { path: '/registrieren', name: 'registrieren', component: register },
             { path: '/wochenPlan', name: 'wochenPlan', component: weekPlaner },
             { path: '/browse', name: 'browse', component: browse },
