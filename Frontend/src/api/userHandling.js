@@ -31,11 +31,13 @@ async function registerUser(userdata) {
  * Post the user credentials to the server backend
  * @param {*} username
  * @param {*} password
+ * @param {*} rememberMe
  */
-async function loginUser(username, password) {
+async function loginUser(username, password, rememberMe) {
     return await axios.post(IP + "/api/user/login", {
         username: username,
-        password: password
+        password: password,
+        rememberMe: rememberMe
     }, { withCredentials: true }).then((response) => {
         return { error: null, data: response.data }
     })
@@ -67,7 +69,7 @@ async function deleteUser() {
  * Logout to clear the httponly jwt cookie
  */
 async function logoutUser() {
-    return await axios.delete(IP + "/api/user/logout", { withCredentials: true })
+    return await axios.get(IP + "/api/user/logout", { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })

@@ -16,9 +16,9 @@ export const useAuthStore = defineStore('store', {
         isLoggedIn: (state) => state.user
     },
     actions: {
-        async login(username, password) {
+        async login(username, password, rememberMe) {
             // Load Userdata from backend store it pagewide
-            let response = await loginUser(username, password)
+            let response = await loginUser(username, password, rememberMe)
             if (response.data) {
                 // Change iso date string to locale date string (German)
                 response.data.registrationDate = new Date(response.data.registrationDate).toLocaleDateString("de-DE")

@@ -11,6 +11,6 @@ module.exports = function (req, res, next) {
         return next();
     } catch {
         // On every error return 403
-        return res.status(403).send("Not Authorized");
+        return res.status(401).send("Not Authorized");
     }
 };

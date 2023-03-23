@@ -12,9 +12,7 @@
             <p class="text-muted">Bitte melde dich mit deinen Daten an.</p>
           </div>
 
-          <div v-if="this.$route.query.sessionExpired" class="alert alert-warning">
-            Deine Sitzung ist abgelaufen, bitte melde dich erneut an.
-          </div>
+          <div v-if="this.$route.query.sessionExpired" class="alert alert-warning">Deine Sitzung ist abgelaufen, bitte melde dich erneut an.</div>
 
           <form>
             <div class="mb-3">
@@ -48,8 +46,8 @@
             </div>
 
             <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-              <label class="form-check-label" for="exampleCheck1">Angemeldet bleiben?</label>
+              <input v-model="this.formLogin.rememberMe" type="checkbox" class="form-check-input" id="rememberme" />
+              <label class="form-check-label" for="rememberme">Angemeldet bleiben?</label>
             </div>
 
             <!--Loading Spinner-->
@@ -61,15 +59,7 @@
 
             <div v-if="this.error_text != ''" class="alert alert-danger" role="alert">{{ this.error_text }}</div>
             <div class="d-flex justify-content-center">
-              <button
-                type="button"
-                role="button"
-                class="btn btn-outline-dark my-2"
-                @click="this.onSignIn()"
-                v-if="!this.loading"
-              >
-                Anmelden
-              </button>
+              <button type="button" role="button" class="btn btn-outline-dark my-2" @click="this.onSignIn()" v-if="!this.loading">Anmelden</button>
             </div>
             <p class="text-muted text-center my-2">Oder mit Google anmelden</p>
             <div class="d-flex justify-content-center">
@@ -104,6 +94,7 @@ export default {
       formLogin: {
         username: null,
         password: null,
+        rememberMe: false,
       },
       error_text: "",
       loading: false,
@@ -111,18 +102,18 @@ export default {
   },
   methods: {
     async onSignIn() {
-      this.v$.$touch()
+      this.v$.$touch();
       if (this.v$.$invalid) {
         return;
       }
       this.loading = true;
       this.error_text = "";
       this.userStore = useAuthStore();
-      let res = await this.userStore.login(this.formLogin.username, this.formLogin.password);
+      let res = await this.userStore.login(this.formLogin.username, this.formLogin.password, this.formLogin.rememberMe);
       if (res.error) {
         console.log(res.error);
         this.error_text = res.error;
-      }else{
+      } else {
         this.$router.push("/home");
       }
       this.loading = false;

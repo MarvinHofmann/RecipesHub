@@ -36,7 +36,7 @@ router.post("/register", async function (req, res) {
 });
 
 router.post("/login", async (req, res) => {
-    const { username, password } = req.body
+    const { username, password, rememberMe } = req.body
 
     //check if user exists
     const user = await User.findOne({ username: username }).exec();
@@ -46,17 +46,26 @@ router.post("/login", async (req, res) => {
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) return res.status(400).send({ message: "Username or password is wrong", code: "E1" });
 
-    //create token
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
-    res.cookie("access_token", token, {
+    let jwtOptions = {};
+    let cookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production"
-    });
+        secure: process.env.NODE_ENV === "production",
+    }
+    // Set expiring date of jwt token and the cookie to 30d
+    if (rememberMe) {
+        cookieOptions.maxAge = 2592000000
+        jwtOptions = { expiresIn: 2592000000 };
+    }
+
+    //create token
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, jwtOptions)
+    res.cookie("access_token", token, cookieOptions)
+
     user.password = undefined
     res.status(200).send(user)
 })
 
-router.delete("/logout", async (req, res) => {
+router.get("/logout", async (req, res) => {
     res.clearCookie("access_token")
     res.status(200).send({ message: "Logout successful" })
 });
