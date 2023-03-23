@@ -30,10 +30,12 @@ app.use(function (req, res, next) {
 // Import Routes
 const authRoute = require('./routes/auth');
 const recipesRoute = require('./routes/recipes');
+const userdataRoute = require('./routes/userdata')
 
 // Routes Middleware
 app.use('/api/user', authRoute)
 app.use('/api/recipes', recipesRoute)
+app.use('/api/userdata', userdataRoute)
 
 // Init MongoDB
 const mongoose = require('mongoose');
