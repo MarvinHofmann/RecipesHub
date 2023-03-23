@@ -54,28 +54,77 @@
       </div>
     </div>
 
-    <!-- Portions Calculator with Ingredients -->
-    <div class="row mt-3 align-items-center d-flex justify-content-center">
-      <div class="col-2 me-2 text-end fs-4">
+    <!-- Portions Calculator -->
+    <div class="row mt-4 align-items-center d-flex justify-content-center">
+      <div class="col-6 text-end fs-4">
         <div id="portionsInline">Portionen:</div>
       </div>
-      <div class="col-2">
-        <input type="number" min="1" :value="this.recipeData.portions" id="portions" class="form-control" />
+      <div class="col-6">
+        <div class="col-lg-2 col-md-4 col-6">
+          <input type="number" min="1" :value="this.recipeData.portions" id="portions" class="form-control" />
+        </div>
       </div>
     </div>
 
-    <div class="row mt-3 d-flex justify-content-center">
-      <div class="table-responsive w-50">
-        <table class="table table-striped">
-          <tbody>
-            <tr v-for="ingredient in this.recipeData.ingredients">
-              <td class="leftTable text-end w-50">
-                {{ ingredient.name }}
-              </td>
-              <td class="rightTable text-start w-50">{{ ingredient.amount }} {{ ingredient.unit }}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div class="row">
+      <!--Ingredients-->
+      <div class="col-lg-6 mt-3">
+        <h4 class="text-center">Zutaten</h4>
+        <div class="row mt-3 d-flex justify-content-center">
+          <div class="table-responsive w-100 w-lg-50">
+            <table class="table table-striped">
+              <tbody>
+                <tr v-for="ingredient in this.recipeData.ingredients">
+                  <td class="leftTable text-end w-50">
+                    {{ ingredient.name }}
+                  </td>
+                  <td class="rightTable text-start w-50">{{ ingredient.amount }} {{ ingredient.unit }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!--Steps-->
+      <div class="col-lg-6 mt-3">
+        <h4 class="text-center">Schritte</h4>
+        <div class="row mt-3">
+          <div class="accordion">
+            <div
+              class="accordion-item"
+              v-for="(step, index) in this.recipeData.steps"
+              :key="index"
+              :class="{ 'mb-2': index > 0 }"
+              :id="'stepAccordion' + index"
+            >
+              <h2 class="accordion-header" id="headingStep">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  :data-bs-target="'#collapse_step' + index"
+                  aria-expanded="true"
+                  :aria-controls="'collapse_step' + index"
+                >
+                  <div class="text-muted">{{ step.number }}. {{ step.title }}<b></b></div>
+                </button>
+              </h2>
+
+              <div
+                :id="'collapse_step' + index"
+                class="accordion-collapse collapse show"
+                aria-expanded="false"
+                aria-labelledby="headingSteep"
+                :data-bs-parent="'#stepAccordion' + index"
+              >
+                <div class="accordion-body">
+                  <p class="">{{ step.description }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -118,5 +167,10 @@ export default {
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   opacity: 1;
+}
+
+.accordion-button {
+  background-color: var(--bs-light);
+  box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
 </style>
