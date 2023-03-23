@@ -41,12 +41,12 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end py-1" aria-labelledby="navbarDropdownMenuLink">
               <li>
-                <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen</div>
-              </li>
-              <li>
                 <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="dropdown-item" type="button">
                   <i class="dropdown-icon bi bi-file-plus"></i> Rezept erstellen
                 </div>
+              </li>
+              <li>
+                <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen</div>
               </li>
               <li>
                 <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-patch-plus"></i> Tag erstellen</div>
@@ -94,7 +94,7 @@ export default {
   methods: {
     onLogout() {
       this.$router.push("/login");
-      this.userStore.logout()
+      this.userStore.logout();
     },
     onAddRecipe() {
       this.$refs.alert.showAlert();

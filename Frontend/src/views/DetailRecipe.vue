@@ -88,7 +88,7 @@
 
       <!--Steps-->
       <div class="col-lg-6 mt-3">
-        <h4 class="text-center">Schritte</h4>
+        <h4 class="text-center">Zubereitung</h4>
         <div class="row mt-3">
           <div class="accordion">
             <div
