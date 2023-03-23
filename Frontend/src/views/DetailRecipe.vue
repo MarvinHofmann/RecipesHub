@@ -173,4 +173,10 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: var(--bs-light);
   box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
+
+.text-bg-secondary{
+  background-color: transparent !important;
+  color: var(--bs-secondary) !important;
+  border:solid 1px var(--bs-secondary) !important;
+}
 </style>

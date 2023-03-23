@@ -61,6 +61,12 @@ export default {
   margin-top: 0.5rem;
 }
 
+.text-bg-secondary{
+  background-color: transparent !important;
+  color: var(--bs-secondary) !important;
+  border:solid 1px var(--bs-secondary) !important;
+}
+
 .card:hover {
   cursor: pointer;
   box-shadow: 0 0 11px rgba(33,33,33,.2);
