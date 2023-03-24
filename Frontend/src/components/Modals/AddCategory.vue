@@ -16,7 +16,7 @@
                   <input
                     class="form-control"
                     type="text"
-                    v-model="v$.categoryData.name.$model"
+                    v-model="this.categoryData.name"
                     id="name"
                     :class="{ 'is-invalid': v$.categoryData.name.$error }"
                   />
@@ -46,7 +46,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
-
+import { addCategory } from "../../api/userdataHandling";
 export default {
   setup() {
     return { v$: useVuelidate(), userStore: useAuthStore() };
@@ -63,8 +63,16 @@ export default {
     notInCategories(value) {
       return !this.userStore.user.categories.includes(value);
     },
-    onAddCategory() {
+    async onAddCategory() {
       console.log(this.categoryData);
+      this.v$.$touch();
+      if (this.v$.$invalid) return;
+      let res = await addCategory(this.categoryData.name, this.categoryData.color);
+      if (res.error) {
+        console.log("Fehler beim hinzufügen der Kategorie");
+      }
+      this.v$.$reset();
+      this.categoryData.name = null;
     },
   },
   validations() {

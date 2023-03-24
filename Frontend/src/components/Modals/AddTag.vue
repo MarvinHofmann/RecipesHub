@@ -13,13 +13,7 @@
               <div class="col-lg-12">
                 <label for="name" class="form-label">Name</label>
                 <div class="input-group">
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="v$.tagData.name.$model"
-                    id="name"
-                    :class="{ 'is-invalid': v$.tagData.name.$error }"
-                  />
+                  <input class="form-control" type="text" v-model="this.tagData.name" id="name" :class="{ 'is-invalid': v$.tagData.name.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.tagData.name.$error">Dieser Tag Name ist nicht möglich</div>
@@ -39,7 +33,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
-
+import { addTag } from "../../api/userdataHandling";
 export default {
   setup() {
     return { v$: useVuelidate(), userStore: useAuthStore() };
@@ -55,8 +49,16 @@ export default {
     notInTags(value) {
       return !this.userStore.user.tags.includes(value);
     },
-    onAddTag() {
+    async onAddTag() {
       console.log(this.tagData);
+      this.v$.$touch();
+      if (this.v$.$invalid) return;
+      let res = await addTag(this.tagData.name);
+      if (res.error) {
+        console.log("Fehler beim hinzufügen der Kategorie");
+      }
+      this.v$.$reset();
+      this.tagData.name = null;
     },
   },
   validations() {
