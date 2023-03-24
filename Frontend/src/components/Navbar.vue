@@ -46,10 +46,14 @@
                 </div>
               </li>
               <li>
-                <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen</div>
+                <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="dropdown-item" type="button">
+                  <i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen
+                </div>
               </li>
               <li>
-                <div class="dropdown-item" type="button"><i class="dropdown-icon bi bi-patch-plus"></i> Tag erstellen</div>
+                <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="dropdown-item" type="button">
+                  <i class="dropdown-icon bi bi-patch-plus"></i> Tag erstellen
+                </div>
               </li>
               <li>
                 <hr class="dropdown-divider m-0" />
@@ -79,6 +83,8 @@
   <Alert ref="alert" :message="'Alert Message'"></Alert>
   <Settings></Settings>
   <AddRecipe @save="this.onAddRecipe()" id="addRecipeModal"></AddRecipe>
+  <AddCategory id="addCategoryModal"></AddCategory>
+  <AddTag id="addTagModal"></AddTag>
 </template>
 
 <script>
@@ -86,11 +92,13 @@ import Alert from "./Alert.vue";
 import Settings from "./Settings.vue";
 import AddRecipe from "./Modals/AddRecipe.vue";
 import { useAuthStore } from "../stores/auth.store";
+import AddCategory from "./Modals/AddCategory.vue";
+import AddTag from "./Modals/AddTag.vue";
 export default {
   setup() {
     return { userStore: useAuthStore() };
   },
-  components: { Settings, AddRecipe, Alert },
+  components: { Settings, AddRecipe, Alert, AddTag, AddCategory },
   methods: {
     onLogout() {
       this.$router.push("/login");
