@@ -1,6 +1,10 @@
 <template>
   <Navbar></Navbar>
   <div class="container mt-3" v-if="this.recipeData">
+    <!--Alert-->
+    <div class="col-lg-12">
+      <Alert ref="alert" :message="'Das Rezept konnte nicht gelöscht werden.'"></Alert>
+    </div>
     <!-- Recipe Header Image and Meta Data -->
     <div class="row">
       <div class="col-lg-6">
@@ -28,7 +32,10 @@
               </div>
               <div class="col-lg-12 mt-2">
                 <p class="mb-0 text-muted">Quelle</p>
-                <p class="mb-0">{{ this.recipeData.source }}</p>
+                <p class="mb-0 text-truncate" @click="this.truncated = !this.truncated" v-if="this.truncated">
+                  {{ this.recipeData.source }}
+                </p>
+                <p class="mb-0 text" @click="this.truncated = !this.truncated" v-else>{{ this.recipeData.source }}</p>
               </div>
               <div class="col-lg-12 mt-2">
                 <p class="mb-0 text-muted">Beschreibung</p>
@@ -39,14 +46,17 @@
           <div class="card-footer bg-white border-0">
             <!--Action Buttons-->
             <div class="row">
-              <div class="col-8 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100">Auf die Einkaufsliste</button>
+              <div class="col-6 px-1 mt-3">
+                <button class="btn btn-outline-dark w-100" @click="this.onAddToList()">Auf die Einkaufsliste</button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100"><i class="bi bi-file-earmark-arrow-down"></i></button>
+                <button class="btn btn-outline-dark w-100" @click="this.onDownloadPDF()"><i class="bi bi-file-earmark-arrow-down"></i></button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-dark w-100" @click="this.onEditRecipe()"><i class="bi bi-pencil"></i></button>
+              </div>
+              <div class="col-2 px-1 mt-3">
+                <button class="btn btn-outline-danger w-100" @click="this.onDeleteRecipe()"><i class="bi bi-trash"></i></button>
               </div>
             </div>
           </div>
@@ -132,16 +142,39 @@
 
 <script>
 import Navbar from "../components/Navbar.vue";
-import { getRecipeWithID } from "../api/recipeHandling";
+import { getRecipeWithID, deleteRecipe } from "../api/recipeHandling";
+import Alert from "../components/Alert.vue";
 export default {
   components: {
     Navbar,
+    Alert,
   },
   data() {
     return {
       recipeData: null,
       imgSrc: "http://via.placeholder.com/640x360",
+      truncated: true,
     };
+  },
+  methods: {
+    async onDeleteRecipe() {
+      console.log("Delete Recipe");
+      let res = await deleteRecipe(this.recipeData._id);
+      if (res.error) {
+        this.$refs.alert.showAlert();
+      } else {
+        this.$router.push("/home");
+      }
+    },
+    onEditRecipe() {
+      console.log("Edit Recipe");
+    },
+    onAddToList() {
+      console.log("Add to List");
+    },
+    onDownloadPDF() {
+      console.log("Download PDF");
+    },
   },
   async mounted() {
     console.log(this.$route.params.id);
@@ -174,9 +207,9 @@ input[type="number"]::-webkit-outer-spin-button {
   box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
 }
 
-.text-bg-secondary{
+.text-bg-secondary {
   background-color: transparent !important;
   color: var(--bs-secondary) !important;
-  border:solid 1px var(--bs-secondary) !important;
+  border: solid 1px var(--bs-secondary) !important;
 }
 </style>

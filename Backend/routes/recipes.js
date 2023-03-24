@@ -3,6 +3,10 @@ const authorization = require("../middleware/verifyToken")
 const { Recipe } = require("../models/recipeSchema")
 const ObjectId = require('mongoose').Types.ObjectId;
 
+
+/**
+ * Endpoint to create a Recipe
+ */
 router.post("/addRecipe", authorization, async (req, res) => {
     if (!req.body) return res.status(400).send({ message: "No information send", code: "E1" })
     // Create final recipe
@@ -25,6 +29,9 @@ router.post("/addRecipe", authorization, async (req, res) => {
 })
 
 
+/**
+ * Returns four random recipes useing the sample method of mongodb
+ */
 router.get("/randomRecipes", authorization, async (req, res) => {
     const query = Recipe.aggregate([{ $sample: { size: 4 } }])
     await query.exec().then(function (randomRecipes) {
@@ -35,6 +42,9 @@ router.get("/randomRecipes", authorization, async (req, res) => {
     });
 });
 
+/**
+ * Returns the complete documnent of the recipe with the given id
+ */
 router.get("/recipe/:id", authorization, async (req, res) => {
     // Validate given Object ID
     if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
@@ -48,6 +58,9 @@ router.get("/recipe/:id", authorization, async (req, res) => {
     });
 });
 
+/**
+ * Returns all Recipes in the DB, only with the title, id, categories, tags and processingTime
+ */
 router.get("/allRecipes", authorization, async (req, res) => {
     const query = Recipe.find({}, { title: 1, _id: 1, category: 1, tags: 1, processingTime: 1 })
     await query.exec().then(function (recipes) {
@@ -58,6 +71,9 @@ router.get("/allRecipes", authorization, async (req, res) => {
     });
 });
 
+/**
+ * Deletes a Recipe with the given ID
+ */
 router.delete("/recipe/:id", authorization, async (req, res) => {
     // Validate given Object ID
     if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });

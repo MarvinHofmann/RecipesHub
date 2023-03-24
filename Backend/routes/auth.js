@@ -6,6 +6,9 @@ const jwt = require('jsonwebtoken')
 // Authorization Middleware
 const authorization = require("../middleware/verifyToken")
 
+/**
+ * Endpoint to register a user with its credentials
+ */
 router.post("/register", async function (req, res) {
     const { username, firstName, lastName, email, password } = req.body
     // Validation
@@ -14,8 +17,7 @@ router.post("/register", async function (req, res) {
 
     //check if user exists
     const userExists = await User.findOne({ username: username }).exec();
-    if (userExists)
-        return res.status(400).send({ message: "User with this username already exists", code: "E1" });
+    if (userExists) return res.status(400).send({ message: "User with this username already exists", code: "E1" });
 
     //Hash pass
     const salt = await bcrypt.genSalt(6)
@@ -35,6 +37,11 @@ router.post("/register", async function (req, res) {
     res.status(201).send(username)
 });
 
+/**
+ * Endpoint to login, if user is authenticated with the password the function
+ * returns a JWT token within a httpOnly cookie. Cookie maxAge and JWT token expiring time
+ * are set to session if the user not pressed "remember me". Otherwise it will be set to 30d
+ */
 router.post("/login", async (req, res) => {
     const { username, password, rememberMe } = req.body
 
@@ -65,16 +72,25 @@ router.post("/login", async (req, res) => {
     res.status(200).send(user)
 })
 
+/**
+ * Deletes the httpOnly Cookie with the name access_token
+ */
 router.get("/logout", async (req, res) => {
     res.clearCookie("access_token")
     res.status(200).send({ message: "Logout successful" })
 });
 
 
+/**
+ * Updates the user data in the DB
+ */
 router.get("/update", authorization, async (req, res) => {
     res.status(200).send("Access Granted")
 });
 
+/**
+ * Deletes the user, that sends the request
+ */
 router.delete("/delete", authorization, async (req, res) => {
     const user = await User.findOne({ "_id": req.userID }).exec();
     if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });

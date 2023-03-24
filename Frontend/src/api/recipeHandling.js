@@ -78,5 +78,21 @@ async function getRandomRecipes() {
         })
 }
 
+/**
+ * It sends a DELETE request to the server, which deletes the recipe with the given id
+ * @param id - the id of the recipe to be deleted
+ * @returns a promise.
+ */
+async function deleteRecipe(id) {
+    return await axios.delete(IP + "/api/recipes/recipe/" + id, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim Löschen des Rezepts", data: null }
+        })
+}
 
-export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes }
+
+export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe }

@@ -8,7 +8,7 @@
     <div class="d-flex justify-content-center mt-3">
       <div class="row w-100">
         <div v-for="day in days" class="col-1 px-0">
-          <div class="card calendarElement">
+          <div class="card calendarElement" @click="this.onAddRecipeToData(day.date)">
             <p class="p-0 ps-1 m-0 text-muted">{{ day.date }}</p>
             <div class="card-body px-1">
               <div
@@ -28,7 +28,6 @@
 
     <div class="row mt-3">
       <div class="col-lg-12">
-        <button class="btn btn-outline-dark me-3">Rezept Hinzufügen</button>
         <button class="btn btn-outline-dark">Einkaufsliste Erstellen</button>
       </div>
     </div>
@@ -115,6 +114,11 @@ export default {
       ],
     };
   },
+  methods: {
+    onAddRecipeToData(date){
+      console.log("Add to ", date);
+    }
+  }
 };
 </script>
 
