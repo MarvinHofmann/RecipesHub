@@ -66,10 +66,11 @@ router.post("/login", async (req, res) => {
 
     //create token
     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, jwtOptions)
+    const sessionToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, jwtOptions)
     res.cookie("access_token", token, cookieOptions)
 
     user.password = undefined
-    res.status(200).send(user)
+    res.status(200).send({ user: user, sessionToken: sessionToken })
 })
 
 /**

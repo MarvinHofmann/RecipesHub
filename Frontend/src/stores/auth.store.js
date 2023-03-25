@@ -6,14 +6,31 @@ export const useAuthStore = defineStore('store', {
     id: 'auth',
     state: () => {
         return {
-            user: useStorage('USER', {}),
+            user: useStorage(
+                'USER',
+                null,
+                undefined,
+                {
+                    serializer: {
+                        read: (v) => v ? JSON.parse(v) : null,
+                        write: (v) => JSON.stringify(v),
+                    },
+                },
+            ),
+            token: useStorage('TOKEN', null)
         }
     },
     getters: {
         getUser() {
             return this.user
         },
-        isLoggedIn: (state) => state.user
+        isLoggedIn() {
+            try {
+                return this.token === this.user.token
+            } catch (error) {
+                return false
+            }
+        }
     },
     actions: {
         async login(username, password, rememberMe) {
@@ -21,9 +38,12 @@ export const useAuthStore = defineStore('store', {
             let response = await loginUser(username, password, rememberMe)
             if (response.data) {
                 // Change iso date string to locale date string (German)
-                response.data.registrationDate = new Date(response.data.registrationDate).toLocaleDateString("de-DE")
+                response.data.user.registrationDate = new Date(response.data.user.registrationDate).toLocaleDateString("de-DE")
+                this.user = response.data.user
+                this.user.token = response.data.sessionToken
+                this.token = response.data.sessionToken
                 localStorage.setItem('USER', JSON.stringify(this.user));
-                this.user = response.data
+                localStorage.setItem('TOKEN', this.token)
             }
             return response
         },
@@ -33,12 +53,14 @@ export const useAuthStore = defineStore('store', {
             if (!response.error) {
                 this.user = null
                 localStorage.removeItem('USER');
-                setTimeout(() => { location.reload() }, 500)
+                localStorage.removeItem('TOKEN');
+                //setTimeout(() => { location.reload() }, 500)
             }
         },
         deleteUser() {
             this.user = null;
             localStorage.removeItem('USER');
+            localStorage.removeItem('TOKEN');
         }
     },
 });

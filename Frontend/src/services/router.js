@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import {useAuthStore} from '../stores/auth.store'
+import { useAuthStore } from '../stores/auth.store'
 
 import home from '../views/Home.vue'
 import about from '../views/About.vue'
@@ -29,14 +29,19 @@ const router =
         },
     })
 
-router.beforeEach(async (to) => {
+router.beforeEach(async (to, from, next) => {
     const userStore = useAuthStore();
     const publicPages = ["/login", "/registrieren"];
     const authRequired = !publicPages.includes(to.path); // Check for public pages
-    const auth = userStore.user.username  // Get token from cookies and to check if already signed in
+    const auth = userStore.isLoggedIn
     if (authRequired && !auth) {
-        return "/login";
+        next({
+            path: '/login',
+            query: { sessionExpired: true }
+        })
+        return;
     }
+    next()
 })
 
 export default router;

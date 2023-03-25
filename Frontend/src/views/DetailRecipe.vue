@@ -177,14 +177,12 @@ export default {
     },
   },
   async mounted() {
-    console.log(this.$route.params.id);
     let res = await getRecipeWithID(this.$route.params.id);
     if (res.error) {
       this.$router.push("/404");
       return;
     }
     this.recipeData = res.data;
-    console.log(res.data);
   },
 };
 </script>
