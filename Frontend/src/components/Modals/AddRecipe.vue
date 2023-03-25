@@ -139,6 +139,7 @@
                         <option>Glas</option>
                         <option>Bund</option>
                         <option>Packung</option>
+                        <option>Stück</option>
                       </select>
                     </div>
                     <div class="col-lg-1 mt-2 ps-lg-1">
@@ -169,7 +170,7 @@
                       <input v-model="step.title" placeholder="Names des Schrittes" class="form-control rounded-0 rounded-top" type="text" />
                     </div>
                     <div class="col-lg-12 pe-lg-1 mt-1">
-                      <textarea rows="2" v-model="step.description" placeholder="Beschreibung" class="form-control rounded-0 rounded-bottom" />
+                      <textarea rows="3" v-model="step.description" placeholder="Beschreibung" class="form-control rounded-0 rounded-bottom" />
                     </div>
                   </div>
                 </div>
@@ -286,7 +287,7 @@ export default {
     addStep() {
       this.recipeData.steps.push({
         title: null,
-        number: this.recipeData.steps.length,
+        number: this.recipeData.steps.length + 1,
         description: null,
       });
       console.log(this.recipeData.ingredients);
