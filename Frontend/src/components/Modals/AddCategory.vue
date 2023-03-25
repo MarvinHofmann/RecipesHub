@@ -9,7 +9,7 @@
         </div>
         <div class="modal-body">
           <form ref="tagData">
-            <div class="row mt-3">
+            <div class="row">
               <div class="col-lg-12">
                 <label for="name" class="form-label">Name</label>
                 <div class="input-group">
@@ -25,10 +25,10 @@
                 <div class="text-danger" v-if="v$.categoryData.name.$error">Dieser Name ist nicht möglich</div>
               </div>
 
-              <div class="col-lg-12">
+              <div class="col-lg-12 mt-3">
                 <label for="color" class="form-label">Farbe</label>
                 <div class="input-group">
-                  <input class="form-control" type="color" v-model="this.categoryData.color" id="color" />
+                  <input class="form-control form-control-color" title="Wähle die Farbe deiner Kategorie" type="color" v-model="this.categoryData.color" id="color" />
                 </div>
               </div>
             </div>

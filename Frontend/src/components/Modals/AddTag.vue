@@ -9,7 +9,7 @@
         </div>
         <div class="modal-body">
           <form ref="tagData">
-            <div class="row mt-3">
+            <div class="row">
               <div class="col-lg-12">
                 <label for="name" class="form-label">Name</label>
                 <div class="input-group">

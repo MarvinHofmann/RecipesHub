@@ -105,7 +105,6 @@
               class="accordion-item"
               v-for="(step, index) in this.recipeData.steps"
               :key="index"
-              :class="{ 'mb-2': index > 0 }"
               :id="'stepAccordion' + index"
             >
               <h2 class="accordion-header" id="headingStep">
