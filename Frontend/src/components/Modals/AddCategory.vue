@@ -70,7 +70,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
-          <button type="button" class="btn btn-outline-dark" @click="this.onAddCategory">Speichern</button>
+          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" @click="this.onAddCategory()">Speichern</button>
         </div>
       </div>
     </div>
@@ -105,6 +105,7 @@ export default {
       if (res.error) {
         console.log("Fehler beim hinzufügen der Kategorie");
       }
+      this.categories = await getCategories();
       this.v$.$reset();
       this.categoryData.name = null;
     },

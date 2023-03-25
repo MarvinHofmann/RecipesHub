@@ -51,7 +51,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
-          <button type="button" class="btn btn-outline-dark" @click="this.onAddTag()">Speichern</button>
+          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" @click="this.onAddTag()">Speichern</button>
         </div>
       </div>
     </div>
@@ -85,6 +85,7 @@ export default {
       if (res.error) {
         console.log("Fehler beim hinzufügen der Kategorie");
       }
+      this.tags = await getTags()
       this.v$.$reset();
       this.tagData.name = null;
     },

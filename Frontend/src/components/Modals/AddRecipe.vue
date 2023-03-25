@@ -87,7 +87,7 @@
                       id="category"
                       v-model="this.recipeData.category"
                     >
-                      <option v-for="option in this.userStore.user.categories">
+                      <option v-for="option in this.categories">
                         {{ option.name }}
                       </option>
                     </select>
@@ -185,7 +185,7 @@
               <h5 class="mt-3">Tags</h5>
               <p class="text-muted mb-2">Wähle aus den Tags, die dein Gericht beschreiben</p>
               <p class="text-danger" v-if="v$.recipeData.tags.$error">Wähle mindestens ein Tag um dein Gericht zu beschreiben</p>
-              <div class="form-check form-check-inline mb-2" v-for="tag in userStore.user.tags">
+              <div class="form-check form-check-inline mb-2" v-for="tag in this.tags">
                 <input class="form-check-input" type="checkbox" :value="tag" v-model="this.recipeData.tags" :id="tag" />
                 <label class="form-check-label" :for="tag"> {{ tag }} </label>
               </div>
@@ -210,6 +210,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { minLength, helpers, required, minValue } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
 import { postAddRecipe } from "../../api/recipeHandling";
+import { getCategories, getTags } from "../../api/userdataHandling";
 export default {
   setup() {
     return { v$: useVuelidate(), userStore: useAuthStore() };
@@ -242,6 +243,8 @@ export default {
       },
       failed: false,
       success: false,
+      tags: [],
+      categories: []
     };
   },
   validations() {
@@ -308,6 +311,10 @@ export default {
       this.v$.$reset();
       this.$refs.recipeData.reset();
     },
+  },
+  async mounted() {
+    this.tags = await getTags();
+    this.categories = await getCategories()
   },
 };
 </script>
