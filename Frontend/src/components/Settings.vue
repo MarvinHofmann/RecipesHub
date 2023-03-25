@@ -114,13 +114,13 @@
       </button>
     </div>
   </div>
-  <DeleteAccount id="deleteAccountModal" @delete="this.onDeleteAccount()"></DeleteAccount>
+  <DeleteAccount id="deleteAccountModal" :deleteText="'Wollen Sie den Account wirklich löschen?'" @delete="this.onDeleteAccount()"></DeleteAccount>
   <SaveModal id="saveModal" @closeSettings="this.emitCloseSettings()"></SaveModal>
 </template>
 
 <script>
 import SaveModal from "./Modals/SaveModal.vue";
-import DeleteAccount from "./Modals/DeleteAccount.vue";
+import DeleteAccount from "./Modals/SureDelete.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email } from "@vuelidate/validators";
 import { Offcanvas, Modal } from "bootstrap";

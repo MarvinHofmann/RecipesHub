@@ -105,13 +105,19 @@ export default {
         // Filter for tags
         for (let j = 0; j < this.filter.tags.length; j++) {
           if (element.tags.length > 0 && element.tags.includes(this.filter.tags[j])) {
-            this.filteredList.push(element);
+            // Only push if not already included through other tag
+            if (!this.filteredList.includes(element)) {
+              this.filteredList.push(element);
+            }
           }
         }
         // Filter for category
         for (let k = 0; k < this.filter.categories.length; k++) {
           if (element.category == this.filter.categories[k] && !this.filteredList.includes(element)) {
-            this.filteredList.push(element);
+            // Only push if not already included through other tag
+            if (!this.filteredList.includes(element)) {
+              this.filteredList.push(element);
+            }
           }
         }
       }
