@@ -20,7 +20,6 @@ axios.interceptors.response.use(
                 case 401:
                     const store = useAuthStore()
                     store.logout()
-                    console.log("test");
                     router.push({ path: '/login', name: "login", query: { sessionExpired: true } })
                     break;
                 case 404:

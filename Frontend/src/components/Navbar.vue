@@ -30,8 +30,35 @@
           <li class="nav-item">
             <router-link :to="'/about'" id="btn" class="nav-link" active-class="active"> About </router-link>
           </li>
+
+          <!-- Nav elements only visible if collapsed otherwise in dropdown-->
+          <div class="d-lg-none">
+            <hr>
+            <li class="nav-item ">
+              <li>
+                <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="nav-link" type="button">
+                  Rezept erstellen
+                </div>
+              </li>
+            </li>
+            <li class="nav-item ">
+              <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="nav-link" type="button">
+                  Kategorie erstellen
+                </div>
+            </li>
+            <li class="nav-item ">
+              <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="nav-link" type="button">
+                  Tag erstellen
+                </div>
+            </li>
+            <li class="nav-item">
+              <div class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
+                Einstellungen
+              </div>
+            </li>
+          </div>
         </ul>
-        <div class="d-flex dropdown dropdown-area" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="d-flex dropdown dropdown-area d-none d-lg-block" data-bs-toggle="dropdown" aria-expanded="false">
           <ul class="navbar-nav">
             <li class="nav-item">
               <a role="button" id="btn" class="nav-link"> {{ this.userStore.user.username }} </a>
