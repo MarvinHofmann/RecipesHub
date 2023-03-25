@@ -1,6 +1,6 @@
 <template>
   <Navbar></Navbar>
-  <div class="container mt-3" v-if="this.recipeData">
+  <div class="container mt-3" v-if="this.recipeData && !this.loading">
     <!--Alert-->
     <div class="col-lg-12">
       <Alert ref="alert" :message="'Das Rezept konnte nicht gelöscht werden.'"></Alert>
@@ -8,8 +8,8 @@
     <!-- Recipe Header Image and Meta Data -->
     <div class="row">
       <div class="col-lg-6">
-        <div class="card card-body h-100 p-0">
-          <img :src="this.imgSrc" class="recipeImage" />
+        <div class="card h-100 p-0 border-0">
+          <img :src="this.imgSrc" class="recipeImage img-fluid" @error="this.imgSrc = '../../public/placeholder.png'" />
         </div>
       </div>
       <div class="col-lg-6">
@@ -56,7 +56,9 @@
                 <button class="btn btn-outline-dark w-100" @click="this.onEditRecipe()"><i class="bi bi-pencil"></i></button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#sureDeleteRecipe"><i class="bi bi-trash"></i></button>
+                <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#sureDeleteRecipe">
+                  <i class="bi bi-trash"></i>
+                </button>
               </div>
             </div>
           </div>
@@ -101,12 +103,7 @@
         <h4 class="text-center">Zubereitung</h4>
         <div class="row mt-3">
           <div class="accordion">
-            <div
-              class="accordion-item"
-              v-for="(step, index) in this.recipeData.steps"
-              :key="index"
-              :id="'stepAccordion' + index"
-            >
+            <div class="accordion-item" v-for="(step, index) in this.recipeData.steps" :key="index" :id="'stepAccordion' + index">
               <h2 class="accordion-header" id="headingStep">
                 <button
                   class="accordion-button collapsed"
@@ -137,6 +134,16 @@
       </div>
     </div>
   </div>
+  <!-- backdrop & spinner -->
+  <div class="backdrop_load" v-else>
+    <div class="text-center loading">
+      <div class="loading_card d-flex justify-content-center shadow-lg bg-light rounded">
+        <div class="spinner-border text-dark" role="status">
+          <span class="d-none">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
   <DeleteRecipe id="sureDeleteRecipe" :deleteText="'Wollen Sie das Rezept wirklich löschen?'" @delete="this.onDeleteRecipe()"></DeleteRecipe>
 </template>
 
@@ -149,13 +156,14 @@ export default {
   components: {
     Navbar,
     Alert,
-    DeleteRecipe
+    DeleteRecipe,
   },
   data() {
     return {
       recipeData: null,
       imgSrc: "http://via.placeholder.com/640x360",
       truncated: true,
+      loading: false,
     };
   },
   methods: {
@@ -179,12 +187,15 @@ export default {
     },
   },
   async mounted() {
+    this.loading = true;
     let res = await getRecipeWithID(this.$route.params.id);
     if (res.error) {
       this.$router.push("/404");
       return;
     }
     this.recipeData = res.data;
+    this.imgSrc = res.data.imgSrc;
+    this.loading = false;
   },
 };
 </script>
@@ -194,6 +205,7 @@ export default {
   object-fit: contain;
   width: 100%;
   height: 100%;
+  max-height: 400px;
 }
 
 /** Alwasy show arrows */
@@ -211,5 +223,39 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: transparent !important;
   color: var(--bs-secondary) !important;
   border: solid 1px var(--bs-secondary) !important;
+}
+
+.loading {
+  position: relative;
+  margin: 0;
+  width: 90%;
+  height: 100%;
+}
+
+.loading_card {
+  align-items: center;
+  position: fixed;
+  top: calc(50% - (150px / 2));
+  right: calc(50% - (150px / 2));
+  opacity: 1;
+  height: 150px;
+  width: 150px;
+}
+
+.spinner-border {
+  position: fixed;
+  opacity: 0.7;
+  height: 60px;
+  width: 60px;
+}
+
+.backdrop_load {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(1px);
 }
 </style>

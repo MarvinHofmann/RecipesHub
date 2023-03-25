@@ -38,6 +38,7 @@
         :tags="item.tags"
         :duration="item.processingTime"
         :recipeID="item._id"
+        :image="item.imgSrc"
       ></RecipeCard>
     </div>
 

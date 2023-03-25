@@ -36,6 +36,9 @@ router.get("/randomRecipes", authorization, async (req, res) => {
     const query = Recipe.aggregate([{ $sample: { size: 4 } }])
     await query.exec().then(function (randomRecipes) {
         if (!randomRecipes) return res.status(404).send({ message: "No Recipes found", code: "E1" });
+        randomRecipes.forEach(recipe => {
+            recipe.imgSrc = "http://localhost:3443/api/images/recipeImage/" + recipe._id
+        });
         return res.status(200).send(randomRecipes)
     }).catch(function (err) {
         return res.status(500).send({ message: "Error while searching for random Document", code: "E2", error: err });
@@ -48,10 +51,10 @@ router.get("/randomRecipes", authorization, async (req, res) => {
 router.get("/recipe/:id", authorization, async (req, res) => {
     // Validate given Object ID
     if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
-
-    const query = Recipe.findOne({ "_id": req.params.id })
-    await query.exec().then(function (recipe) {
+    const query = Recipe.findOne({ "_id": req.params.id }, { images: 0 })
+    await query.lean().then(function (recipe) {
         if (!recipe) return res.status(404).send({ message: "No Recipe with that id", code: "E2" });
+        recipe.imgSrc = "http://localhost:3443/api/images/recipeImage/" + recipe._id
         return res.status(200).send(recipe)
     }).catch(function (err) {
         return res.status(500).send({ message: "Error while searching for Document", code: "E3", error: err });
@@ -63,8 +66,11 @@ router.get("/recipe/:id", authorization, async (req, res) => {
  */
 router.get("/allRecipes", authorization, async (req, res) => {
     const query = Recipe.find({}, { title: 1, _id: 1, category: 1, tags: 1, processingTime: 1 })
-    await query.exec().then(function (recipes) {
+    await query.lean().then(function (recipes) {
         if (!recipes) return res.status(404).send({ message: "No Recipes in the DB", code: "E1" });
+        recipes.forEach(recipe => {
+            recipe.imgSrc = "http://localhost:3443/api/images/recipeImage/" + recipe._id
+        });
         return res.status(200).send(recipes)
     }).catch(function (err) {
         return res.status(500).send({ message: "Error while searching for Recipes", code: "E2", error: err });
