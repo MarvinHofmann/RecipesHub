@@ -3,31 +3,32 @@
   <div class="container mt-3">
     <h1 class="display-4 text-center mb-0 fw-normal">Recipes Hub</h1>
     <p class="text-center text-muted">Willkommen bei dem einzigen Planungstool für Hobbyköche!</p>
-
-    <h2>Rezepte sammeln</h2>
-    <p>
-      Bist du es leid, zwischen unzähligen Kochbüchern, Notizen und Online-Rezepten zu suchen, um das perfekte Gericht zu finden? Dieses praktisches
-      Tool bietet die Lösung! Sammle alle deine Rezepte an einem zentralen Ort, indem du neue Kreationen hinzufügst und alte Lieblingsrezepte
-      aufbewahrst. Mit den benutzerfreundlichen Filtern kannst du ganz einfach nach Zutaten, Zubereitungszeit oder speziellen Ernährungsbedürfnissen
-      suchen und so die perfekte Mahlzeit auswählen. Verliere nie wieder den Überblick über deine Kochmöglichkeiten - organisiere jetzt deine Rezepte
-      mit diesem Tool und lass dich von kulinarischen Kreationen inspirieren!
-    </p>
-    <h2>Einkaufslisten erstellen</h2>
-    <p>
-      Mit der Einkaufslistenfunktion behältst du immer den Überblick über alle Zutaten, die du für deine geplanten Mahlzeiten brauchst. Kein mühsames
-      Durchsuchen des Kühlschranks mehr - plane deine Woche im Voraus und gehe nur noch einmal einkaufen! Mit der Funktion zur Anpassung der
-      Portionsgrößen kannst du auch spontan Freunde einladen, ohne dir Sorgen machen zu müssen, ob genug Essen für alle da ist. Unser System ist so
-      benutzerfreundlich, dass du entweder deine Einkaufsliste ausdrucken oder ganz einfach mobil abrufen kannst. Werde Teil der Community und lass
-      uns gemeinsam deine Kocherfahrung optimieren!
-    </p>
-    <h2>Und vieles mehr</h2>
-    <p>
-      Mit der Funktion zur Wochenplanung kannst du deine Mahlzeiten für die gesamte Woche planen und organisieren - sei es für dich allein oder für
-      deine ganze Familie. Aber das ist noch nicht alles! Füge deinen Mahlzeiten tolle Bilder hinzu, um dich noch mehr zu inspirieren, oder
-      durchstöbere deine eigene vielfältige Auswahl an Rezepten, um dich an alte Klassiker zu errinern. Du entscheidest, wie du dein kulinarisches
-      Erlebnis gestalten möchtest - mit diesem Tool sind deiner Kreativität keine Grenzen gesetzt! Werde jetzt Teil der Community und entdecke neue
-      kulinarische Horizonte!
-    </p>
+    <div class="body overflow-auto">
+      <h2>Rezepte sammeln</h2>
+      <p>
+        Bist du es leid, zwischen unzähligen Kochbüchern, Notizen und Online-Rezepten zu suchen, um das perfekte Gericht zu finden? Dieses praktisches
+        Tool bietet die Lösung! Sammle alle deine Rezepte an einem zentralen Ort, indem du neue Kreationen hinzufügst und alte Lieblingsrezepte
+        aufbewahrst. Mit den benutzerfreundlichen Filtern kannst du ganz einfach nach Zutaten, Zubereitungszeit oder speziellen Ernährungsbedürfnissen
+        suchen und so die perfekte Mahlzeit auswählen. Verliere nie wieder den Überblick über deine Kochmöglichkeiten - organisiere jetzt deine
+        Rezepte mit diesem Tool und lass dich von kulinarischen Kreationen inspirieren!
+      </p>
+      <h2>Einkaufslisten erstellen</h2>
+      <p>
+        Mit der Einkaufslistenfunktion behältst du immer den Überblick über alle Zutaten, die du für deine geplanten Mahlzeiten brauchst. Kein
+        mühsames Durchsuchen des Kühlschranks mehr - plane deine Woche im Voraus und gehe nur noch einmal einkaufen! Mit der Funktion zur Anpassung
+        der Portionsgrößen kannst du auch spontan Freunde einladen, ohne dir Sorgen machen zu müssen, ob genug Essen für alle da ist. Unser System ist
+        so benutzerfreundlich, dass du entweder deine Einkaufsliste ausdrucken oder ganz einfach mobil abrufen kannst. Werde Teil der Community und
+        lass uns gemeinsam deine Kocherfahrung optimieren!
+      </p>
+      <h2>Und vieles mehr</h2>
+      <p>
+        Mit der Funktion zur Wochenplanung kannst du deine Mahlzeiten für die gesamte Woche planen und organisieren - sei es für dich allein oder für
+        deine ganze Familie. Aber das ist noch nicht alles! Füge deinen Mahlzeiten tolle Bilder hinzu, um dich noch mehr zu inspirieren, oder
+        durchstöbere deine eigene vielfältige Auswahl an Rezepten, um dich an alte Klassiker zu errinern. Du entscheidest, wie du dein kulinarisches
+        Erlebnis gestalten möchtest - mit diesem Tool sind deiner Kreativität keine Grenzen gesetzt! Werde jetzt Teil der Community und entdecke neue
+        kulinarische Horizonte!
+      </p>
+    </div>
   </div>
   <Footer></Footer>
 </template>
@@ -46,4 +47,18 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/** lg bootstrap breakpoint */
+@media screen and (min-width: 992px) {
+  .body {
+    padding-bottom: 240px;
+  }
+}
+
+/** md bootstrap break point */
+@media screen and (min-width: 720px) and (max-width: 992px) {
+  .body {
+    padding-bottom: 300px;
+  }
+}
+</style>

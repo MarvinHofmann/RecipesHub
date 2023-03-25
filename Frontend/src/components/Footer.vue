@@ -58,9 +58,17 @@ export default {};
   color: #212529;
 }
 
-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+@media screen and (min-width: 720px) {
+  footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  footer {
+    width: 100%;
+  }
 }
 </style>

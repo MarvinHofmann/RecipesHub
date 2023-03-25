@@ -10,6 +10,34 @@
         <div class="modal-body">
           <form ref="tagData">
             <div class="row">
+              <div class="accordion" id="tagAccordion">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button
+                      class="accordion-button"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#collapseOne"
+                      aria-expanded="true"
+                      aria-controls="collapseOne"
+                    >
+                      Deine Kategorien
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#tagAccordion">
+                    <div class="accordion-body">
+                      <div class="row" id="collapseTags">
+                        <div class="col-4 p-y-0" v-for="cat in categories">
+                          <p class="mb-1 text-muted">{{ cat.name }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-3">
               <div class="col-lg-12">
                 <label for="name" class="form-label">Name</label>
                 <div class="input-group">
@@ -28,7 +56,13 @@
               <div class="col-lg-12 mt-3">
                 <label for="color" class="form-label">Farbe</label>
                 <div class="input-group">
-                  <input class="form-control form-control-color" title="Wähle die Farbe deiner Kategorie" type="color" v-model="this.categoryData.color" id="color" />
+                  <input
+                    class="form-control form-control-color"
+                    title="Wähle die Farbe deiner Kategorie"
+                    type="color"
+                    v-model="this.categoryData.color"
+                    id="color"
+                  />
                 </div>
               </div>
             </div>
@@ -45,11 +79,10 @@
 <script>
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
-import { useAuthStore } from "../../stores/auth.store";
-import { addCategory } from "../../api/userdataHandling";
+import { addCategory, getCategories } from "../../api/userdataHandling";
 export default {
   setup() {
-    return { v$: useVuelidate(), userStore: useAuthStore() };
+    return { v$: useVuelidate() };
   },
   data() {
     return {
@@ -57,11 +90,12 @@ export default {
         name: null,
         color: "#1cb1e3",
       },
+      categories: [],
     };
   },
   methods: {
     notInCategories(value) {
-      return !this.userStore.user.categories.includes(value);
+      return !this.categories.includes(value);
     },
     async onAddCategory() {
       console.log(this.categoryData);
@@ -81,6 +115,9 @@ export default {
         name: { required, notInCategories: this.notInCategories },
       },
     };
+  },
+  async mounted() {
+    this.categories = await getCategories();
   },
 };
 </script>
