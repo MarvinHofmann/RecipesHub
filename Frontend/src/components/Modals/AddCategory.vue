@@ -39,13 +39,13 @@
 
             <div class="row mt-3">
               <div class="col-lg-12">
-                <label for="name" class="form-label">Name</label>
+                <label for="catName" class="form-label">Name</label>
                 <div class="input-group">
                   <input
                     class="form-control"
                     type="text"
                     v-model="this.categoryData.name"
-                    id="name"
+                    id="catName"
                     :class="{ 'is-invalid': v$.categoryData.name.$error }"
                   />
                 </div>

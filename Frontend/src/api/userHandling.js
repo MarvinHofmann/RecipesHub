@@ -79,5 +79,25 @@ async function logoutUser() {
         })
 }
 
+/**
+ * It sends a request to the server to change the password of the user.
+ * @param oldPW - old password
+ * @param newPW - new password
+ * @returns { error: null, data: response.data }
+ */
+async function changePassword(oldPW, newPW) {
+    return await axios.put(IP + "/user/changePW", {
+        oldPassword: oldPW,
+        newPassword: newPW
+    }, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim erstellen eines neuen Passworts", data: null }
+        })
+}
 
-export { registerUser, loginUser, deleteUser, logoutUser }
+
+export { registerUser, loginUser, deleteUser, logoutUser, changePassword }

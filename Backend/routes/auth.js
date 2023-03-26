@@ -84,10 +84,30 @@ router.get("/logout", async (req, res) => {
 
 
 /**
- * Updates the user data in the DB
+ * Updates the userPW in DB
  */
-router.get("/update", authorization, async (req, res) => {
-    res.status(200).send("Access Granted")
+router.put("/changePW", authorization, async (req, res) => {
+    const { oldPassword, newPassword } = req.body
+    if (newPassword.length < 6 || !oldPassword || !newPassword) return res.status(400).json({ message: "False Information" })
+
+    //get user PW
+    const userPW = await User.findOne({ _id: req.userID }, { password: 1 }).exec();
+    if (!userPW) return res.status(400).send({ message: "Cant find user", code: "E1" });
+
+    //check if password is correct
+    const validPassword = await bcrypt.compare(oldPassword, userPW.password);
+    if (!validPassword) return res.status(400).send({ message: "Old password is wrong", code: "E1" });
+
+    //Hash new password
+    const salt = await bcrypt.genSalt(6)
+    const hashPassword = await bcrypt.hash(newPassword, salt)
+
+    const query = User.updateOne({ _id: req.userID }, { password: hashPassword })
+    await query.exec().then(function (result) {
+        return res.status(200).send(result)
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while changing PW", code: "E2", error: err });
+    });
 });
 
 /**

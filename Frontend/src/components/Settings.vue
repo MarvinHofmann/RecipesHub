@@ -65,9 +65,7 @@
             </div>
           </div>
           <div class="stickBottom mb-3 mx-3">
-            <button :disabled="this.edit_data" data-bs-toggle="modal" data-bs-target="#deleteAccountModal" class="w-100 btn btn-outline-danger">
-              Account löschen
-            </button>
+            <button data-bs-toggle="modal" data-bs-target="#deleteAccountModal" class="w-100 btn btn-outline-danger">Account löschen</button>
           </div>
         </div>
         <div class="tab-pane fade mt-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
@@ -77,13 +75,13 @@
               <!-- Row Vorname / Nachname -->
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="name" class="form-label">Vorname</label>
+                  <label for="firstName" class="form-label">Vorname</label>
                   <div class="input-group">
                     <input
                       class="form-control"
                       type="text"
                       v-model="v$.userdata.firstName.$model"
-                      id="name"
+                      id="firstName"
                       :class="{ 'is-invalid': v$.userdata.firstName.$error }"
                     />
                   </div>
@@ -146,9 +144,10 @@
           </form>
         </div>
         <div class="tab-pane fade mt-3" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-          <form ref="changePassword">
+          <form ref="pwChangeForm">
             <!--Current Password-->
             <h3>Neues Passwort</h3>
+            <Alert ref="pwAlert" :type="this.alertMessageType" :message="this.alertMessage"></Alert>
             <div class="mb-3">
               <div class="row">
                 <div class="col-lg-12">
@@ -157,7 +156,7 @@
                     <input
                       class="form-control"
                       type="password"
-                      v-model="v$.passwordChange.currentPassword.$model"
+                      v-model="this.passwordChange.currentPassword"
                       id="oldPassword"
                       :class="{ 'is-invalid': v$.passwordChange.currentPassword.$error }"
                     />
@@ -175,8 +174,8 @@
                   <div class="input-group">
                     <input
                       class="form-control"
-                      type="text"
-                      v-model="v$.passwordChange.newPassword.$model"
+                      type="password"
+                      v-model="this.passwordChange.newPassword"
                       id="newPassword"
                       :class="{ 'is-invalid': v$.passwordChange.newPassword.$error }"
                     />
@@ -189,7 +188,7 @@
                   <div class="input-group">
                     <input
                       :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }"
-                      v-model="v$.passwordChange.repeatPassword.$model"
+                      v-model="this.passwordChange.repeatPassword"
                       type="password"
                       class="form-control"
                       id="rePassword"
@@ -201,9 +200,7 @@
               </div>
             </div>
             <div>
-              <button :disabled="v$.passwordChange.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">
-                Passwort ändern
-              </button>
+              <button type="button" class="btn btn-outline-dark mt-1 w-100" @click="this.onChangePassword()">Passwort ändern</button>
             </div>
           </form>
         </div>
@@ -220,12 +217,14 @@ import DeleteAccount from "./Modals/SureDelete.vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import { Offcanvas, Modal } from "bootstrap";
-import { deleteUser } from "../api/userHandling";
+import { deleteUser, changePassword } from "../api/userHandling";
 import { useAuthStore } from "../stores/auth.store";
+import Alert from "./Alert.vue";
 export default {
   components: {
     DeleteAccount,
     SaveModal,
+    Alert,
   },
   setup() {
     return { v$: useVuelidate(), userStore: useAuthStore() };
@@ -245,6 +244,8 @@ export default {
         newPassword: null,
         repeatPassword: null,
       },
+      alertMessage: null,
+      alertMessageType: null,
     };
   },
   validations() {
@@ -278,6 +279,24 @@ export default {
         this.$router.push("/login");
       }
     },
+    async onChangePassword() {
+      this.v$.$touch();
+      if (this.v$.passwordChange.$invalid) return;
+
+      let res = await changePassword(this.passwordChange.currentPassword, this.passwordChange.newPassword);
+      if (res.error) {
+        this.alertMessage = "Fehler beim erstellen des neuen passworts";
+        this.alertMessageType = "alert-danger";
+        this.$refs.pwAlert.showAlert();
+        return;
+      }
+      this.alertMessage = "Das passwort wurde geändert";
+      this.alertMessageType = "alert-success";
+      this.$refs.pwChangeForm.reset();
+      this.$refs.pwAlert.showAlert();
+      this.passwordChange = this.getInitialPasswordData();
+      this.v$.$reset();
+    },
     /**
      * If userdata isnt in edit mode or nothing changed the offcanvas settings
      * gets closed. Otherwise a Modal is shown that there are unsaved changes
@@ -292,11 +311,16 @@ export default {
       }
       this.bsModal.show();
     },
+    /**
+     * If the modal fires the event, that the user surely wants to leave the settings
+     * with loosing its changes
+     */
     emitCloseSettings() {
       this.$refs.changeData.reset();
+      this.$refs.pwChangeForm.reset();
       this.bsOffcanvas.hide();
       this.userdata = this.getInitialUserdata();
-      console.log(this.userdata);
+      this.changeData = this.getInitialPasswordData();
       this.v$.$reset();
     },
     /**
@@ -309,7 +333,7 @@ export default {
      * Stores and returns the initial password form data in a json
      */
     getInitialPasswordData() {
-      return { currentPassword: null, newPassword: null, email: null, repeatPassword: null };
+      return { currentPassword: null, newPassword: null, repeatPassword: null };
     },
     /**
      * Initializes the eventlistener for the Offcanvas. It checks if the user
