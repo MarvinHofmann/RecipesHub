@@ -73,7 +73,15 @@
       </div>
       <div class="col-6">
         <div class="col-lg-2 col-md-4 col-6">
-          <input type="number" min="1" :value="this.recipeData.portions" id="portions" class="form-control" />
+          <input
+            type="number"
+            min="1"
+            max="200"
+            :value="this.recipeData.portions"
+            id="portions"
+            class="form-control"
+            @change="onPortionChange($event)"
+          />
         </div>
       </div>
     </div>
@@ -164,6 +172,7 @@ export default {
       imgSrc: "http://via.placeholder.com/640x360",
       truncated: true,
       loading: false,
+      portions: 0,
     };
   },
   methods: {
@@ -184,6 +193,19 @@ export default {
     },
     onDownloadPDF() {
       console.log("Download PDF");
+    },
+    /**
+     * Recalculates the quantities of the ingredients
+     * based on the changed number of portions
+     * @param {*} event @change Event of the Input
+     */
+    onPortionChange(event) {
+      let portions = event.target.value;
+      let initPortions = this.recipeData.portions;
+      this.recipeData.portions = event.target.value;
+      this.recipeData.ingredients.forEach((ingredient) => {
+        ingredient.amount = ((ingredient.amount / initPortions) * portions).toFixed(2);
+      });
     },
   },
   async mounted() {

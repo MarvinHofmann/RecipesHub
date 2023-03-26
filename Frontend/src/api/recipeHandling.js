@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const IP = "http://localhost:3443";
+const IP = "http://localhost:3443/api/v1";
 
 /**
  * Posts the RecipeData to add a Recipe.
@@ -8,7 +8,7 @@ const IP = "http://localhost:3443";
  * @returns a promise {error: str, data: str}
  */
 async function postAddRecipe(recipeData) {
-    return await axios.post(IP + "/api/recipes/addRecipe", {
+    return await axios.post(IP + "/recipes/addRecipe", {
         title: recipeData.title,
         description: recipeData.description,
         source: recipeData.source,
@@ -36,7 +36,7 @@ async function postAddRecipe(recipeData) {
  * @returns a promise.
  */
 async function getRecipeWithID(id) {
-    return await axios.get(IP + "/api/recipes/recipe/" + id, { withCredentials: true })
+    return await axios.get(IP + "/recipes/recipe/" + id, { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })
@@ -52,7 +52,7 @@ async function getRecipeWithID(id) {
  * @returns { error: null, data: response.data }
  */
 async function getAllRecipes() {
-    return await axios.get(IP + "/api/recipes/allRecipes/", { withCredentials: true })
+    return await axios.get(IP + "/recipes/allRecipes/", { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })
@@ -68,7 +68,7 @@ async function getAllRecipes() {
  * @returns { error: null, data: response.data }
  */
 async function getRandomRecipes() {
-    return await axios.get(IP + "/api/recipes/randomRecipes/", { withCredentials: true })
+    return await axios.get(IP + "/recipes/randomRecipes/", { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })
@@ -84,7 +84,7 @@ async function getRandomRecipes() {
  * @returns a promise.
  */
 async function deleteRecipe(id) {
-    return await axios.delete(IP + "/api/recipes/recipe/" + id, { withCredentials: true })
+    return await axios.delete(IP + "/recipes/recipe/" + id, { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })
