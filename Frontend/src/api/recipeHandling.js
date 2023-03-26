@@ -95,6 +95,12 @@ async function deleteRecipe(id) {
 }
 
 
+/**
+ * It takes a formData object containing the image and the ID
+ * sends it to the server, and returns the response.
+ * @param formData - FormData includes image and recipeID
+ * @returns a promise.
+ */
 async function uploadRecipeImage(formData) {
     return await axios.put(IP + "/images/addRecipeImage", formData, { withCredentials: true })
         .then((response) => {

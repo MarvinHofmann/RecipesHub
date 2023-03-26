@@ -283,6 +283,9 @@ export default {
     };
   },
   methods: {
+    /**
+     * Add new ingredient to the Array
+     */
     addIngredient() {
       this.recipeData.ingredients.push({
         name: "",
@@ -291,9 +294,16 @@ export default {
       });
       console.log(this.recipeData.ingredients);
     },
+    /**
+     * Remove index from Array
+     * @param {*} index to remove
+     */
     removeIngredient(index) {
       this.recipeData.ingredients.splice(index, 1);
     },
+    /**
+     * Adds step to Array
+     */
     addStep() {
       this.recipeData.steps.push({
         title: null,
@@ -302,9 +312,18 @@ export default {
       });
       console.log(this.recipeData.ingredients);
     },
+    /**
+     * Remove step with index
+     * @param {*} index to remove
+     */
     removeStep(index) {
       this.recipeData.steps.splice(index, 1);
     },
+    /**
+     * Fired if user presses the save button
+     * Posts the information to the backend
+     * if recipe is created upload image
+     */
     async onSaveRecipe() {
       this.v$.$touch();
       if (this.v$.$invalid) return;
@@ -319,6 +338,10 @@ export default {
       this.v$.$reset();
       this.$refs.recipeData.reset();
     },
+    /**
+     * Fired if user selects a file
+     * @param {*} e event
+     */
     onFileChange(e) {
       const selectedFile = e.target.files[0];
       this.selectedFile = selectedFile;
@@ -332,12 +355,16 @@ export default {
         this.$refs.file.value = null;
         return;
       }
-      if (this.selectedFile.size > 	2000000) {
+      if (this.selectedFile.size > 2000000) {
         this.selectedFile = null;
         this.$refs.file.value = null;
         this.sizeError = true;
       }
     },
+    /**
+     * Uploads file to recipe document
+     * @param {*} id of recipe to store the image
+     */
     uploadFile(id) {
       const formData = new FormData();
       formData.append("image", this.selectedFile);
