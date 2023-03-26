@@ -11,107 +11,203 @@
       <h5 id="offcanvasSettingsLabel">Einstellungen</h5>
       <button type="button" class="btn-close text-reset" @click="this.closeSettings()" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body">
-      <div class="row">
-        <div class="col-6 d-flex justify-content-center">
-          <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0" />
-        </div>
-        <div class="col-6">
-          <div>{{this.userStore.user.firstName}} {{this.userStore.user.lastName}}</div>
-          <div>Mitglied seit: {{this.userStore.user.registrationDate}}</div>
-          <div>E-Mail: {{this.userStore.user.email}}</div>
-          <button class="btn btn-outline-dark mt-2" @click="this.edit_data = !this.edit_data">
-            <div v-if="!this.edit_data">Daten Ändern</div>
-            <div v-else>Abbrechen</div>
+    <div class="offcanvas-body pt-0">
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button
+            class="nav-link active"
+            id="nav-home-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-home"
+            type="button"
+            role="tab"
+            aria-controls="nav-home"
+            aria-selected="true"
+          >
+            Profil
+          </button>
+          <button
+            class="nav-link"
+            id="nav-profile-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-profile"
+            type="button"
+            role="tab"
+            aria-controls="nav-profile"
+            aria-selected="false"
+          >
+            Daten ändern
+          </button>
+          <button
+            class="nav-link"
+            id="nav-contact-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#nav-contact"
+            type="button"
+            role="tab"
+            aria-controls="nav-contact"
+            aria-selected="false"
+          >
+            Passwort ändern
           </button>
         </div>
-      </div>
-      <Transition name="fade">
-        <form v-if="this.edit_data" ref="changeData">
-          <hr class="mb-2" />
-          <div class="mb-3">
-            <!-- Row Vorname / Nachname -->
-            <div class="row">
-              <div class="col-lg-6">
-                <label for="name" class="form-label">Vorname</label>
-                <div class="input-group">
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="v$.userdata.firstName.$model"
-                    id="name"
-                    :class="{ 'is-invalid': v$.userdata.firstName.$error }"
-                  />
-                </div>
-                <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.firstName.$error">Vorname Benötigt</div>
-              </div>
-              <div class="col-lg-6">
-                <label for="nachname" class="form-label">Nachname</label>
-                <div class="input-group">
-                  <input
-                    :class="{ 'is-invalid': v$.userdata.lastName.$error }"
-                    v-model="v$.userdata.lastName.$model"
-                    type="text"
-                    class="form-control"
-                    id="nachname"
-                  />
-                </div>
-                <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.lastName.$error">Nachname Benötigt</div>
-              </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active mt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+          <div class="row">
+            <div class="col-6 d-flex justify-content-center">
+              <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0" />
             </div>
-
-            <!-- Row Email / Username -->
-            <div class="row mt-3">
-              <div class="col-lg-6">
-                <label for="email" class="form-label">Email</label>
-                <div class="input-group">
-                  <input
-                    :class="{ 'is-invalid': v$.userdata.email.$error }"
-                    v-model="this.userdata.email"
-                    type="text"
-                    class="form-control"
-                    id="email"
-                    @blur="v$.userdata.email.$touch"
-                  />
-                </div>
-                <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.email.$error">Email Benötigt</div>
-              </div>
-              <div class="col-lg-6">
-                <label for="username" class="form-label">Username</label>
-                <div class="input-group">
-                  <input
-                    v-model="this.userdata.username"
-                    @blur="v$.userdata.username.$touch"
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    :class="{ 'is-invalid': v$.userdata.username.$error }"
-                  />
-                </div>
-                <!-- error message -->
-                <div class="text-danger" v-if="v$.userdata.username.$error">Username Benötigt</div>
-              </div>
+            <div class="col-6">
+              <div>{{ this.userStore.user.firstName }} {{ this.userStore.user.lastName }}</div>
+              <div>Mitglied seit: {{ this.userStore.user.registrationDate }}</div>
+              <div>E-Mail: {{ this.userStore.user.email }}</div>
             </div>
           </div>
-        </form>
-      </Transition>
-      <Transition name="fade">
-        <div v-if="this.edit_data">
-          <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">Speichern</button>
-          <hr />
+          <div class="stickBottom mb-3 mx-3">
+            <button :disabled="this.edit_data" data-bs-toggle="modal" data-bs-target="#deleteAccountModal" class="w-100 btn btn-outline-danger">
+              Account löschen
+            </button>
+          </div>
         </div>
-      </Transition>
-      <button
-        :disabled="this.edit_data"
-        data-bs-toggle="modal"
-        data-bs-target="#deleteAccountModal"
-        class="stickBottom btn btn-outline-danger mb-3 mx-3"
-      >
-        Account löschen
-      </button>
+        <div class="tab-pane fade mt-3" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+          <form ref="changeData">
+            <h3>Userdaten ändern</h3>
+            <div class="mb-3">
+              <!-- Row Vorname / Nachname -->
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="name" class="form-label">Vorname</label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      type="text"
+                      v-model="v$.userdata.firstName.$model"
+                      id="name"
+                      :class="{ 'is-invalid': v$.userdata.firstName.$error }"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.userdata.firstName.$error">Vorname Benötigt</div>
+                </div>
+                <div class="col-lg-6">
+                  <label for="nachname" class="form-label">Nachname</label>
+                  <div class="input-group">
+                    <input
+                      :class="{ 'is-invalid': v$.userdata.lastName.$error }"
+                      v-model="v$.userdata.lastName.$model"
+                      type="text"
+                      class="form-control"
+                      id="nachname"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.userdata.lastName.$error">Nachname Benötigt</div>
+                </div>
+              </div>
+
+              <!-- Row Email / Username -->
+              <div class="row mt-3">
+                <div class="col-lg-6">
+                  <label for="email" class="form-label">Email</label>
+                  <div class="input-group">
+                    <input
+                      :class="{ 'is-invalid': v$.userdata.email.$error }"
+                      v-model="this.userdata.email"
+                      type="text"
+                      class="form-control"
+                      id="email"
+                      @blur="v$.userdata.email.$touch"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.userdata.email.$error">Email Benötigt</div>
+                </div>
+                <div class="col-lg-6">
+                  <label for="username" class="form-label">Username</label>
+                  <div class="input-group">
+                    <input
+                      v-model="this.userdata.username"
+                      @blur="v$.userdata.username.$touch"
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      :class="{ 'is-invalid': v$.userdata.username.$error }"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.userdata.username.$error">Username Benötigt</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">Speichern</button>
+            </div>
+          </form>
+        </div>
+        <div class="tab-pane fade mt-3" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+          <form ref="changePassword">
+            <!--Current Password-->
+            <h3>Neues Passwort</h3>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col-lg-12">
+                  <label for="oldPassword" class="form-label">Aktuelles Passwort</label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      type="password"
+                      v-model="v$.passwordChange.currentPassword.$model"
+                      id="oldPassword"
+                      :class="{ 'is-invalid': v$.passwordChange.currentPassword.$error }"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.passwordChange.currentPassword.$error">Neues Passwort eingeben</div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <!-- New Password / Repeat -->
+              <div class="row">
+                <div class="col-lg-6">
+                  <label for="newPassword" class="form-label">Neues Passwort</label>
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      type="text"
+                      v-model="v$.passwordChange.newPassword.$model"
+                      id="newPassword"
+                      :class="{ 'is-invalid': v$.passwordChange.newPassword.$error }"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.passwordChange.newPassword.$error">Passwörter stimmen nicht überein</div>
+                </div>
+                <div class="col-lg-6">
+                  <label for="rePassword" class="form-label">Passwort Wiederholen</label>
+                  <div class="input-group">
+                    <input
+                      :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }"
+                      v-model="v$.passwordChange.repeatPassword.$model"
+                      type="password"
+                      class="form-control"
+                      id="rePassword"
+                    />
+                  </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="v$.passwordChange.repeatPassword.$error">Passwörter stimmen nicht überein</div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <button :disabled="v$.passwordChange.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">
+                Passwort ändern
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </div>
   <DeleteAccount id="deleteAccountModal" :deleteText="'Wollen Sie den Account wirklich löschen?'" @delete="this.onDeleteAccount()"></DeleteAccount>
@@ -122,7 +218,7 @@
 import SaveModal from "./Modals/SaveModal.vue";
 import DeleteAccount from "./Modals/SureDelete.vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, email } from "@vuelidate/validators";
+import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import { Offcanvas, Modal } from "bootstrap";
 import { deleteUser } from "../api/userHandling";
 import { useAuthStore } from "../stores/auth.store";
@@ -138,12 +234,16 @@ export default {
     return {
       bsOffcanvas: null,
       bsModal: null,
-      edit_data: false,
       userdata: {
         firstName: null,
         lastName: null,
         email: null,
         username: null,
+      },
+      passwordChange: {
+        currentPassword: null,
+        newPassword: null,
+        repeatPassword: null,
       },
     };
   },
@@ -155,16 +255,14 @@ export default {
         email: { required, email },
         username: { required },
       },
+      passwordChange: {
+        currentPassword: { required },
+        newPassword: { required, minLengthValue: minLength(6) },
+        repeatPassword: { required, sameaspass: sameAs(this.passwordChange.newPassword) },
+      },
     };
   },
   methods: {
-    /**
-     * If the user saves his changes diable edit mode and store changes
-     */
-    onSaveSettings() {
-      this.edit_data = false;
-      // Change data at Backend
-    },
     /**
      * Gets called if the user surely deletes it after pressing
      * Löschen in the Modal
@@ -174,10 +272,10 @@ export default {
       let serverResponse = await deleteUser();
       if (serverResponse.error) {
         console.log(error);
-      }else{
+      } else {
         this.bsOffcanvas.hide();
-        this.userStore.deleteUser()
-        this.$router.push("/login")
+        this.userStore.deleteUser();
+        this.$router.push("/login");
       }
     },
     /**
@@ -185,8 +283,10 @@ export default {
      * gets closed. Otherwise a Modal is shown that there are unsaved changes
      */
     closeSettings() {
-      if (!this.edit_data || JSON.stringify(this.userdata) == JSON.stringify(this.getInitialUserdata())) {
-        this.edit_data = false;
+      if (
+        JSON.stringify(this.passwordChange) == JSON.stringify(this.getInitialPasswordData()) &&
+        JSON.stringify(this.userdata) == JSON.stringify(this.getInitialUserdata())
+      ) {
         this.bsOffcanvas.hide();
         return;
       }
@@ -194,7 +294,6 @@ export default {
     },
     emitCloseSettings() {
       this.$refs.changeData.reset();
-      this.edit_data = false;
       this.bsOffcanvas.hide();
       this.userdata = this.getInitialUserdata();
       console.log(this.userdata);
@@ -205,6 +304,12 @@ export default {
      */
     getInitialUserdata() {
       return { firstName: null, lastName: null, email: null, username: null };
+    },
+    /**
+     * Stores and returns the initial password form data in a json
+     */
+    getInitialPasswordData() {
+      return { currentPassword: null, newPassword: null, email: null, repeatPassword: null };
     },
     /**
      * Initializes the eventlistener for the Offcanvas. It checks if the user
