@@ -1,9 +1,9 @@
 <template>
   <Navbar></Navbar>
-  <div class="container mt-3">
+  <div class="container">
     <!-- Hero Section, visible if user just Logged In-->
     <Transition name="fade">
-      <div class="row mx-0" v-if="this.justLoggedIn">
+      <div class="row mx-0 mt-3" v-if="this.justLoggedIn">
         <div class="alert alert-light border text-center alert-dismissible fade show">
           <h1 class="text-dark">Hallo {{ this.userStore.user.username }}, schön dich zu sehen.</h1>
           <button type="button" class="btn-close text-reset" @click="this.justLoggedIn = false" aria-label="Close"></button>
@@ -12,12 +12,12 @@
     </Transition>
 
     <div class="row">
-      <div class="col-6">
+      <div class="col-md-6 mt-3">
         <div class="card card-body">
           <h5>Einkaufsliste</h5>
         </div>
       </div>
-      <div class="col-6">
+      <div class="col-md-6 mt-3">
         <div class="card card-body">
           <h5>Wochenplan</h5>
         </div>

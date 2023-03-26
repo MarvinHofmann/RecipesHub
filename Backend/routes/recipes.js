@@ -3,7 +3,6 @@ const authorization = require("../middleware/verifyToken")
 const { Recipe } = require("../models/recipeSchema")
 const ObjectId = require('mongoose').Types.ObjectId;
 
-
 /**
  * Endpoint to create a Recipe
  */
@@ -20,7 +19,8 @@ router.post("/addRecipe", authorization, async (req, res) => {
         tags: req.body.tags,
         ingredients: req.body.ingredients,
         steps: req.body.steps,
-        portions: req.body.portions
+        portions: req.body.portions,
+        userID: req.userID
     }).then(function (recipe) {
         return res.status(201).send({ message: "Recipe Created", id: recipe._id })
     }).catch((err) => {
@@ -34,7 +34,7 @@ router.post("/addRecipe", authorization, async (req, res) => {
  * Returns four random recipes useing the sample method of mongodb
  */
 router.get("/randomRecipes", authorization, async (req, res) => {
-    const query = Recipe.aggregate([{ $sample: { size: 4 } }])
+    const query = Recipe.aggregate([{ $match: { userID: new ObjectId(req.userID) } }, { $sample: { size: 4 } }])
     await query.exec().then(function (randomRecipes) {
         if (!randomRecipes) return res.status(404).send({ message: "No Recipes found", code: "E1" });
         randomRecipes.forEach(recipe => {
@@ -52,7 +52,7 @@ router.get("/randomRecipes", authorization, async (req, res) => {
 router.get("/recipe/:id", authorization, async (req, res) => {
     // Validate given Object ID
     if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
-    const query = Recipe.findOne({ "_id": req.params.id }, { images: 0 })
+    const query = Recipe.findOne({ "_id": req.params.id, userID: req.userID }, { images: 0 })
     await query.lean().then(function (recipe) {
         if (!recipe) return res.status(404).send({ message: "No Recipe with that id", code: "E2" });
         recipe.imgSrc = "http://localhost:3443/api/v1/images/recipeImage/" + recipe._id
@@ -66,7 +66,7 @@ router.get("/recipe/:id", authorization, async (req, res) => {
  * Returns all Recipes in the DB, only with the title, id, categories, tags and processingTime
  */
 router.get("/allRecipes", authorization, async (req, res) => {
-    const query = Recipe.find({}, { title: 1, _id: 1, category: 1, tags: 1, processingTime: 1 })
+    const query = Recipe.find({ userID: req.userID }, { title: 1, _id: 1, category: 1, tags: 1, processingTime: 1 })
     await query.lean().then(function (recipes) {
         if (!recipes) return res.status(404).send({ message: "No Recipes in the DB", code: "E1" });
         recipes.forEach(recipe => {
@@ -85,7 +85,7 @@ router.delete("/recipe/:id", authorization, async (req, res) => {
     // Validate given Object ID
     if (!ObjectId.isValid(req.params.id)) return res.status(404).send({ message: `${req.params.id} isnt a valid ObjectID`, code: "E1" });
 
-    const query = Recipe.deleteOne({ "_id": req.params.id })
+    const query = Recipe.deleteOne({ "_id": req.params.id, userID: req.userID })
     await query.exec().then(function (result) {
         if (result.deletedCount < 1) return res.status(404).send({ message: "Recipe not found, nothing deleted", code: "E1" });
         return res.status(200).send("Recipe succesfully deleted")

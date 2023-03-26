@@ -184,7 +184,7 @@
                   <div class="text-danger" v-if="v$.passwordChange.newPassword.$error">Passwörter stimmen nicht überein</div>
                 </div>
                 <div class="col-lg-6">
-                  <label for="rePassword" class="form-label">Passwort Wiederholen</label>
+                  <label for="rePassword" class="form-label">Passwort wiederholen</label>
                   <div class="input-group">
                     <input
                       :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }"
@@ -289,12 +289,12 @@ export default {
 
       let res = await changePassword(this.passwordChange.currentPassword, this.passwordChange.newPassword);
       if (res.error) {
-        this.alertMessage = "Fehler beim erstellen des neuen passworts";
+        this.alertMessage = "Fehler beim Ändern des Passworts.";
         this.alertMessageType = "alert-danger";
         this.$refs.pwAlert.showAlert();
         return;
       }
-      this.alertMessage = "Das passwort wurde geändert";
+      this.alertMessage = "Das Passwort wurde erfolgreich geändert.";
       this.alertMessageType = "alert-success";
       this.$refs.pwChangeForm.reset();
       this.$refs.pwAlert.showAlert();
