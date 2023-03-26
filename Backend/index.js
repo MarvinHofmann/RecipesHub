@@ -6,7 +6,8 @@ const port = 3443;
 
 // Init Body Parser
 let bodyParser = require("body-parser");
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 // Init Cookie Parser
 const cookieParser = require("cookie-parser");
@@ -31,11 +32,13 @@ app.use(function (req, res, next) {
 const authRoute = require('./routes/auth');
 const recipesRoute = require('./routes/recipes');
 const userdataRoute = require('./routes/userdata')
+const imagesRoute = require('./routes/images')
 
 // Routes Middleware
-app.use('/api/user', authRoute)
-app.use('/api/recipes', recipesRoute)
-app.use('/api/userdata', userdataRoute)
+app.use('/api/v1/user', authRoute)
+app.use('/api/v1/recipes', recipesRoute)
+app.use('/api/v1/userdata', userdataRoute)
+app.use('/api/v1/images', imagesRoute)
 
 // Init MongoDB
 const mongoose = require('mongoose');

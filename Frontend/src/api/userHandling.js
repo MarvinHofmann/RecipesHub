@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const IP = "http://localhost:3443";
+const IP = "http://localhost:3443/api/v1";
 
 /**
  * Posts the Userdata to Register an user.
@@ -8,7 +8,7 @@ const IP = "http://localhost:3443";
  * @returns a promise {error: str, data: str}
  */
 async function registerUser(userdata) {
-    return await axios.post(IP + "/api/user/register", {
+    return await axios.post(IP + "/user/register", {
         username: userdata.username,
         firstName: userdata.firstName,
         lastName: userdata.lastName,
@@ -19,7 +19,7 @@ async function registerUser(userdata) {
             return { error: null, data: response.data }
         })
         .catch((error) => {
-            if (error.response && error.response.data.code == "E1") {
+            if (error.data.code == "E1") {
                 // The request was made and the server responded with a status code
                 return { error: "Der User mit dem angegebenen Usernamen existiert bereits.", data: null }
             }
@@ -34,7 +34,7 @@ async function registerUser(userdata) {
  * @param {*} rememberMe
  */
 async function loginUser(username, password, rememberMe) {
-    return await axios.post(IP + "/api/user/login", {
+    return await axios.post(IP + "/user/login", {
         username: username,
         password: password,
         rememberMe: rememberMe
@@ -43,7 +43,7 @@ async function loginUser(username, password, rememberMe) {
     })
         .catch((error) => {
             console.log(error);
-            if (error.response && error.response.data.code == "E1") {
+            if (error && error.data.code == "E1") {
                 // The request was made and the server responded with a status code
                 return { error: "Der angegebene Username oder das Passwort sind falsch.", data: null }
             }
@@ -55,7 +55,7 @@ async function loginUser(username, password, rememberMe) {
  * Delete the logged in user
  */
 async function deleteUser() {
-    return await axios.delete(IP + "/api/user/delete", { withCredentials: true })
+    return await axios.delete(IP + "/user/delete", { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })
@@ -69,7 +69,7 @@ async function deleteUser() {
  * Logout to clear the httponly jwt cookie
  */
 async function logoutUser() {
-    return await axios.get(IP + "/api/user/logout", { withCredentials: true })
+    return await axios.get(IP + "/user/logout", { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })

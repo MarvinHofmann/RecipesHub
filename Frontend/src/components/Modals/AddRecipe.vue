@@ -56,12 +56,16 @@
                 <div class="col-lg-6">
                   <label for="images" class="form-label">Bilder</label>
                   <div class="input-group">
-                    <input type="file" class="form-control" id="images" />
+                    <input type="file" class="form-control" id="images" ref="file" accept="image/*" @change="onFileChange($event)" />
                   </div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="this.fileError">Bitte lade nur .png oder .jpeg Dateien hoch oder lasse das Feld frei</div>
+                  <!-- error message -->
+                  <div class="text-danger" v-if="this.sizeError">Das Bild ist zu groß (max. 2mb)</div>
                 </div>
               </div>
 
-              <!-- Row Zeit / Bilder -->
+              <!-- Row Beschreibung / Kategorie -->
               <div class="row mt-3">
                 <div class="col-lg-6">
                   <label for="description" class="form-label">Beschreibung</label>
@@ -209,7 +213,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { minLength, helpers, required, minValue } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
-import { postAddRecipe } from "../../api/recipeHandling";
+import { postAddRecipe, uploadRecipeImage } from "../../api/recipeHandling";
 import { getCategories, getTags } from "../../api/userdataHandling";
 export default {
   setup() {
@@ -244,7 +248,10 @@ export default {
       failed: false,
       success: false,
       tags: [],
-      categories: []
+      categories: [],
+      selectedFile: null,
+      fileError: false,
+      sizeError: false,
     };
   },
   validations() {
@@ -307,14 +314,40 @@ export default {
         console.log("Error while creating");
         return;
       }
+      this.uploadFile(response.data.id);
       this.success = true;
       this.v$.$reset();
       this.$refs.recipeData.reset();
     },
+    onFileChange(e) {
+      const selectedFile = e.target.files[0];
+      this.selectedFile = selectedFile;
+      console.log(this.selectedFile.size);
+      this.sizeError = false;
+      this.fileError = false;
+      let acceptedTypes = ["image/jpeg", "image/png"];
+      if (!acceptedTypes.includes(this.selectedFile.type)) {
+        this.fileError = true;
+        this.selectedFile = null;
+        this.$refs.file.value = null;
+        return;
+      }
+      if (this.selectedFile.size > 	2000000) {
+        this.selectedFile = null;
+        this.$refs.file.value = null;
+        this.sizeError = true;
+      }
+    },
+    uploadFile(id) {
+      const formData = new FormData();
+      formData.append("image", this.selectedFile);
+      formData.append("recipeID", id);
+      uploadRecipeImage(formData);
+    },
   },
   async mounted() {
     this.tags = await getTags();
-    this.categories = await getCategories()
+    this.categories = await getCategories();
   },
 };
 </script>

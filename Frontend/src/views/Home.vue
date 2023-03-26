@@ -30,7 +30,7 @@
       <hr class="mt-0 mb-0" />
     </div>
 
-    <div class="row mt-4">
+    <div class="row mt-4" v-if="this.randomRecipes && !this.loading">
       <RecipeCard
         v-for="item in randomRecipes"
         :recipe-name="item.title"
@@ -38,7 +38,11 @@
         :tags="item.tags"
         :duration="item.processingTime"
         :recipeID="item._id"
+        :image="item.imgSrc"
       ></RecipeCard>
+    </div>
+    <div class="row mt-3" v-else>
+      <SceletonCard v-for="item in 4" />
     </div>
 
     <div class="float-end mt-0">
@@ -52,6 +56,7 @@ import Navbar from "../components/Navbar.vue";
 import { useAuthStore } from "../stores/auth.store";
 import RecipeCard from "../components/RecipeCard.vue";
 import { getRandomRecipes } from "../api/recipeHandling";
+import SceletonCard from "../components/SceletonCard.vue";
 export default {
   setup() {
     return { userStore: useAuthStore() };
@@ -59,14 +64,17 @@ export default {
   components: {
     Navbar,
     RecipeCard,
+    SceletonCard,
   },
   data() {
     return {
       justLoggedIn: false,
       randomRecipes: [],
+      loading: false,
     };
   },
   async mounted() {
+    this.loading = true;
     this.justLoggedIn = this.$router.options.history.state.back == "/login";
     let res = await getRandomRecipes();
     if (res.error) {
@@ -78,6 +86,7 @@ export default {
     setTimeout(() => {
       this.justLoggedIn = false;
     }, 7500);
+    this.loading = false;
   },
 };
 </script>

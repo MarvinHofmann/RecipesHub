@@ -1,7 +1,7 @@
 <template>
   <div class="col-xxl-3 col-lg-4 col-md-6 mb-4">
     <div class="card h-100" @click="this.onClickRecipe">
-      <img class="card-img-top" :src="this.image" alt="..." />
+      <img class="card-img-top" :src="this.imgSrc" @error="this.imgSrc = '../../public/placeholder.png'" alt="..." />
       <div class="card-body">
         <h5 class="card-title">{{ this.recipeName }}</h5>
         <p class="card-text mb-1">{{ this.category }}</p>
@@ -33,7 +33,7 @@ export default {
     },
     image: {
       type: String,
-      default: "http://via.placeholder.com/640x360",
+      default: "../../public/placeholder.png",
     },
     category: {
       type: String,
@@ -45,12 +45,17 @@ export default {
     },
   },
   data() {
-    return {};
+    return {
+      imgSrc: "",
+    };
   },
   methods: {
     onClickRecipe() {
       this.$router.push("/rezept/" + this.recipeID);
     },
+  },
+  mounted() {
+    this.imgSrc = this.image;
   },
 };
 </script>
@@ -61,15 +66,15 @@ export default {
   margin-top: 0.5rem;
 }
 
-.text-bg-secondary{
+.text-bg-secondary {
   background-color: transparent !important;
   color: var(--bs-secondary) !important;
-  border:solid 1px var(--bs-secondary) !important;
+  border: solid 1px var(--bs-secondary) !important;
 }
 
 .card:hover {
   cursor: pointer;
-  box-shadow: 0 0 11px rgba(33,33,33,.2);
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
 .card-img-top {
   width: 100%;

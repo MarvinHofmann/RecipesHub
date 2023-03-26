@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const IP = "http://localhost:3443";
+const IP = "http://localhost:3443/api/v1";
 
 /**
  * It sends a request to the server to add a new category to the database.
@@ -8,7 +8,7 @@ const IP = "http://localhost:3443";
  * @returns { error: null, data: response.data }
  */
 async function addTag(tagName) {
-    return await axios.put(IP + "/api/userdata/newTag", {
+    return await axios.put(IP + "/userdata/newTag", {
         tag: tagName
     }, { withCredentials: true })
         .then((response) => {
@@ -26,7 +26,7 @@ async function addTag(tagName) {
  * @returns An array of objects.
  */
 async function getTags() {
-    return await axios.get(IP + "/api/userdata/tags", { withCredentials: true })
+    return await axios.get(IP + "/userdata/tags", { withCredentials: true })
         .then((response) => {
             return response.data.tags
         })
@@ -44,7 +44,7 @@ async function getTags() {
  * @returns { error: null, data: response.data }
  */
 async function addCategory(catName, colorCode) {
-    return await axios.put(IP + "/api/userdata/newCategory", {
+    return await axios.put(IP + "/userdata/newCategory", {
         name: catName,
         color: colorCode
     }, { withCredentials: true })
@@ -63,7 +63,7 @@ async function addCategory(catName, colorCode) {
  * @returns An array of objects.
  */
 async function getCategories() {
-    return await axios.get(IP + "/api/userdata/categories", { withCredentials: true })
+    return await axios.get(IP + "/userdata/categories", { withCredentials: true })
         .then((response) => {
             return response.data.categories
         })

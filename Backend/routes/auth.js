@@ -11,6 +11,7 @@ const authorization = require("../middleware/verifyToken")
  */
 router.post("/register", async function (req, res) {
     const { username, firstName, lastName, email, password } = req.body
+    if (!username || !firstName || !lastName || !email || !password) return res.status(400).send({ message: "No informations Send", code: "E0" })
     // Validation
     if (password.length < 6)
         return res.status(400).json({ message: "Password less than 6 characters" })
