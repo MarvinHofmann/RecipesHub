@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const IP = "http://localhost:3443/api";
+const IP = "http://localhost:3443/api/v1";
 
 /**
  * Posts the Userdata to Register an user.
@@ -55,7 +55,7 @@ async function loginUser(username, password, rememberMe) {
  * Delete the logged in user
  */
 async function deleteUser() {
-    return await axios.delete(IP + "/api/user/delete", { withCredentials: true })
+    return await axios.delete(IP + "/user/delete", { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }
         })

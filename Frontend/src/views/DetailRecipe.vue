@@ -177,12 +177,11 @@ export default {
   },
   methods: {
     async onDeleteRecipe() {
-      console.log("Delete Recipe");
       let res = await deleteRecipe(this.recipeData._id);
       if (res.error) {
         this.$refs.alert.showAlert();
       } else {
-        this.$router.push("/home");
+        this.$router.push(this.$router.options.history.state.back);
       }
     },
     onEditRecipe() {

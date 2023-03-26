@@ -26,8 +26,7 @@ router.put("/addRecipeImage", [upload.single("image"), authorization], async (re
     });
 })
 
-router.put("/addProfilePicture", [upload.single("image"), authorization], async (req, res) => {
-    console.log(req.file);
+router.put("/addProfilePicture", upload.single("image"), authorization , async (req, res) => {
     const img = {
         data: req.file.buffer,
         contentType: req.file.mimetype

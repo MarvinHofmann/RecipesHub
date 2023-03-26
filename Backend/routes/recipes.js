@@ -21,11 +21,12 @@ router.post("/addRecipe", authorization, async (req, res) => {
         ingredients: req.body.ingredients,
         steps: req.body.steps,
         portions: req.body.portions
+    }).then(function (recipe) {
+        return res.status(201).send({ message: "Recipe Created", id: recipe._id })
     }).catch((err) => {
         console.error(err);
         return res.status(500).send({ message: "Error while creating Recipe", code: "E2", error: err })
     })
-    res.status(201).send({ message: "Recipe Created" })
 })
 
 

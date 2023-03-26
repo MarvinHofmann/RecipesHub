@@ -95,4 +95,16 @@ async function deleteRecipe(id) {
 }
 
 
-export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe }
+async function uploadRecipeImage(formData) {
+    return await axios.put(IP + "/images/addRecipeImage", formData, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim Hochladen des Bildes", data: null }
+        })
+}
+
+
+export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe, uploadRecipeImage }
