@@ -29,13 +29,9 @@ const router =
         },
     });
 
-// Event Listener checks if user presses backButton (window.popstate event)
-window.pressedBackButton = false
-window.addEventListener('popstate', () => {
-    window.pressedBackButton = true
-})
 
 router.beforeEach(async (to, from, next) => {
+    window.pressedBackButton = false
     const userStore = useAuthStore();
     const publicPages = ["/login", "/registrieren"];
     const authRequired = !publicPages.includes(to.path); // Check for public pages
@@ -46,13 +42,6 @@ router.beforeEach(async (to, from, next) => {
             query: { sessionExpired: true }
         })
         return;
-    }
-    // If user presses back button and gets redirected to 404 go to home
-    if (to.path == "/404" && window.pressedBackButton) {
-        next({
-            path: '/home',
-        })
-        return
     }
     next()
 })

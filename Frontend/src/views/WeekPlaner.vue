@@ -71,7 +71,7 @@ export default {
             },
             {
               title: "Rezept 1",
-              color: "#9997f3",
+              color: "#11f33f",
             },
           ],
         },
@@ -89,7 +89,7 @@ export default {
           recipes: [
             {
               title: "Rezept 1",
-              color: "#1e9733",
+              color: "#da97f1",
             },
           ],
         },

@@ -1,4 +1,5 @@
 <template>
+  <NavbarVue></NavbarVue>
   <div class="container">
     <div class="center-container">
       <h1 class="text-center">404</h1>
@@ -12,7 +13,11 @@
 </template>
 
 <script>
+import NavbarVue from '../components/Navbar.vue';
 export default {
+  components: {
+    NavbarVue
+  },
   data() {
     return {};
   },

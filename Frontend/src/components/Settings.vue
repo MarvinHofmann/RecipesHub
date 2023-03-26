@@ -56,7 +56,7 @@
         <div class="tab-pane fade show active mt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
           <div class="row">
             <div class="col-6 d-flex justify-content-center">
-              <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0" />
+              <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0 profilePic" />
             </div>
             <div class="col-6">
               <div>{{ this.userStore.user.firstName }} {{ this.userStore.user.lastName }}</div>
@@ -279,6 +279,10 @@ export default {
         this.$router.push("/login");
       }
     },
+    /**
+     * Post new Password to the backend cheks if its ok
+     * shows information if pw changed or an Error occured
+     */
     async onChangePassword() {
       this.v$.$touch();
       if (this.v$.passwordChange.$invalid) return;
@@ -370,5 +374,9 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.profilePic:hover {
+  opacity: 0.5;
 }
 </style>

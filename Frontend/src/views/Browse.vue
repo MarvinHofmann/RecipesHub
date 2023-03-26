@@ -3,12 +3,12 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm-6 mt-3">
+      <div class="col-6 mt-3">
         <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addRecipeModal" type="button">Rezept erstellen</button>
       </div>
-      <div class="col-sm-6 mt-3">
-        <div class="float-sm-end">
-          <p class="d-sm-inline-block me-2 p-0 m-0">{{ this.numberOfRecipes }} Rezepte</p>
+      <div class="col-6 mt-3">
+        <div class="float-end">
+          <p class="d-none d-xs-none d-sm-inline-block me-2 p-0 m-0">{{ this.numberOfRecipes }} Rezepte</p>
           <button
             class="btn btn-outline-dark"
             type="button"
