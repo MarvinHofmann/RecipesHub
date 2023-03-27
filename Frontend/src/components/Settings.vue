@@ -72,75 +72,90 @@
           <form ref="changeData">
             <h3>Userdaten ändern</h3>
             <div class="mb-3">
-              <!-- Row Vorname / Nachname -->
-              <div class="row">
-                <div class="col-lg-6">
+              <!-- Row Vorname -->
+              <div class="row mt-2">
+                <div class="col-lg-12">
                   <label for="firstName" class="form-label">Vorname</label>
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="v$.userdata.firstName.$model"
-                      id="firstName"
-                      :class="{ 'is-invalid': v$.userdata.firstName.$error }"
-                    />
+                    <input class="form-control" aria-describedby="bFirstName" type="text" v-model="v$.userdata.firstName.$model" id="firstName" />
+                    <button
+                      @click="onChangeUserdata('firstName')"
+                      :disabled="v$.userdata.firstName.$error || this.userdata.firstName == null"
+                      class="btn btn-outline-success"
+                      type="button"
+                      id="bFirstName"
+                    >
+                      Ändern
+                    </button>
                   </div>
-                  <!-- error message -->
-                  <div class="text-danger" v-if="v$.userdata.firstName.$error">Vorname Benötigt</div>
                 </div>
-                <div class="col-lg-6">
+              </div>
+              <!-- Row Nachname -->
+              <div class="row mt-2">
+                <div class="col-lg-12">
                   <label for="nachname" class="form-label">Nachname</label>
                   <div class="input-group">
-                    <input
-                      :class="{ 'is-invalid': v$.userdata.lastName.$error }"
-                      v-model="v$.userdata.lastName.$model"
-                      type="text"
-                      class="form-control"
-                      id="nachname"
-                    />
+                    <input v-model="v$.userdata.lastName.$model" type="text" class="form-control" id="nachname" />
+                    <button
+                      @click="onChangeUserdata('lastName')"
+                      :disabled="v$.userdata.lastName.$error || this.userdata.lastName == null"
+                      class="btn btn-outline-success"
+                      type="button"
+                      id="blastName"
+                    >
+                      Ändern
+                    </button>
                   </div>
-                  <!-- error message -->
-                  <div class="text-danger" v-if="v$.userdata.lastName.$error">Nachname Benötigt</div>
                 </div>
               </div>
 
-              <!-- Row Email / Username -->
-              <div class="row mt-3">
-                <div class="col-lg-6">
+              <!-- Row Email -->
+              <div class="row mt-2">
+                <div class="col-lg-12">
                   <label for="email" class="form-label">Email</label>
                   <div class="input-group">
                     <input
                       :class="{ 'is-invalid': v$.userdata.email.$error }"
-                      v-model="this.userdata.email"
+                      v-model="v$.userdata.email.$model"
                       type="text"
                       class="form-control"
                       id="email"
-                      @blur="v$.userdata.email.$touch"
                     />
+                    <button
+                      @click="onChangeUserdata('email')"
+                      :disabled="v$.userdata.email.$error || this.userdata.email == null"
+                      class="btn btn-outline-success"
+                      type="button"
+                      id="bEmail"
+                    >
+                      Ändern
+                    </button>
                   </div>
                   <!-- error message -->
-                  <div class="text-danger" v-if="v$.userdata.email.$error">Email Benötigt</div>
+                  <div class="text-danger" v-if="v$.userdata.email.$error">Keine gültige Email Adresse</div>
                 </div>
-                <div class="col-lg-6">
+              </div>
+
+              <!-- Row Username -->
+              <div class="row mt-2">
+                <div class="col-lg-12">
                   <label for="username" class="form-label">Username</label>
                   <div class="input-group">
-                    <input
-                      v-model="this.userdata.username"
-                      @blur="v$.userdata.username.$touch"
-                      type="text"
-                      class="form-control"
-                      id="username"
-                      :class="{ 'is-invalid': v$.userdata.username.$error }"
-                    />
+                    <input v-model="v$.userdata.username.$model" type="text" class="form-control" id="username" />
+                    <button
+                      @click="onChangeUserdata('username')"
+                      :disabled="v$.userdata.username.$error || this.userdata.username == null"
+                      class="btn btn-outline-success"
+                      type="button"
+                      id="bUsername"
+                    >
+                      Ändern
+                    </button>
                   </div>
-                  <!-- error message -->
-                  <div class="text-danger" v-if="v$.userdata.username.$error">Username Benötigt</div>
                 </div>
               </div>
             </div>
-            <div>
-              <button :disabled="v$.userdata.$invalid" class="btn btn-outline-dark mt-1 w-100" @click="this.onSaveSettings()">Speichern</button>
-            </div>
+            <Alert ref="userDataAlert" :message="this.userDataAlert.message" :type="this.userDataAlert.type"></Alert>
           </form>
         </div>
         <div class="tab-pane fade mt-3" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
@@ -218,6 +233,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "@vuelidate/validators";
 import { Offcanvas, Modal } from "bootstrap";
 import { deleteUser, changePassword } from "../api/userHandling";
+import { changeEmail, changeFirstName, changeLastname, changeUsername } from "../api/userdataHandling";
 import { useAuthStore } from "../stores/auth.store";
 import Alert from "./Alert.vue";
 export default {
@@ -246,6 +262,10 @@ export default {
       },
       alertMessage: null,
       alertMessageType: null,
+      userDataAlert: {
+        message: null,
+        type: null,
+      },
     };
   },
   validations() {
@@ -278,6 +298,37 @@ export default {
         this.userStore.deleteUser();
         this.$router.push("/login");
       }
+    },
+    /**
+     * Gets called on change button Press in userdata settings
+     * fires the request to the backend
+     * @param {*} field name of the value that gets changed
+     */
+    async onChangeUserdata(field) {
+      let res = null;
+      switch (field) {
+        case "firstName":
+          res = await changeFirstName(this.userdata.firstName);
+          break;
+        case "lastName":
+          res = await changeLastname(this.userdata.lastName);
+          break;
+        case "email":
+          res = await changeEmail(this.userdata.email);
+          break;
+        case "username":
+          res = await changeUsername(this.userdata.username);
+          break;
+      }
+      if (res.error) {
+        this.userDataAlert = { message: res.error, type: "alert-danger" };
+      }else{
+        this.userDataAlert = { message: "Daten erfolgreich geändert", type: "alert-success" };
+      }
+      this.v$.$reset();
+      this.$refs.changeData.reset()
+      this.userdata = this.getInitialUserdata()
+      this.$refs.userDataAlert.showAlert();
     },
     /**
      * Post new Password to the backend cheks if its ok

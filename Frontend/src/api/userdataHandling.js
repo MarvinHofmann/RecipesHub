@@ -73,4 +73,82 @@ async function getCategories() {
         })
 }
 
-export { addTag, addCategory, getTags, getCategories }
+
+/**
+ * It sends a request to the server to change the username of the currently logged in user.
+ * Returns specific error if username exists
+ * @param newUsername - The new username
+ * @returns a promise.
+ */
+async function changeUsername(newUsername) {
+    return await axios.put(IP + "/userdata/change/username", {
+        username: newUsername
+    }, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            if (error && error.data.code == "E2") {
+                return { error: "Der angegebene Username ist bereits vorhanden", data: null }
+            }
+            console.log(error);
+            return { error: "Fehler beim ändern des Username", data: null }
+        })
+}
+
+
+/**
+ * It sends a PUT request to the server with the new email and the server returns a response.
+ * @param newEmail - the new email address
+ * @returns a promise.
+ */
+async function changeEmail(newEmail) {
+    return await axios.put(IP + "/userdata/change/email", {
+        email: newEmail
+    }, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim ändern der Email", data: null }
+        })
+}
+
+/**
+ * It sends a PUT request to the server with the new first name and returns the response.
+ * @param newFirstName - String
+ * @returns { error: null, data: response.data }
+ */
+async function changeFirstName(newFirstName) {
+    return await axios.put(IP + "/userdata/change/firstName", {
+        firstName: newFirstName
+    }, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim ändern des Vornamens", data: null }
+        })
+}
+
+/**
+ * It sends a PUT request to the server with the new last name and returns the response.
+ * @param newLastName - String
+ * @returns { error: null, data: response.data }
+ */
+async function changeLastname(newLastName) {
+    return await axios.put(IP + "/userdata/change/lastName", {
+        lastName: newLastName
+    }, { withCredentials: true })
+        .then((response) => {
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Fehler beim ändern des Nachnamens", data: null }
+        })
+}
+
+export { addTag, addCategory, getTags, getCategories, changeEmail, changeFirstName, changeLastname, changeUsername }

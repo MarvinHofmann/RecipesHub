@@ -1,5 +1,5 @@
 <template>
-  <div class="col-xxl-3 col-lg-4 col-md-6 mb-4">
+  <div class="col-xxl-3 col-lg-6 col-md-6 mb-4">
     <div class="card h-100" aria-hidden="true">
       <svg
         class="bd-placeholder-img card-img-top"
