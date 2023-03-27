@@ -43,7 +43,7 @@
               </div>
             </div>
           </div>
-          <div class="card-footer bg-white border-0">
+          <div class="card-footer bg-white border-0 print-none">
             <!--Action Buttons-->
             <div class="row">
               <div class="col-6 px-1 mt-3">

@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="print-none navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
       <a @click="this.$router.push('/home')" class="navbar-brand fs-3 me-0" href="#">
         <img src="../assets/logo.png" height="30" />

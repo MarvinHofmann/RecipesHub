@@ -95,4 +95,19 @@ router.delete("/recipe/:id", authorization, async (req, res) => {
     });
 });
 
+
+const pdfCreation = require("../pdfCreation/pdfCreation")
+
+router.get("/pdf/:id", authorization, async (req, res) => {
+    const query = Recipe.findOne({ _id: req.params.id, userID: req.userID } , {images: 0})
+    await query.lean().then(async function (recipe) {
+        if (!recipe) return res.status(404).send({ message: "No Recipe with that id", code: "E2" });
+        const createdPDF = await pdfCreation(recipe)
+        res.contentType("application/pdf");
+        res.status(200).send(createdPDF)
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while searching for Document", code: "E3", error: err });
+    });
+});
+
 module.exports = router
