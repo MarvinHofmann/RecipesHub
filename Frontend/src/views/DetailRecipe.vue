@@ -50,10 +50,15 @@
                 <button class="btn btn-outline-dark w-100" @click="this.onAddToList()">Auf die Einkaufsliste</button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100" @click="this.onDownloadPDF()"><i class="bi bi-file-earmark-arrow-down"></i></button>
+                <button class="btn btn-outline-dark w-100" @click="this.onDownloadPDF()">
+                  <i class="bi bi-cloud-download fs-6" v-if="!this.loadingDownload"></i>
+                  <div class="spinner-border spinner-border-sm" role="status" v-else>
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                </button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100" @click="this.onEditRecipe()"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-outline-dark w-100" @click="this.onEditRecipe()"><i class="bi bi-pencil-square"></i></button>
               </div>
               <div class="col-2 px-1 mt-3">
                 <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#sureDeleteRecipe">
@@ -146,7 +151,7 @@
   <div class="backdrop_load" v-else>
     <div class="text-center loading">
       <div class="loading_card d-flex justify-content-center shadow-lg bg-light rounded">
-        <div class="spinner-border text-dark" role="status">
+        <div class="spinner-border-self text-dark" role="status">
           <span class="d-none">Loading...</span>
         </div>
       </div>
@@ -157,7 +162,7 @@
 
 <script>
 import Navbar from "../components/Navbar.vue";
-import { getRecipeWithID, deleteRecipe } from "../api/recipeHandling";
+import { getRecipeWithID, deleteRecipe, downloadPDF } from "../api/recipeHandling";
 import Alert from "../components/Alert.vue";
 import DeleteRecipe from "../components/Modals/SureDelete.vue";
 export default {
@@ -172,6 +177,7 @@ export default {
       imgSrc: "http://via.placeholder.com/640x360",
       truncated: true,
       loading: false,
+      loadingDownload: false,
       portions: 0,
     };
   },
@@ -190,8 +196,26 @@ export default {
     onAddToList() {
       console.log("Add to List");
     },
-    onDownloadPDF() {
+    /**
+     * fires if user Downloads the Recipe
+     */
+    async onDownloadPDF() {
+      this.loadingDownload = true;
       console.log("Download PDF");
+      let res = await downloadPDF(this.recipeData._id,this.recipeData.portions);
+      if (res.error) {
+        this.loadingDownload = false;
+        return;
+      }
+      console.log(res.data);
+      // Create fake button and trigger it to download the file as PDF with the recipe name as pdf name
+      const fileURL = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
+      const fileLink = document.createElement("a");
+      fileLink.href = fileURL;
+      fileLink.setAttribute("download", this.recipeData.title + ".pdf");
+      document.body.appendChild(fileLink);
+      fileLink.click();
+      this.loadingDownload = false;
     },
     /**
      * Recalculates the quantities of the ingredients
@@ -263,7 +287,7 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 150px;
 }
 
-.spinner-border {
+.spinner-border-self {
   position: fixed;
   opacity: 0.7;
   height: 60px;
