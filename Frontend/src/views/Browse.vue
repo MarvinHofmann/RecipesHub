@@ -31,18 +31,18 @@
             <div class="col-lg-6">
               <h6 class="mb-1">Tags</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="tag in loadedTags" @change="this.filterList()">
-                  <input class="form-check-input" type="checkbox" :value="tag" v-model="this.filter.tags" :id="tag" />
-                  <label class="form-check-label" :for="tag"> {{ tag }} </label>
+                <div class="form-check form-check-inline mb-2" v-for="(tag, index) in loadedTags" @change="this.filterList()">
+                  <input class="form-check-input" type="checkbox" :value="tag" v-model="this.filter.tags" :id="tag + index" />
+                  <label class="form-check-label" :for="tag + index"> {{ tag }} </label>
                 </div>
               </form>
             </div>
             <div class="col-lg-6 border-left">
               <h6 class="mb-1">Kategorie</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="category in loadedCategories" @change="this.filterList()">
-                  <input class="form-check-input" type="checkbox" :value="category.name" v-model="this.filter.categories" :id="category" />
-                  <label class="form-check-label" :for="category"> {{ category.name }} </label>
+                <div class="form-check form-check-inline mb-2" v-for="(category, index) in loadedCategories" @change="this.filterList()">
+                  <input class="form-check-input" type="checkbox" :value="category.name" v-model="this.filter.categories" :id="category + index" />
+                  <label class="form-check-label" :for="category + index"> {{ category.name }} </label>
                 </div>
               </form>
             </div>

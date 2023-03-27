@@ -1,6 +1,6 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="addTag" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addCategory" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -70,7 +70,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
-          <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal" @click="this.onAddCategory()">Speichern</button>
+          <button type="button" class="btn btn-outline-dark" @click="this.onAddCategory()">Speichern</button>
         </div>
       </div>
     </div>
@@ -98,7 +98,6 @@ export default {
       return !this.categories.includes(value);
     },
     async onAddCategory() {
-      console.log(this.categoryData);
       this.v$.$touch();
       if (this.v$.$invalid) return;
       let res = await addCategory(this.categoryData.name, this.categoryData.color);

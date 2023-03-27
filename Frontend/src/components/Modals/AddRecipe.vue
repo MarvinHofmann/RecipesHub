@@ -1,6 +1,14 @@
 <template>
   <!-- Modal -->
-  <div class="modal modal-xl fade" id="addRecipeModal" tabindex="-1" aria-labelledby="addRecipeModalLabel" aria-hidden="true" role="dialog">
+  <div
+    ref="addModal"
+    class="modal modal-xl fade"
+    id="addRecipeModal"
+    tabindex="-1"
+    aria-labelledby="addRecipeModalLabel"
+    aria-hidden="true"
+    role="dialog"
+  >
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
@@ -215,6 +223,7 @@ import { minLength, helpers, required, minValue } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
 import { postAddRecipe, uploadRecipeImage } from "../../api/recipeHandling";
 import { getCategories, getTags } from "../../api/userdataHandling";
+import { Modal } from "bootstrap";
 export default {
   setup() {
     return { v$: useVuelidate(), userStore: useAuthStore() };
@@ -238,7 +247,7 @@ export default {
         steps: [
           {
             title: null,
-            number: 0,
+            number: 1,
             description: null,
           },
         ],
@@ -375,6 +384,15 @@ export default {
   async mounted() {
     this.tags = await getTags();
     this.categories = await getCategories();
+  },
+  beforeUnmount() {
+    const saveModal = document.getElementById("addRecipeModal");
+    const modal = new Modal(saveModal);
+    modal.dispose();
+    const modalBackdrops = document.getElementsByClassName("modal-backdrop");
+    while (modalBackdrops.length > 0) {
+      modalBackdrops[0].parentNode.removeChild(modalBackdrops[0]);
+    }
   },
 };
 </script>

@@ -30,7 +30,14 @@ const router =
     });
 
 
+// Event Listener checks if user presses backButton (window.popstate event)
+window.pressedBackButton = false
+window.addEventListener('popstate', () => {
+    window.pressedBackButton = true
+})
+
 router.beforeEach(async (to, from, next) => {
+    const backButtonPressed = window.pressedBackButton
     window.pressedBackButton = false
     const userStore = useAuthStore();
     const publicPages = ["/login", "/registrieren"];
@@ -42,6 +49,12 @@ router.beforeEach(async (to, from, next) => {
             query: { sessionExpired: true }
         })
         return;
+    }
+    if (to.path == "/404" && backButtonPressed) {
+        next({
+            path: '/home',
+        })
+        return
     }
     next()
 })
