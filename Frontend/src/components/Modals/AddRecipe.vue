@@ -333,7 +333,7 @@ export default {
         console.log("Error while creating");
         return;
       }
-      this.uploadFile(response.data.id);
+      if (this.selectedFile) this.uploadFile(response.data.id);
       this.success = true;
       this.v$.$reset();
       this.$refs.recipeData.reset();

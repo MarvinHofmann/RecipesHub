@@ -3,6 +3,8 @@ const authorization = require("../middleware/verifyToken")
 const { Recipe } = require("../models/recipeSchema")
 const ObjectId = require('mongoose').Types.ObjectId;
 
+const BASEURL = "http://localhost:3443/api/v1/images/recipeImage/"
+
 /**
  * Endpoint to create a Recipe
  */
@@ -13,7 +15,6 @@ router.post("/addRecipe", authorization, async (req, res) => {
         title: req.body.title,
         description: req.body.description,
         source: req.body.source,
-        images: req.body.images,
         processingTime: req.body.processingTime,
         category: req.body.category,
         tags: req.body.tags,
@@ -38,7 +39,7 @@ router.get("/randomRecipes", authorization, async (req, res) => {
     await query.exec().then(function (randomRecipes) {
         if (!randomRecipes) return res.status(404).send({ message: "No Recipes found", code: "E1" });
         randomRecipes.forEach(recipe => {
-            recipe.imgSrc = "http://localhost:3443/api/v1/images/recipeImage/" + recipe._id
+            recipe.imgSrc = BASEURL + recipe._id
         });
         return res.status(200).send(randomRecipes)
     }).catch(function (err) {
@@ -55,7 +56,7 @@ router.get("/recipe/:id", authorization, async (req, res) => {
     const query = Recipe.findOne({ "_id": req.params.id, userID: req.userID }, { images: 0 })
     await query.lean().then(function (recipe) {
         if (!recipe) return res.status(404).send({ message: "No Recipe with that id", code: "E2" });
-        recipe.imgSrc = "http://localhost:3443/api/v1/images/recipeImage/" + recipe._id
+        recipe.imgSrc = BASEURL + recipe._id
         return res.status(200).send(recipe)
     }).catch(function (err) {
         return res.status(500).send({ message: "Error while searching for Document", code: "E3", error: err });
@@ -70,7 +71,7 @@ router.get("/allRecipes", authorization, async (req, res) => {
     await query.lean().then(function (recipes) {
         if (!recipes) return res.status(404).send({ message: "No Recipes in the DB", code: "E1" });
         recipes.forEach(recipe => {
-            recipe.imgSrc = "http://localhost:3443/api/v1/images/recipeImage/" + recipe._id
+            recipe.imgSrc = BASEURL + recipe._id
         });
         return res.status(200).send(recipes)
     }).catch(function (err) {

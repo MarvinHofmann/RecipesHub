@@ -1,10 +1,18 @@
 const mongoose = require('mongoose');
 
+const fs = require("fs")
+const path = require('path');
+
 const recipeSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
     source: { type: String, default: "Eigenes Rezept" },
-    images: { data: Buffer, contentType: String, },
+    images: {
+        type: { data: Buffer, contentType: String }, default: {
+            data: fs.readFileSync(path.join(__dirname, "..", "assets", "defaultRecipe.png")),
+            contentType: "image/png"
+        }, _id: false
+    },
     registrationDate: { type: Date, default: Date.now() },
     lastModified: { type: Date, default: Date.now() },
     processingTime: { type: Number, required: true },
@@ -21,11 +29,11 @@ const recipeSchema = new mongoose.Schema({
         type: [{
             name: { type: String, required: true },
             amount: { type: Number, required: true },
-            unit: { type: String, required: true, default: "gramm" },
+            unit: { type: String, required: true },
         }], required: true, _id: false
     },
     portions: { type: Number, required: true, default: 1 },
-    userID: { type: mongoose.ObjectId, required: true}
+    userID: { type: mongoose.ObjectId, required: true }
 });
 
 const Recipe = mongoose.model("recipe", recipeSchema)

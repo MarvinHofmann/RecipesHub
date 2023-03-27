@@ -39,9 +39,9 @@
 
             <div class="row mt-3">
               <div class="col-lg-12">
-                <label for="name" class="form-label">Name</label>
+                <label for="tagName" class="form-label">Name</label>
                 <div class="input-group">
-                  <input class="form-control" type="text" v-model="this.tagData.name" id="name" :class="{ 'is-invalid': v$.tagData.name.$error }" />
+                  <input class="form-control" type="text" v-model="this.tagData.name" id="tagName" :class="{ 'is-invalid': v$.tagData.name.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.tagData.name.$error">Dieser Tag Name ist nicht möglich</div>
