@@ -59,7 +59,7 @@ router.put("/change/username", authorization, async (req, res) => {
     if (!username) return res.status(400).send({ message: "No information send", code: "E1" })
 
     //Check if username is already taken
-    const user = User.findOne({ username: username }, { username: 1, _id: 1 }).exec()
+    const user = await User.findOne({ username: username }, { username: 1, _id: 1 }).exec()
     if (user && user._id != req.userID) return res.status(400).send({ message: "Username already exists", code: "E2" })
 
     //Update username
