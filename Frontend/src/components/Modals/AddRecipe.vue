@@ -52,13 +52,13 @@
                     <input
                       class="form-control"
                       type="number"
-                      v-model="this.recipeData.processingTime"
+                      v-model="this.recipeData.cookingTime"
                       id="time"
-                      :class="{ 'is-invalid': v$.recipeData.processingTime.$error }"
+                      :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }"
                     />
                   </div>
                   <!-- error message -->
-                  <div class="text-danger" v-if="v$.recipeData.processingTime.$error">Die ungefähre Dauer der Zubereitung in Minuten</div>
+                  <div class="text-danger" v-if="v$.recipeData.cookingTime.$error">Die ungefähre Dauer der Zubereitung in Minuten</div>
                 </div>
 
                 <div class="col-lg-6">
@@ -233,7 +233,7 @@ export default {
       recipeData: {
         title: null,
         source: "",
-        processingTime: null,
+        cookingTime: null,
         images: null,
         description: null,
         category: null,
@@ -267,7 +267,7 @@ export default {
     return {
       recipeData: {
         title: { required },
-        processingTime: { required },
+        cookingTime: { required },
         description: { required },
         category: { required },
         ingredients: {
