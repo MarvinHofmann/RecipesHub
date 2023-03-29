@@ -36,7 +36,7 @@
         :recipe-name="item.title"
         :category="item.category"
         :tags="item.tags"
-        :duration="item.processingTime"
+        :duration="item.cookingTime"
         :recipeID="item._id"
         :image="item.imgSrc"
       ></RecipeCard>

@@ -12,7 +12,7 @@ async function postAddRecipe(recipeData) {
         title: recipeData.title,
         description: recipeData.description,
         source: recipeData.source,
-        processingTime: recipeData.processingTime,
+        cookingTime: recipeData.cookingTime,
         category: recipeData.category,
         tags: recipeData.tags,
         steps: recipeData.steps,

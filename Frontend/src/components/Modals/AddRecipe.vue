@@ -113,10 +113,10 @@
               <div class="mt-2">
                 <!-- Portionsangaben -->
                 <div class="row g-3 align-items-center">
-                  <div class="col-1 me-2">
+                  <div class="col-2 me-2">
                     <label id="portionsInline"> Portionen: </label>
                   </div>
-                  <div class="col-1" :class="{ 'col-2': v$.recipeData.portions.$error }">
+                  <div class="col-2" :class="{ 'col-2': v$.recipeData.portions.$error }">
                     <input
                       type="number"
                       min="1"
@@ -194,8 +194,8 @@
                 </div>
               </div>
 
-              <h5 class="mt-3">Tags</h5>
-              <p class="text-muted mb-2">Wähle aus den Tags, die dein Gericht beschreiben</p>
+              <h5 class="mt-3 mb-0">Tags</h5>
+              <p class="text-muted mb-2">Wähle Tags, die dein Gericht am besten beschreiben.</p>
               <p class="text-danger" v-if="v$.recipeData.tags.$error">Wähle mindestens ein Tag um dein Gericht zu beschreiben</p>
               <div class="form-check form-check-inline mb-2" v-for="tag in this.tags">
                 <input class="form-check-input" type="checkbox" :value="tag" v-model="this.recipeData.tags" :id="tag" />

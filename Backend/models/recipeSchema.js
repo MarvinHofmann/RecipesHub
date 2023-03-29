@@ -15,7 +15,7 @@ const recipeSchema = new mongoose.Schema({
     },
     registrationDate: { type: Date, default: Date.now() },
     lastModified: { type: Date, default: Date.now() },
-    processingTime: { type: Number, required: true },
+    cookingTime: { type: Number, required: true },
     category: { type: String, required: true },
     tags: { type: [String], required: true },
     steps: {

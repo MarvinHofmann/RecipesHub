@@ -15,7 +15,7 @@ router.post("/addRecipe", authorization, async (req, res) => {
         title: req.body.title,
         description: req.body.description,
         source: req.body.source,
-        processingTime: req.body.processingTime,
+        cookingTime: req.body.cookingTime,
         category: req.body.category,
         tags: req.body.tags,
         ingredients: req.body.ingredients,
@@ -64,10 +64,10 @@ router.get("/recipe/:id", authorization, async (req, res) => {
 });
 
 /**
- * Returns all Recipes in the DB, only with the title, id, categories, tags and processingTime
+ * Returns all Recipes in the DB, only with the title, id, categories, tags and cookingTime
  */
 router.get("/allRecipes", authorization, async (req, res) => {
-    const query = Recipe.find({ userID: req.userID }, { title: 1, _id: 1, category: 1, tags: 1, processingTime: 1 })
+    const query = Recipe.find({ userID: req.userID }, { title: 1, _id: 1, category: 1, tags: 1, cookingTime: 1 })
     await query.lean().then(function (recipes) {
         if (!recipes) return res.status(404).send({ message: "No Recipes in the DB", code: "E1" });
         recipes.forEach(recipe => {

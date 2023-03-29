@@ -24,7 +24,7 @@
             <div class="row">
               <div class="col-lg-4 col-md-4 col-6 mt-2">
                 <p class="mb-0 text-muted">Dauer</p>
-                <p class="mb-0">{{ this.recipeData.processingTime }} Minuten</p>
+                <p class="mb-0">{{ this.recipeData.cookingTime }} Minuten</p>
               </div>
               <div class="col-lg-4 col-md-4 col-6 mt-2">
                 <p class="mb-0 text-muted">Kategorie</p>
