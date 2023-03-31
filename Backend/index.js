@@ -33,12 +33,17 @@ const authRoute = require('./routes/auth');
 const recipesRoute = require('./routes/recipes');
 const userdataRoute = require('./routes/userdata')
 const imagesRoute = require('./routes/images')
+const shoppingListRoute = require('./routes/shoppingList')
+const weekPlanRoute = require('./routes/weekPlan')
 
 // Routes Middleware
 app.use('/api/v1/user', authRoute)
 app.use('/api/v1/recipes', recipesRoute)
 app.use('/api/v1/userdata', userdataRoute)
 app.use('/api/v1/images', imagesRoute)
+app.use('/api/v1/weekPlan', weekPlanRoute)
+app.use('/api/v1/shoppingList', shoppingListRoute)
+
 
 // Init MongoDB
 const mongoose = require('mongoose');

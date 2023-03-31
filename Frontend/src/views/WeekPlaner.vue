@@ -16,7 +16,7 @@
                 :style="{ backgroundColor: recipe.color }"
                 class="text w-100"
                 type="button"
-                @click="this.$router.push('/rezept/' + recipe.id)"
+                @click.self="this.$router.push('/rezept/' + recipe.id)"
               >
                 {{ recipe.title }}
               </div>
@@ -32,16 +32,21 @@
       </div>
     </div>
   </div>
+  <AddRecipeToPlan id="addToDate" :date="this.dateToAdd"></AddRecipeToPlan>
 </template>
 
 <script>
 import Navbar from "../components/Navbar.vue";
+import AddRecipeToPlan from "../components/Modals/AddRecipeToPlan.vue";
+import { Modal } from "bootstrap";
 export default {
   components: {
     Navbar,
+    AddRecipeToPlan,
   },
   data() {
     return {
+      dateToAdd: null,
       days: [
         {
           date: "Mo. 1.3",
@@ -115,10 +120,15 @@ export default {
     };
   },
   methods: {
-    onAddRecipeToData(date){
+    onAddRecipeToData(date) {
+      if (this.$router.options.history.state.current != "/wochenPlan") return;
       console.log("Add to ", date);
-    }
-  }
+      const saveModal = document.getElementById("addToDate");
+      const modal = new Modal(saveModal);
+      this.dateToAdd = date
+      modal.toggle()
+    },
+  },
 };
 </script>
 
