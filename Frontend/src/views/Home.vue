@@ -13,12 +13,35 @@
 
     <div class="row">
       <div class="col-md-6 mt-3">
-        <div class="card card-body">
+        <div class="card card-body h-100">
           <h5>Einkaufsliste</h5>
+          <div class="ms-2 form-check" v-for="(item, index) in this.shoppingList">
+            <input class="form-check-input" type="checkbox" value="" :id="'formCheckShopping' + index" />
+            <label class="form-check-label" :for="'formCheckShopping' + index">
+              {{ item.name }} <div class="text-muted d-inline">{{ item.amount }} {{ item.unit }} </div></label
+            >
+          </div>
+          <div class="input-group input-group-sm mt-2">
+            <input type="text" placeholder="Artikel" class="form-control" v-model="this.listElement.name"/>
+            <input type="number" placeholder="Anzahl" class="form-control" v-model="this.listElement.amount"/>
+            <select class="form-select text-muted" placeholder="Einheit" v-model="this.listElement.unit">
+              <option class="text-muted" selected disabled hidden>Einheit</option>
+              <option>Gramm</option>
+              <option>Milliliter</option>
+              <option>Esslöffel</option>
+              <option>Teelöffel</option>
+              <option>Tasse</option>
+              <option>Glas</option>
+              <option>Bund</option>
+              <option>Packung</option>
+              <option>Stück</option>
+            </select>
+            <button class="btn btn-outline-dark" type="button" @click="this.onAddToShoppingList()"><i class="bi bi-bag-plus"></i></button>
+          </div>
         </div>
       </div>
       <div class="col-md-6 mt-3">
-        <div class="card card-body">
+        <div class="card card-body h-100">
           <h5>Wochenplan</h5>
         </div>
       </div>
@@ -57,6 +80,7 @@ import { useAuthStore } from "../stores/auth.store";
 import RecipeCard from "../components/RecipeCard.vue";
 import { getRandomRecipes } from "../api/recipeHandling";
 import SceletonCard from "../components/SceletonCard.vue";
+import { getList } from "../api/shoppingListHandling";
 export default {
   setup() {
     return { userStore: useAuthStore() };
@@ -71,11 +95,24 @@ export default {
       justLoggedIn: false,
       randomRecipes: [],
       loading: false,
+      shoppingList: [],
+      listElement: {
+        name: null,
+        amount: null,
+        unit: "Einheit",
+      },
     };
+  },
+  methods: {
+    onAddToShoppingList(){
+      this.shoppingList.push(this.listElement)
+    }
   },
   async mounted() {
     this.loading = true;
     this.justLoggedIn = this.$router.options.history.state.back == "/login";
+    this.shoppingList = await getList();
+    console.log(this.shoppingList);
     let res = await getRandomRecipes();
     if (res.error) {
       // Show error
@@ -85,14 +122,10 @@ export default {
 
     setTimeout(() => {
       this.justLoggedIn = false;
-    }, 7500);
+    }, 5000);
     this.loading = false;
   },
 };
 </script>
 
-<style scoped>
-.card-body {
-  height: 150px;
-}
-</style>
+<style scoped></style>

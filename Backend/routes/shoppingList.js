@@ -13,7 +13,7 @@ router.get("/list", authorization, async (req, res) => {
     });
 });
 
-router.put("/shoppingElement", authorization, async (req, res) => {
+router.put("/newElement", authorization, async (req, res) => {
     const { name, amount, unit } = req.body
     if (!name || !amount || !unit) return res.status(400).send({ message: "No information send", code: "E1" })
     const query = User.updateOne({ _id: req.userID }, { $addToSet: { shoppingList: { name: name, amount: amount, unit: unit } } })

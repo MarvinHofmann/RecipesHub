@@ -14,7 +14,7 @@ router.get("/plan", authorization, async (req, res) => {
 });
 
 
-router.put("/weekElement", authorization, async (req, res) => {
+router.put("/newWeekEvent", authorization, async (req, res) => {
     const { title, color, recipeID, date } = req.body
     if (!title || !color || !recipeID || !date) return res.status(400).send({ message: "No information send", code: "E1" })
     const query = User.updateOne({ _id: req.userID }, { $addToSet: { weekPlan: { title: title, color: color, recipeID: recipeID, date: date } } })
