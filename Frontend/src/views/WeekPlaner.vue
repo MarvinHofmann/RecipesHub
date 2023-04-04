@@ -9,7 +9,7 @@
       <div class="row w-100">
         <div v-for="day in days" class="col-1 px-0">
           <div class="card calendarElement" @click="this.onAddRecipeToData(day.date)">
-            <p class="p-0 ps-1 m-0 text-muted">{{ day.date }}</p>
+            <p class="p-0 ps-1 m-0 text-muted">{{ getFormattedDate(day.date) }}</p>
             <div class="card-body px-1">
               <div
                 v-for="recipe in day.recipes"
@@ -39,6 +39,7 @@
 import Navbar from "../components/Navbar.vue";
 import AddRecipeToPlan from "../components/Modals/AddRecipeToPlan.vue";
 import { Modal } from "bootstrap";
+import { getDates } from "../api/weekPlanHandling"
 export default {
   components: {
     Navbar,
@@ -49,7 +50,7 @@ export default {
       dateToAdd: null,
       days: [
         {
-          date: "Mo. 1.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -59,7 +60,7 @@ export default {
           ],
         },
         {
-          date: "Di. 2.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -68,7 +69,7 @@ export default {
           ],
         },
         {
-          date: "Mi. 3.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -81,7 +82,7 @@ export default {
           ],
         },
         {
-          date: "Do. 4.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -90,7 +91,7 @@ export default {
           ],
         },
         {
-          date: "Fr. 5.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -99,7 +100,7 @@ export default {
           ],
         },
         {
-          date: "Sa. 6.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -108,7 +109,7 @@ export default {
           ],
         },
         {
-          date: "So. 7.3",
+          date: new Date(),
           recipes: [
             {
               title: "Rezept 1",
@@ -125,10 +126,17 @@ export default {
       console.log("Add to ", date);
       const saveModal = document.getElementById("addToDate");
       const modal = new Modal(saveModal);
-      this.dateToAdd = date
-      modal.toggle()
+      this.dateToAdd = date;
+      modal.toggle();
+    },
+    getFormattedDate(date) {
+      return new Date(date).toLocaleDateString("de-DE", {weekday: "short", day: "numeric" , month: "numeric"});
     },
   },
+  async mounted(){
+    let dates = await getDates()
+    console.log(dates);
+  }
 };
 </script>
 
