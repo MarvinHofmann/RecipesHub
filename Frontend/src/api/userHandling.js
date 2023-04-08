@@ -43,7 +43,7 @@ async function loginUser(username, password, rememberMe) {
     })
         .catch((error) => {
             console.log(error);
-            if (error && error.data.code == "E1") {
+            if (error.data && error.data.code == "E1") {
                 // The request was made and the server responded with a status code
                 return { error: "Der angegebene Username oder das Passwort sind falsch.", data: null }
             }
