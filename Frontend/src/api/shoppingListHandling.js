@@ -14,4 +14,32 @@ async function getList() {
         })
 }
 
-export { getList }
+async function addToList(listElement) {
+    return await axios.put(IP + "/shoppingList/newElement", {
+        "name": listElement.name,
+        "amount": listElement.amount,
+        "unit": listElement.unit
+    },{ withCredentials: true })
+        .then((response) => {
+            return response.data.shoppingList
+        })
+        .catch((error) => {
+            console.log(error);
+            return []
+        })
+}
+
+async function removeFromList(name) {
+    console.log(name);
+    return await axios.delete(IP + "/shoppingList/deleteElement/" + name, { withCredentials: true })
+        .then((response) => {
+            return response.data.shoppingList
+        })
+        .catch((error) => {
+            console.log(error);
+            return []
+        })
+}
+
+
+export { getList, addToList, removeFromList }

@@ -16,14 +16,22 @@
         <div class="card card-body h-100">
           <h5>Einkaufsliste</h5>
           <div class="ms-2 form-check" v-for="(item, index) in this.shoppingList">
-            <input class="form-check-input" type="checkbox" value="" :id="'formCheckShopping' + index" />
-            <label class="form-check-label" :for="'formCheckShopping' + index">
-              {{ item.name }} <div class="text-muted d-inline">{{ item.amount }} {{ item.unit }} </div></label
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              :id="'formCheckShopping' + index"
+              v-model="this.shoppingList[index]"
+              @click="this.onDeleteElementFromList(item.name)"
+            />
+            <label class="form-check-label" :for="'formCheckShopping' + index" :ref="'label' + index">
+              {{ item.name }}
+              <div class="text-muted d-inline">{{ item.amount }} {{ item.unit }}</div></label
             >
           </div>
           <div class="input-group input-group-sm mt-2">
-            <input type="text" placeholder="Artikel" class="form-control" v-model="this.listElement.name"/>
-            <input type="number" placeholder="Anzahl" class="form-control" v-model="this.listElement.amount"/>
+            <input type="text" placeholder="Artikel" class="form-control" v-model="this.listElement.name" />
+            <input type="number" placeholder="Anzahl" class="form-control" v-model="this.listElement.amount" />
             <select class="form-select text-muted" placeholder="Einheit" v-model="this.listElement.unit">
               <option class="text-muted" selected disabled hidden>Einheit</option>
               <option>Gramm</option>
@@ -80,7 +88,7 @@ import { useAuthStore } from "../stores/auth.store";
 import RecipeCard from "../components/RecipeCard.vue";
 import { getRandomRecipes } from "../api/recipeHandling";
 import SceletonCard from "../components/SceletonCard.vue";
-import { getList } from "../api/shoppingListHandling";
+import { getList, addToList, removeFromList } from "../api/shoppingListHandling";
 export default {
   setup() {
     return { userStore: useAuthStore() };
@@ -101,12 +109,20 @@ export default {
         amount: null,
         unit: "Einheit",
       },
+      checked: false,
     };
   },
   methods: {
-    onAddToShoppingList(){
-      this.shoppingList.push(this.listElement)
-    }
+    async onAddToShoppingList() {
+      // Add to DB
+      let res = await addToList(this.listElement);
+      this.shoppingList = res;
+    },
+    async onDeleteElementFromList(name) {
+      // Delete from DB
+      let res = await removeFromList(name);
+      this.shoppingList = res;
+    },
   },
   async mounted() {
     this.loading = true;
