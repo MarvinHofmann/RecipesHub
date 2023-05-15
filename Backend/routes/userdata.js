@@ -39,6 +39,23 @@ router.put("/newTag", authorization, async (req, res) => {
     });
 })
 
+/* Endpoint to delete a tag in the users document */
+router.delete("/deleteTag/:name", authorization, async (req, res) => {
+    const name = req.params.name;
+    if (!name) return res.status(400).send({ message: "No information send", code: "E1" });
+
+    const query = User.updateOne({ "_id": req.userID, }, { $pull: { 'tags': name } })
+    await query.exec().then(async function (result) {
+        if (result.deletedCount < 1) return res.status(404).send({ message: "Tag not found, nothing deleted", code: "E2" });
+        const query = User.findOne({ _id: req.userID }, { _id: 0, tags: 1 })
+        await query.exec().then(function (tagList) {
+            return res.status(200).send(tagList)
+        })
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while deleting Tag", code: "E3", error: err });
+    });
+})
+
 /* Endpoint to create a new category in the users document */
 router.put("/newCategory", authorization, async (req, res) => {
     const { name, color } = req.body;
@@ -52,6 +69,23 @@ router.put("/newCategory", authorization, async (req, res) => {
     });
 })
 
+
+/* Endpoint to delete a category in the users document */
+router.delete("/deleteCategory/:name", authorization, async (req, res) => {
+    const name = req.params.name;
+    if (!name) return res.status(400).send({ message: "No information send", code: "E1" });
+
+    const query = User.updateOne({ "_id": req.userID, }, { $pull: { 'categories': {name: name} } })
+    await query.exec().then(async function (result) {
+        if (result.deletedCount < 1) return res.status(404).send({ message: "Category not found, nothing deleted", code: "E2" });
+        const query = User.findOne({ _id: req.userID }, { _id: 0, categories: 1 })
+        await query.exec().then(function (catList) {
+            return res.status(200).send(catList)
+        })
+    }).catch(function (err) {
+        return res.status(500).send({ message: "Error while deleting Category", code: "E3", error: err });
+    });
+})
 
 /* A router that is used to update the username of the user. */
 router.put("/change/username", authorization, async (req, res) => {
