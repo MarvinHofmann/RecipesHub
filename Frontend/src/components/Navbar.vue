@@ -82,7 +82,7 @@
                 </div>
               </li>
               <li>
-                <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="dropdown-item" type="button">
+                <div data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" class="dropdown-item" type="button">
                   <i class="dropdown-icon bi bi-clipboard-minus"></i> Kategorie löschen
                 </div>
               </li>
@@ -96,7 +96,7 @@
                 </div>
               </li>
               <li>
-                <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="dropdown-item" type="button">
+                <div data-bs-toggle="modal" data-bs-target="#deleteTagModal" class="dropdown-item" type="button">
                   <i class="dropdown-icon bi bi-patch-minus"></i> Tag löschen
                 </div>
               </li>
@@ -130,6 +130,8 @@
   <AddRecipe @save="this.onAddRecipe()" id="addRecipeModal"></AddRecipe>
   <AddCategory id="addCategoryModal"></AddCategory>
   <AddTag id="addTagModal"></AddTag>
+  <DeleteCategory id="deleteCategoryModal"></DeleteCategory>
+  <DeleteTag id="deleteTagModal"></DeleteTag>
 </template>
 
 <script>
@@ -139,11 +141,13 @@ import AddRecipe from "./Modals/AddRecipe.vue";
 import { useAuthStore } from "../stores/auth.store";
 import AddCategory from "./Modals/AddCategory.vue";
 import AddTag from "./Modals/AddTag.vue";
+import DeleteCategory from "./Modals/DeleteCategory.vue";
+import DeleteTag from "./Modals/DeleteTag.vue";
 export default {
   setup() {
     return { userStore: useAuthStore() };
   },
-  components: { Settings, AddRecipe, Alert, AddTag, AddCategory },
+  components: { Settings, AddRecipe, Alert, AddTag, AddCategory, DeleteCategory, DeleteTag },
   methods: {
     onLogout() {
       this.$router.push("/login");
