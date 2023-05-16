@@ -17,6 +17,7 @@
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
     "pinia": "^2.0.33",
+    "serve": "^14.2.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6",
     "vuelidate": "^0.7.7"

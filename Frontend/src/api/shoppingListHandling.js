@@ -15,7 +15,7 @@ async function getList() {
 }
 
 async function addToList(listElement) {
-    return await axios.put(IP + "/shoppingList/newElement", {
+    return await axios.put(IP + "/shoppingList/addElement", {
         "name": listElement.name,
         "amount": listElement.amount,
         "unit": listElement.unit
@@ -29,9 +29,8 @@ async function addToList(listElement) {
         })
 }
 
-async function removeFromList(name) {
-    console.log(name);
-    return await axios.delete(IP + "/shoppingList/deleteElement/" + name, { withCredentials: true })
+async function removeFromList(name, unit) {
+    return await axios.delete(IP + "/shoppingList/deleteElement/" + name + "/" + unit, { withCredentials: true })
         .then((response) => {
             return response.data.shoppingList
         })

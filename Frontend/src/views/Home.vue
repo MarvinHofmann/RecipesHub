@@ -15,19 +15,21 @@
       <div class="col-md-6 mt-3">
         <div class="card card-body h-100">
           <h5>Einkaufsliste</h5>
-          <div class="ms-2 form-check" v-for="(item, index) in this.shoppingList">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              :id="'formCheckShopping' + index"
-              v-model="this.shoppingList[index]"
-              @click="this.onDeleteElementFromList(item.name)"
-            />
-            <label class="form-check-label" :for="'formCheckShopping' + index" :ref="'label' + index">
-              {{ item.name }}
-              <div class="text-muted d-inline">{{ item.amount }} {{ item.unit }}</div></label
-            >
+          <div class="hide-overflow">
+            <div class="ms-2 form-check" v-for="(item, index) in this.shoppingList">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                value=""
+                :id="'formCheckShopping' + index"
+                v-model="this.shoppingList[index]"
+                @click="this.onDeleteElementFromList(item.name, item.unit)"
+              />
+              <label class="form-check-label" :for="'formCheckShopping' + index" :ref="'label' + index">
+                {{ item.name }}
+                <div class="text-muted d-inline">{{ item.amount }} {{ item.unit }}</div></label
+              >
+            </div>
           </div>
           <div class="input-group input-group-sm mt-2">
             <input type="text" placeholder="Artikel" class="form-control" v-model="this.listElement.name" />
@@ -44,7 +46,7 @@
               <option>Packung</option>
               <option>Stück</option>
             </select>
-            <button class="btn btn-outline-dark" type="button" @click="this.onAddToShoppingList()"><i class="bi bi-bag-plus"></i></button>
+            <button class="btn btn-outline-success" type="button" @click="this.onAddToShoppingList()"><i class="bi bi-bag-plus"></i></button>
           </div>
         </div>
       </div>
@@ -118,9 +120,9 @@ export default {
       let res = await addToList(this.listElement);
       this.shoppingList = res;
     },
-    async onDeleteElementFromList(name) {
+    async onDeleteElementFromList(name, unit) {
       // Delete from DB
-      let res = await removeFromList(name);
+      let res = await removeFromList(name, unit);
       this.shoppingList = res;
     },
   },
@@ -144,4 +146,24 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.hide-overflow {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+/* https://www.w3schools.com/howto/howto_css_custom_scrollbar.asp */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(194, 193, 193);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+</style>

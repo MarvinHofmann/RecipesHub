@@ -13,25 +13,48 @@ router.get("/list", authorization, async (req, res) => {
     });
 });
 
-router.put("/newElement", authorization, async (req, res) => {
+router.put("/addElement", authorization, async (req, res) => {
     const { name, amount, unit } = req.body
     if (!name || !amount || !unit) return res.status(400).send({ message: "No information send", code: "E1" })
-    const query = User.updateOne({ _id: req.userID }, { $addToSet: { shoppingList: { name: name, amount: amount, unit: unit } } })
-    await query.exec().then(async function (updatedElement) {
-        const query = User.findOne({ _id: req.userID }, { _id: 0, shoppingList: 1 })
-        await query.exec().then(function (sList) {
-            return res.status(200).send(sList)
-        })
-    }).catch(function (err) {
-        return res.status(500).send({ message: "Error while updating shoppingList", code: "E2", error: err });
-    });
+
+    // Check if If Element with that name already exists:
+    const listElement = await User.findOne({ _id: req.userID, "shoppingList.name": name, "shoppingList.unit": unit}, { _id: 0, shoppingList: {$elemMatch: {name: name, unit:unit}}}).exec()
+    console.log(listElement);
+    // Increase amount if exists
+    if (listElement != null) {
+        const query = User.updateOne({ _id: req.userID, shoppingList: { $elemMatch: {name: name, unit: unit}}}, {$inc: {"shoppingList.$.amount": amount}})
+        await query.exec().then(async function (updatedElement) {
+            console.log(updatedElement);
+            const query = User.findOne({ _id: req.userID }, { _id: 0, shoppingList: 1 })
+            await query.exec().then(function (sList) {
+                return res.status(200).send(sList)
+            })
+        }).catch(function (err) {
+            console.log(err);
+            return res.status(500).send({ message: "Error while updating shoppingList", code: "E2", error: err });
+        });
+    }
+    // Add new element if not exists
+    else{
+        const query = User.updateOne({ _id: req.userID }, { $addToSet: { shoppingList: { name: name, amount: amount, unit: unit } } })
+        await query.exec().then(async function (updatedElement) {
+            const query = User.findOne({ _id: req.userID }, { _id: 0, shoppingList: 1 })
+            await query.exec().then(function (sList) {
+                return res.status(200).send(sList)
+            })
+        }).catch(function (err) {
+            return res.status(500).send({ message: "Error while updating shoppingList", code: "E2", error: err });
+        });
+    }
+
 });
 
-router.delete("/deleteElement/:name", authorization, async (req, res) => {
+router.delete("/deleteElement/:name/:unit", authorization, async (req, res) => {
     const name = req.params.name;
-    if (!name) return res.status(400).send({ message: "No information send", code: "E1" });
+    const unit = req.params.unit;
+    if (!name || !unit) return res.status(400).send({ message: "No information send", code: "E1" });
 
-    const query = User.updateOne({ "_id": req.userID, }, { $pull: { 'shoppingList': { "name": name } } })
+    const query = User.updateOne({ "_id": req.userID, }, { $pull: { 'shoppingList': { "name": name, "unit": unit } } })
     await query.exec().then(async function (result) {
         if (result.deletedCount < 1) return res.status(404).send({ message: "Element not found, nothing deleted", code: "E2" });
         const query = User.findOne({ _id: req.userID }, { _id: 0, shoppingList: 1 })

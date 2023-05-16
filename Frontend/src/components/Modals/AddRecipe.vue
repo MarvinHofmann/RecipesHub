@@ -142,7 +142,7 @@
                       <input v-model="ingredient.amount" placeholder="Menge" class="form-control" type="number" />
                     </div>
                     <div class="col-lg-3 mt-2 ingredientCol">
-                      <select class="form-select" id="unitSelect" v-model="ingredient.unit">
+                      <select class="form-select" id="unitSelectAddRecipe" v-model="ingredient.unit">
                         <option>Gramm</option>
                         <option>Milliliter</option>
                         <option>Esslöffel</option>

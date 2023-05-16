@@ -73,13 +73,31 @@
                 </div>
               </li>
               <li>
+                <hr class="dropdown-divider m-0" />
+                <h6 class="dropdown-header pb-0">Kategorien</h6>
+              </li>
+              <li>
                 <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="dropdown-item" type="button">
                   <i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen
                 </div>
               </li>
               <li>
+                <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="dropdown-item" type="button">
+                  <i class="dropdown-icon bi bi-clipboard-minus"></i> Kategorie löschen
+                </div>
+              </li>
+              <li>
+                <hr class="dropdown-divider m-0" />
+                <h6 class="dropdown-header pb-0">Tags</h6>
+              </li>
+              <li>
                 <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="dropdown-item" type="button">
                   <i class="dropdown-icon bi bi-patch-plus"></i> Tag erstellen
+                </div>
+              </li>
+              <li>
+                <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="dropdown-item" type="button">
+                  <i class="dropdown-icon bi bi-patch-minus"></i> Tag löschen
                 </div>
               </li>
               <li>

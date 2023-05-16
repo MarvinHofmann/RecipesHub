@@ -165,6 +165,7 @@ import Navbar from "../components/Navbar.vue";
 import { getRecipeWithID, deleteRecipe, downloadPDF } from "../api/recipeHandling";
 import Alert from "../components/Alert.vue";
 import DeleteRecipe from "../components/Modals/SureDelete.vue";
+import { addToList } from "../api/shoppingListHandling";
 export default {
   components: {
     Navbar,
@@ -193,8 +194,12 @@ export default {
     onEditRecipe() {
       console.log("Edit Recipe");
     },
-    onAddToList() {
+    async onAddToList() {
       console.log("Add to List");
+      this.recipeData.ingredients.forEach(element => {
+        console.log(element.name, element.unit);
+        addToList(element)
+      });
     },
     /**
      * fires if user Downloads the Recipe
