@@ -194,10 +194,12 @@ export default {
     onEditRecipe() {
       console.log("Edit Recipe");
     },
+    /**
+     * Sends the ingredients of the recipe to the backend and
+     * saves them to the shoppingList
+     */
     async onAddToList() {
-      console.log("Add to List");
       this.recipeData.ingredients.forEach(element => {
-        console.log(element.name, element.unit);
         addToList(element)
       });
     },
@@ -212,7 +214,6 @@ export default {
         this.loadingDownload = false;
         return;
       }
-      console.log(res.data);
       // Create fake button and trigger it to download the file as PDF with the recipe name as pdf name
       const fileURL = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
       const fileLink = document.createElement("a");

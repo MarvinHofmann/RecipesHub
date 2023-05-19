@@ -1,39 +1,71 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="deleteCategory" tabindex="-1" aria-labelledby="deleteCateModalLabel" aria-hidden="true">
+  <div class="modal fade" id="deleteCategory" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="deleteCateModalLabel">Kategorie löschen</h1>
+          <h1 class="modal-title fs-5" id="deleteCategoryModalLabel">Kategorie löschen</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="row" id="collapseTags">
-              <div class="col-4 p-y-0" v-for="cat in categories">
-                <p class="mb-1 text-muted">{{ cat.name }}</p>
-              </div>
+          <input class="form-control" v-model="searchTerm" type="search" placeholder="Suche in deinen Kategorien..." />
+          <div class="maxHeight row mx-1">
+            <div class="col-6 mt-2" v-for="(category, index) in filteredData">
+              <span type="button" class="badge rounded-pill text-bg-danger me-2" @click="addToDelete(category, index)"><i class="bi bi-trash"></i></span>
+              <label class="form-check-label" :for="category + index"> {{ category.name }} </label>
             </div>
+          </div>
+          <div class="mt-2 me-1 btn-group" v-for="(selectedItem, index) in this.selectedItems" @click="removeSelected(selectedItem, index)">
+            <button type="button" class="btn btn-sm btn-outline-dark">{{ selectedItem.name }} <i class="bi bi-x-circle"></i></button>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
-          <button type="button" class="btn btn-outline-dark" @click="this.onDeleteCategory()">Löschen</button>
+          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0" @click="this.onDeleteCategory()">Löschen</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { getCategories } from "../../api/userdataHandling";
+import { deleteCategory, getCategories } from "../../api/userdataHandling";
 export default {
   data() {
     return {
       categories: [],
+      searchTerm: "",
+      selectedItems: [],
     };
   },
+  computed: {
+    filteredData() {
+      return this.categories.filter((entry) => {
+        return entry.name.toLowerCase().includes(this.searchTerm.toLocaleLowerCase());
+      });
+    },
+  },
   methods: {
-    async onDeleteCategory() {},
+    async onDeleteCategory() {
+      this.selectedItems.forEach(element => {
+          deleteCategory(element)
+      });
+      this.selectedItems = []
+    },
+    addToDelete(category) {
+      // individually search index, because filteredData could return a shorter list
+      // with a wrong index in terms of the whole array
+      for (let i = 0; i < this.categories.length; i++) {
+        if (this.categories[i] == category) {
+          this.selectedItems.push(category);
+          this.categories.splice(i, 1);
+          return;
+        }
+      }
+    },
+    removeSelected(selected, index) {
+      this.categories.push(selected);
+      this.selectedItems.splice(index, 1);
+    },
   },
   async mounted() {
     this.categories = await getCategories();
@@ -41,4 +73,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.maxHeight {
+  max-height: 250px;
+  overflow-y: auto;
+}
+</style>

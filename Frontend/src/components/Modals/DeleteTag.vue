@@ -8,42 +8,64 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <input class="form-control" v-model="searchTerm" type="search" placeholder="Suche in deinen Tags..." />
-            <form class="mt-1">
-              <div class="form-check form-check-inline mb-2" v-for="(tag, index) in filteredData">
-                <input class="form-check-input" type="checkbox" :value="tag" :id="tag + index" />
-                <label class="form-check-label" :for="tag + index"> {{ tag }} </label>
-              </div>
-            </form>
+          <input class="form-control" v-model="searchTerm" type="search" placeholder="Suche in deinen Tags..." />
+          <div class="maxHeight row mx-1">
+            <div class="col-4 mt-2" v-for="(tag, index) in filteredData">
+              <span type="button" class="badge rounded-pill text-bg-danger me-2" @click="addToDelete(tag, index)"><i class="bi bi-trash"></i></span>
+              <label class="form-check-label" :for="tag + index"> {{ tag }} </label>
+            </div>
+          </div>
+          <div class="mt-2 me-1 btn-group" v-for="(selectedItem, index) in this.selectedItems" @click="removeSelected(selectedItem, index)">
+            <button type="button" class="btn btn-sm btn-outline-dark">{{ selectedItem }} <i class="bi bi-x-circle"></i></button>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
-          <button type="button" class="btn btn-outline-dark" @click="this.onDeleteTag()">Löschen</button>
+          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0"  @click="this.onDeleteTag()">Löschen</button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { getTags } from "../../api/userdataHandling";
+import { deleteTag, getTags } from "../../api/userdataHandling";
 export default {
   data() {
     return {
       tags: [],
       searchTerm: "",
+      selectedItems: [],
     };
   },
   computed: {
     filteredData() {
       return this.tags.filter((entry) => {
-        return entry.toLowerCase().includes(this.searchTerm);
+        return entry.toLowerCase().includes(this.searchTerm.toLocaleLowerCase());
       });
     },
   },
   methods: {
-    async onDeleteTag() {},
+    async onDeleteTag() {
+      this.selectedItems.forEach(element => {
+          deleteTag(element)
+      });
+      this.selectedItems = []
+    },
+    addToDelete(tag) {
+      // individually search index, because filteredData could return a shorter list
+      // with a wrong index in terms of the whole array
+      for (let i = 0; i < this.tags.length; i++) {
+        if (this.tags[i] == tag) {
+          this.selectedItems.push(tag);
+          this.tags.splice(i, 1);
+          return;
+        }
+      }
+    },
+    removeSelected(selected, index) {
+      this.tags.push(selected);
+      this.selectedItems.splice(index, 1);
+    },
   },
   async mounted() {
     this.tags = await getTags();
@@ -51,4 +73,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.maxHeight {
+  max-height: 250px;
+  overflow-y: auto;
+}
+</style>

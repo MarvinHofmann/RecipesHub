@@ -130,7 +130,6 @@ export default {
     this.loading = true;
     this.justLoggedIn = this.$router.options.history.state.back == "/login";
     this.shoppingList = await getList();
-    console.log(this.shoppingList);
     let res = await getRandomRecipes();
     if (res.error) {
       // Show error

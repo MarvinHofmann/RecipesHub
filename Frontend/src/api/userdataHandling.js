@@ -36,6 +36,21 @@ async function getTags() {
         })
 }
 
+/**
+ * It makes a DELETE request to the server, and deletes the selected tag.
+ * @returns the tag to delete.
+ */
+async function deleteTag(tag) {
+    return await axios.delete(IP + "/userdata/deleteTag/" + tag, { withCredentials: true })
+        .then((response) => {
+            return response.data.tags
+        })
+        .catch((error) => {
+            console.log(error);
+            return []
+        })
+}
+
 
 /**
  * It sends a request to the server to add a new category to the database.
@@ -64,6 +79,21 @@ async function addCategory(catName, colorCode) {
  */
 async function getCategories() {
     return await axios.get(IP + "/userdata/categories", { withCredentials: true })
+        .then((response) => {
+            return response.data.categories
+        })
+        .catch((error) => {
+            console.log(error);
+            return []
+        })
+}
+
+/**
+ * It makes a DELETE request to the server, and deletes the selected category.
+ * @returns the category to delete.
+ */
+async function deleteCategory(catName) {
+    return await axios.delete(IP + "/userdata/deleteCategory/" + catName, { withCredentials: true })
         .then((response) => {
             return response.data.categories
         })
@@ -151,4 +181,4 @@ async function changeLastname(newLastName) {
         })
 }
 
-export { addTag, addCategory, getTags, getCategories, changeEmail, changeFirstName, changeLastname, changeUsername }
+export { addTag, deleteTag, deleteCategory, addCategory, getTags, getCategories, changeEmail, changeFirstName, changeLastname, changeUsername }
