@@ -27,7 +27,7 @@
                   <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#tagAccordion">
                     <div class="accordion-body">
                       <div class="row" id="collapseTags">
-                        <div class="col-3 p-y-0" v-for="tag in tags">
+                        <div class="col-sm-3 p-y-0" v-for="tag in tags">
                           <p class="p-0 mb-1 text-muted">{{ tag }}</p>
                         </div>
                       </div>

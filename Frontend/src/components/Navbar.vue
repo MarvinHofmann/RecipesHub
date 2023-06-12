@@ -5,15 +5,8 @@
         <img src="../assets/logo.png" height="30" />
         RecipesHub
       </a>
-      <button
-        class="navbar-toggler toggle-button"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
+      <button class="navbar-toggler toggle-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+        aria-label="Toggle navigation">
         <i class="bi bi-list toggle-icon"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -33,28 +26,50 @@
 
           <!-- Nav elements only visible if collapsed otherwise in dropdown-->
           <div class="d-lg-none">
-            <hr>
+            <hr class="m-0">
             <li class="nav-item ">
-              <li>
-                <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="nav-link" type="button">
-                  Rezept erstellen
-                </div>
-              </li>
+            <li>
+              <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="nav-link" type="button">
+                Rezept erstellen
+              </div>
+            </li>
             </li>
             <li class="nav-item ">
-              <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="nav-link" type="button">
-                  Kategorie erstellen
+              <div class="row">
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="nav-link" type="button">
+                    Kategorie erstellen
+                  </div>
                 </div>
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#deleteCategoryModal" class="nav-link" type="button">
+                    Kategorie löschen
+                  </div>
+                </div>
+              </div>
             </li>
             <li class="nav-item ">
-              <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="nav-link" type="button">
-                  Tag erstellen
+              <div class="row">
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="nav-link" type="button">
+                    Tag erstellen
+                  </div>
                 </div>
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#deleteTagModal" class="nav-link" type="button">
+                    Tag löschen
+                  </div>
+                </div>
+              </div>
             </li>
+            <hr class="m-0">
             <li class="nav-item">
               <div class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
-                Einstellungen
+                <i class="dropdown-icon bi bi-gear"></i>Einstellungen
               </div>
+            </li>
+            <li>
+              <a id="btn" class="nav-link pt-0" type="button" @click="onLogout"><i class="dropdown-icon bi bi-box-arrow-in-left"></i> Ausloggen </a>
             </li>
           </div>
         </ul>
@@ -104,13 +119,7 @@
                 <hr class="dropdown-divider m-0" />
               </li>
               <li>
-                <div
-                  class="dropdown-item"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#offcanvasSettings"
-                  aria-controls="offcanvasSettings"
-                >
+                <div class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
                   <i class="dropdown-icon bi bi-gear"></i>
                   Einstellungen
                 </div>
@@ -174,23 +183,27 @@ export default {
   margin-right: 7px;
 }
 
-.navbar-nav .show > .nav-link,
+.navbar-nav .show>.nav-link,
 .navbar-nav .nav-link.active {
   padding-bottom: 0;
   border-bottom: 3px solid rgba(0, 0, 0, 0.8) !important;
   font-weight: 600;
 }
+
 .avatar {
   margin-top: 5%;
   line-height: 40px;
 }
+
 #avatar:hover {
   opacity: 60%;
 }
+
 #image:hover {
   opacity: 60%;
   cursor: pointer;
 }
+
 @media screen and (min-width: 992px) {
   .nav-item {
     line-height: 40px;
