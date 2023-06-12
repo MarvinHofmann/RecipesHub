@@ -22,11 +22,7 @@ const router =
             { path: '/wochenPlan', name: 'wochenPlan', component: weekPlaner },
             { path: '/browse', name: 'browse', component: browse },
             { path: '/:pathMatch(.*)*', component: p404 },
-        ],
-        scrollBehavior(to, from, savedPosition) {
-            // always scroll to top
-            return { top: -10 }
-        },
+        ]
     });
 
 
@@ -37,12 +33,15 @@ window.addEventListener('popstate', () => {
 })
 
 router.beforeEach(async (to, from, next) => {
+    // Get state of Event-Listener
     const backButtonPressed = window.pressedBackButton
     window.pressedBackButton = false
+    // Get information about LoggedIn Status
     const userStore = useAuthStore();
-    const publicPages = ["/login", "/registrieren"];
-    const authRequired = !publicPages.includes(to.path); // Check for public pages
     const auth = userStore.isLoggedIn
+    // Check if to.path is a public Page
+    const publicPages = ["/login", "/registrieren"];
+    const authRequired = !publicPages.includes(to.path);
     if (authRequired && !auth) {
         next({
             path: '/login',
@@ -50,6 +49,7 @@ router.beforeEach(async (to, from, next) => {
         })
         return;
     }
+    // Hnalde back pressed Button wit 404 Page
     if (to.path == "/404" && backButtonPressed) {
         next({
             path: '/home',

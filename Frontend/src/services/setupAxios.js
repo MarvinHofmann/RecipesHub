@@ -12,11 +12,8 @@ axios.interceptors.response.use(
     },
     error => {
         console.log("ERR", error);
-        if (error.response.status) {
+        if (error.response && error.response.status) {
             switch (error.response.status) {
-                case 400:
-                    //do something
-                    break;
                 case 401:
                     const store = useAuthStore()
                     store.logout()
