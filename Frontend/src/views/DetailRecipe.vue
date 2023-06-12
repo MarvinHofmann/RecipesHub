@@ -151,7 +151,7 @@
   <div class="backdrop_load" v-else>
     <div class="text-center loading">
       <div class="loading_card d-flex justify-content-center shadow-lg bg-light rounded">
-        <div class="spinner-border text-dark" role="status">
+        <div class="spinner-border spinner-big text-dark" role="status">
           <span class="d-none">Loading...</span>
         </div>
       </div>
@@ -293,7 +293,7 @@ input[type="number"]::-webkit-outer-spin-button {
   width: 150px;
 }
 
-.spinner-border {
+.spinner-big {
   position: fixed;
   opacity: 0.7;
   height: 60px;
