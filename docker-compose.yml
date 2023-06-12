@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+    frontend:
+        build:
+            context: ./Frontend
+            dockerfile: Dockerfile
+        ports:
+            - "80:80"
+        restart: always
+
+    backend:
+        build:
+            context: ./Backend
+            dockerfile: Dockerfile
+        ports:
+            - "3443:3443"
+            - "8000:8000"
+        restart: always
