@@ -43,19 +43,22 @@ router.beforeEach(async (to, from, next) => {
     const publicPages = ["/login", "/registrieren"];
     const authRequired = !publicPages.includes(to.path);
     if (authRequired && !auth) {
+        // Not logged in or session expired return to login
         next({
             path: '/login',
             query: { sessionExpired: true }
         })
         return;
     }
-    // Hnalde back pressed Button wit 404 Page
     if (to.path == "/404" && backButtonPressed) {
+        // Back Button pressed and requested page is 404
+        // Go Back to Home to prevent endless loop
         next({
             path: '/home',
         })
         return
     }
+    // Else send user to requested page
     next()
 })
 
