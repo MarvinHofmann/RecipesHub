@@ -84,7 +84,7 @@
             <ul class="dropdown-menu dropdown-menu-end py-1" aria-labelledby="navbarDropdownMenuLink">
               <li>
                 <div data-bs-toggle="modal" data-bs-target="#addRecipeModal" class="dropdown-item" type="button">
-                  <i class="dropdown-icon bi bi-file-plus"></i> Rezept erstellen
+                  <i class="dropdown-icon bi bi-receipt-cutoff"></i> Rezept erstellen
                 </div>
               </li>
               <li>
@@ -125,7 +125,7 @@
                 </div>
               </li>
               <li>
-                <a id="btn" class="dropdown-item" type="button" @click="onLogout"><i class="dropdown-icon bi bi-box-arrow-in-left"></i> Ausloggen </a>
+                <a id="btn" class="dropdown-item" type="button" @click="onLogout"><i class="dropdown-icon bi bi-box-arrow-left"></i> Ausloggen </a>
               </li>
             </ul>
           </ul>

@@ -9,14 +9,7 @@
       <div class="col-6 mt-3">
         <div class="float-end">
           <p class="d-none d-xs-none d-sm-inline-block me-2 p-0 m-0">{{ this.numberOfRecipes }} Rezepte</p>
-          <button
-            class="btn btn-outline-dark"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#filterCollapse"
-            aria-expanded="false"
-            aria-controls="filterCollapse"
-          >
+          <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
             Filter Anzeigen
           </button>
         </div>
@@ -51,17 +44,18 @@
       </div>
     </div>
 
+    <div class="col-lg-12 mt-3" v-if="this.numberOfRecipes == 0">
+      <div class="card text-center">
+        <div class="card-body">
+          <h2>Noch keine Rezepte erstellt, jetzt neues Rezept erstellen</h2>
+          <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#addRecipeModal" type="button">Rezept erstellen</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Recipes Card dynamically created -->
     <div class="row mt-3">
-      <RecipeCard
-        v-for="item in filteredList"
-        :recipe-name="item.title"
-        :category="item.category"
-        :tags="item.tags"
-        :duration="item.cookingTime"
-        :recipeID="item._id"
-        :image="item.imgSrc"
-      ></RecipeCard>
+      <RecipeCard v-for="item in filteredList" :recipe-name="item.title" :category="item.category" :tags="item.tags" :duration="item.cookingTime" :recipeID="item._id" :image="item.imgSrc"></RecipeCard>
     </div>
   </div>
   <AddRecipe id="addRecipeModal"></AddRecipe>
