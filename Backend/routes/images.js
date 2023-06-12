@@ -5,10 +5,8 @@ const { User } = require("../models/userSchema")
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-// Authorization Middleware
-const authorization = require("../middleware/verifyToken")
 
-router.put("/addRecipeImage", [upload.single("image"), authorization], async (req, res) => {
+router.put("/addRecipeImage", [upload.single("image"), ], async (req, res) => {
     const recipeID = req.body.recipeID
     if (!recipeID) return res.status(400).send({ message: "No information send", code: "E1" })
 
@@ -27,12 +25,12 @@ router.put("/addRecipeImage", [upload.single("image"), authorization], async (re
     });
 })
 
-router.put("/addProfilePicture", upload.single("image"), authorization, async (req, res) => {
+router.put("/addProfilePicture", upload.single("image"),  async (req, res) => {
     const img = {
         data: req.file.buffer,
         contentType: req.file.mimetype
     }
-    const query = User.updateOne({ _id: req.userID }, { profilePicture: img })
+    const query = User.updateOne({ _id: req.user }, { profilePicture: img })
     await query.exec().then(function (result) {
         return res.status(200).send(result)
     }).catch(function (err) {
@@ -40,7 +38,7 @@ router.put("/addProfilePicture", upload.single("image"), authorization, async (r
     });
 })
 
-router.get("/recipeImage/:id", authorization, async (req, res) => {
+router.get("/recipeImage/:id", async (req, res) => {
     const query = Recipe.findOne({ _id: req.params.id }, { images: 1, _id: 0 })
     await query.exec().then(function (result) {
         if (!result) return res.status(404).send({ message: "No Recipes found", code: "E1" });

@@ -28,6 +28,12 @@ app.use(function (req, res, next) {
   next();
 });
 
+// Import passport config and passport, inizialize it
+const passport = require('passport');
+const initPPConfig = require("./middleware/passport_config")
+initPPConfig();
+app.use(passport.initialize())
+
 // Import Routes
 const authRoute = require('./routes/auth');
 const recipesRoute = require('./routes/recipes');
@@ -38,11 +44,12 @@ const weekPlanRoute = require('./routes/weekPlan')
 
 // Routes Middleware
 app.use('/api/v1/user', authRoute)
-app.use('/api/v1/recipes', recipesRoute)
-app.use('/api/v1/userdata', userdataRoute)
-app.use('/api/v1/images', imagesRoute)
-app.use('/api/v1/weekPlan', weekPlanRoute)
-app.use('/api/v1/shoppingList', shoppingListRoute)
+app.use('/api/v1/recipes', passport.authenticate('jwt', { session: false }), recipesRoute)
+app.use('/api/v1/userdata', passport.authenticate('jwt', { session: false }), userdataRoute)
+app.use('/api/v1/images', passport.authenticate('jwt', { session: false }), imagesRoute)
+app.use('/api/v1/weekPlan', passport.authenticate('jwt', { session: false }), weekPlanRoute)
+app.use('/api/v1/shoppingList', passport.authenticate('jwt', { session: false }), shoppingListRoute)
+
 
 
 // Init MongoDB

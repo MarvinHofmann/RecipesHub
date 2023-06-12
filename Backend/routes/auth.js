@@ -2,9 +2,7 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const User = require('../models/userSchema')
 const jwt = require('jsonwebtoken')
-
-// Authorization Middleware
-const authorization = require("../middleware/verifyToken")
+const passport = require("passport")
 
 /**
  * Endpoint to register a user with its credentials
@@ -43,41 +41,47 @@ router.post("/register", async function (req, res) {
  * returns a JWT token within a httpOnly cookie. Cookie maxAge and JWT token expiring time
  * are set to session if the user not pressed "remember me". Otherwise it will be set to 30d
  */
-router.post("/login", async (req, res) => {
-    const { username, password, rememberMe } = req.body
-
-    //check if user exists
-    const user = await User.findOne({ username: username }).exec();
-    if (!user) return res.status(400).send({ message: "Username or password is wrong", code: "E1" });
-
-    //check if password is correct
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) return res.status(400).send({ message: "Username or password is wrong", code: "E1" });
-
-    let jwtOptions = {};
-    let cookieOptions = {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+router.post('/login', async (req, res, next) => {
+    passport.authenticate('login', async (err, user, info) => {
+        try {
+            if (err || !user) {
+                console.log(err);
+                const error = new Error('An error occurred.');
+                return next(error);
+            }
+            req.login(user, { session: false },
+                async (error) => {
+                    if (error) return next(error);
+                    const { username, password, rememberMe } = req.body
+                    const sessionToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
+                    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
+                    let jwtOptions = {};
+                    let cookieOptions = {
+                        httpOnly: true,
+                        secure: process.env.NODE_ENV === "production",
+                    }
+                    // Set expiring date of jwt token and the cookie to 30d
+                    if (rememberMe) {
+                        cookieOptions.maxAge = 2592000000
+                        jwtOptions = { expiresIn: 2592000000 };
+                    }
+                    res.cookie("access_token", token, cookieOptions)
+                    user.password = undefined
+                    res.status(200).send({ user: user, sessionToken: sessionToken })
+                }
+            );
+        } catch (error) {
+            return next(error);
+        }
     }
-    // Set expiring date of jwt token and the cookie to 30d
-    if (rememberMe) {
-        cookieOptions.maxAge = 2592000000
-        jwtOptions = { expiresIn: 2592000000 };
-    }
-
-    //create token
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, jwtOptions)
-    const sessionToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, jwtOptions)
-    res.cookie("access_token", token, cookieOptions)
-
-    user.password = undefined
-    res.status(200).send({ user: user, sessionToken: sessionToken })
-})
+    )(req, res, next);
+}
+);
 
 /**
  * Deletes the httpOnly Cookie with the name access_token
  */
-router.get("/logout", async (req, res) => {
+router.get("/logout", passport.authenticate('jwt', { session: false }), async (req, res) => {
     res.clearCookie("access_token")
     res.status(200).send({ message: "Logout successful" })
 });
@@ -86,7 +90,7 @@ router.get("/logout", async (req, res) => {
 /**
  * Updates the userPW in DB
  */
-router.put("/changePW", authorization, async (req, res) => {
+router.put("/changePW",  passport.authenticate('jwt', { session: false }), async (req, res) => {
     const { oldPassword, newPassword } = req.body
     if (newPassword.length < 6 || !oldPassword || !newPassword) return res.status(400).json({ message: "False Information" })
 
@@ -113,7 +117,7 @@ router.put("/changePW", authorization, async (req, res) => {
 /**
  * Deletes the user, that sends the request
  */
-router.delete("/delete", authorization, async (req, res) => {
+router.delete("/delete",  passport.authenticate('jwt', { session: false }), async (req, res) => {
     const user = await User.findOne({ "_id": req.userID }).exec();
     if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
 

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const bcrypt = require('bcryptjs')
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema({
         }], required: true, _id: false
     },
 });
+
+userSchema.methods.isValidPassword = async function(password) {
+    const user = this;
+    const compare = await bcrypt.compare(password, user.password);
+    return compare;
+  }
 
 const User = mongoose.model("user", userSchema)
 module.exports = User
