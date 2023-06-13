@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 exports.app = app;
-const port = 3443;
+const port = 9999;
 
 // Init Body Parser
 let bodyParser = require("body-parser");
