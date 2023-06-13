@@ -31,6 +31,7 @@ function init() {
                 if (!validate) return done(null, false, { message: 'Wrong Password' });
                 return done(null, user, { message: 'Logged in Successfully' });
             } catch (error) {
+                console.log("Error while Login ",  err);
                 return done(error);
             }
         }
@@ -45,6 +46,7 @@ function init() {
                 try {
                     return done(null, token._id);
                 } catch (error) {
+                    console.log("Error while verifying JWT ",  err);
                     done(error);
                 }
             }
