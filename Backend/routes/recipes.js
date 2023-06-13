@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { Recipe } = require("../models/recipeSchema")
 const ObjectId = require('mongoose').Types.ObjectId;
 
-const BASEURL = "http://localhost:3443/api/v1/images/recipeImage/"
+const BASEURL = process.env.IMAGES_URL
 
 /**
  * Endpoint to create a Recipe

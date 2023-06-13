@@ -6,7 +6,7 @@ const { User } = require("../models/userSchema")
 const upload = multer({ storage: multer.memoryStorage() });
 
 
-router.put("/addRecipeImage", [upload.single("image"), ], async (req, res) => {
+router.put("/addRecipeImage", [upload.single("image")], async (req, res) => {
     const recipeID = req.body.recipeID
     if (!recipeID) return res.status(400).send({ message: "No information send", code: "E1" })
 

@@ -35,13 +35,13 @@ function init() {
         }
         )
     );
-    passport.use(
+    passport.use('jwt',
         new JWTstrategy({
             secretOrKey: process.env.JWT_SECRET,
             jwtFromRequest: cookieExtractor,
         },
             async (token, done) => {
-                console.log("TOKEN", token, " " ,token_id);
+                console.log("TOKEN", token, " " , token._id);
                 try {
                     return done(null, token._id);
                 } catch (error) {
