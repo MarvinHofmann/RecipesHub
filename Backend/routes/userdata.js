@@ -3,7 +3,6 @@ const User = require('../models/userSchema')
 
 /* Returns the tags of the user, requested it */
 router.get("/tags", async (req, res) => {
-    console.log(req.user);
     const query = User.findOne({ _id: req.user }, { _id: 0, tags: 1 })
     await query.exec().then(function (tags) {
         if (!tags) return res.status(400).send({ message: "No tags for that user", code: "E1" });
