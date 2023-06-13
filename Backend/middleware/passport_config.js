@@ -24,10 +24,10 @@ function init() {
         }, async (username, password, done) => {
             try {
                 const user = await User.findOne({ username: username });
+                console.log(user);
                 if (!user) return done(null, false, { message: 'User not found' });
-
                 const validate = await user.isValidPassword(password);
-
+                console.log(validate);
                 if (!validate) return done(null, false, { message: 'Wrong Password' });
                 return done(null, user, { message: 'Logged in Successfully' });
             } catch (error) {
