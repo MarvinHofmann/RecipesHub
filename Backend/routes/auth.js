@@ -58,7 +58,7 @@ router.post('/login', async (req, res, next) => {
                     let jwtOptions = {};
                     let cookieOptions = {
                         httpOnly: true,
-                        secure: false // process.env.NODE_ENV === "production",
+                        secure: process.env.NODE_ENV === "production",
                     }
                     // Set expiring date of jwt token and the cookie to 30d
                     if (rememberMe) {

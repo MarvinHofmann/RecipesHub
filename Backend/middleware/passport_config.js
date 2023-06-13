@@ -41,7 +41,6 @@ function init() {
             jwtFromRequest: cookieExtractor,
         },
             async (token, done) => {
-                console.log("TOKEN", token, " " , token._id);
                 try {
                     return done(null, token._id);
                 } catch (error) {
