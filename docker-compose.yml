@@ -6,7 +6,7 @@ services:
             context: ./Frontend
             dockerfile: Dockerfile
         ports:
-            - "80:80"
+            - "3002:3002"
         restart: always
 
     backend:
