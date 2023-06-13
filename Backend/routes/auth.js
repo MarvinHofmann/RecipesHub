@@ -81,7 +81,7 @@ router.post('/login', async (req, res, next) => {
 /**
  * Deletes the httpOnly Cookie with the name access_token
  */
-router.get("/logout", passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.get("/logout", async (req, res) => {
     res.clearCookie("access_token")
     res.status(200).send({ message: "Logout successful" })
 });
