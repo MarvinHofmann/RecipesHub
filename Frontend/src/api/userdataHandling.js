@@ -1,6 +1,5 @@
 import axios from "axios"
-
-const IP = "http://localhost:3443/api/v1";
+const IP = import.meta.env.VITE_APP_HOST;
 
 /**
  * It sends a request to the server to add a new category to the database.

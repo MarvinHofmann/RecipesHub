@@ -1,6 +1,5 @@
 import axios from "axios"
-
-const IP = "http://localhost:3443/api/v1";
+const IP = import.meta.env.VITE_APP_HOST;
 
 /**
  * Posts the Userdata to Register an user.
