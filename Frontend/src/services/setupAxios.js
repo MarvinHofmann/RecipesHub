@@ -23,7 +23,7 @@ axios.interceptors.response.use(
                     router.forward("/404")
                     break;
             }
-            return Promise.reject(error.response);
+            //return Promise.reject(error.response);
         }
     }
 )
