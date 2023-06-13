@@ -16,14 +16,14 @@ axios.interceptors.response.use(
             switch (error.response.status) {
                 case 401:
                     const store = useAuthStore()
-                    //store.logout()
-                    //router.push({ path: '/login', name: "login", query: { sessionExpired: true } })
+                    store.logout()
+                    router.push({ path: '/login', name: "login", query: { sessionExpired: true } })
                     break;
                 case 404:
                     router.forward("/404")
                     break;
             }
-            //return Promise.reject(error.response);
+            return Promise.reject(error.response);
         }
     }
 )
