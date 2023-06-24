@@ -29,7 +29,7 @@ function init() {
                 if (!validate) return done(null, false, { message: 'Wrong Password' });
                 return done(null, user, { message: 'Logged in Successfully' });
             } catch (error) {
-                console.log("Error while Login ",  err);
+                console.log("Error while Login ",  error);
                 return done(error);
             }
         }
