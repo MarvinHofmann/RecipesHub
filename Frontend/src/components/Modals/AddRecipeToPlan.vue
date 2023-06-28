@@ -27,7 +27,8 @@
   </div>
 </template>
 <script>
-import { getAllRecipes, addRecipeToPlan } from "../../api/recipeHandling";
+import { getAllRecipes } from "../../api/recipeHandling";
+import { addRecipeToDate } from "../../api/weekPlanHandling"
 export default {
   props: ["date"],
   data() {
@@ -38,7 +39,7 @@ export default {
   },
   methods: {
     async onAddRecipeToDate(){
-      let res = await addRecipeToPlan(this.selectedRecipe, this.date);
+      let res = await addRecipeToDate(this.selectedRecipe, this.date);
     }
   },
   async mounted() {

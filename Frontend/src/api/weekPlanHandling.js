@@ -15,7 +15,7 @@ async function getDates() {
 
 async function addRecipeToDate(recipe, date) {
     return await axios.post(IP + "/weekPlan/newWeekEvent", {
-        recipeID: recipe.ID,
+        recipeID: recipe._id,
         date: date
     }, { withCredentials: true },
     )

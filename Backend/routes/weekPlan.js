@@ -3,8 +3,23 @@ const User = require('../models/userSchema')
 const { Recipe } = require("../models/recipeSchema")
 
 router.get("/plan", async (req, res) => {
-    const query = User.findOne({ _id: req.user }, { _id: 0, weekPlan: 1 })
+    const query = User.findOne({
+        _id: req.user,
+        weekPlan: { $elemMatch: { date: { $gte: new Date(2023, 5, 10, 0, 0, 0), $lte: new Date() } } }
+    },
+        { _id: 0, weekPlan: 1 },
+    )
+    /* const query = User.aggregate(
+        { $match: { _id: req.user } },
+        { $unwind: "$weekPlan" },
+        {
+            $match: {
+                "weekPlan.dates": { $gte: new Date(2023, 5, 10, 0, 0, 0), $lte: new Date() }
+            }
+        }
+    ) */
     await query.exec().then(function (wPlan) {
+        console.log(wPlan);
         if (!wPlan) return res.status(400).send({ message: "No tags for that user", code: "E1" });
         return res.status(200).send(wPlan)
     }).catch(function (err) {
@@ -13,7 +28,7 @@ router.get("/plan", async (req, res) => {
 });
 
 
-router.put("/newWeekEvent", async (req, res) => {
+router.post("/newWeekEvent", async (req, res) => {
     const { recipeID, date } = req.body
     if (!recipeID || !date) return res.status(400).send({ message: "No information send", code: "E1" })
     // Get title and color from Recipe
