@@ -13,4 +13,18 @@ async function getDates() {
         })
 }
 
-export { getDates }
+async function addRecipeToDate(recipe, date) {
+    return await axios.post(IP + "/weekPlan/newWeekEvent", {
+        recipeID: recipe.ID,
+        date: date
+    }, { withCredentials: true },
+    )
+        .then((response) => {
+            return response.data
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
+
+export { getDates, addRecipeToDate }
