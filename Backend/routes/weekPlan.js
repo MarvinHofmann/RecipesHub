@@ -15,7 +15,12 @@ router.get("/plan", async (req, res) => {
         if (!wPlan) return res.status(400).send({ message: "No tags for that user", code: "E1" });
         let returnArray = [7]
         for (let i = 0; i < 8; i++) {
-            returnArray[i] = {date: new Date(curr.setDate(first + i)), }
+            const date = new Date(curr.setDate(first + i));
+            if (wPlan.some(e => e.date == date)) {
+                returnArray[i] = {date: date, recipes: null}
+            }else {
+                returnArray[i] = {date: date, recipes: []}
+            }
         }
         console.log(returnArray);
         return res.status(200).send(wPlan)
