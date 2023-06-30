@@ -25,19 +25,6 @@ router.put("/addRecipeImage", [upload.single("image")], async (req, res) => {
     });
 })
 
-router.put("/addProfilePicture", upload.single("image"),  async (req, res) => {
-    const img = {
-        data: req.file.buffer,
-        contentType: req.file.mimetype
-    }
-    const query = User.updateOne({ _id: req.user }, { profilePicture: img })
-    await query.exec().then(function (result) {
-        return res.status(200).send(result)
-    }).catch(function (err) {
-        return res.status(500).send({ message: "Error while updating document", code: "E2", error: err });
-    });
-})
-
 router.get("/recipeImage/:id", async (req, res) => {
     const query = Recipe.findOne({ _id: req.params.id }, { images: 1, _id: 0 })
     await query.exec().then(function (result) {
