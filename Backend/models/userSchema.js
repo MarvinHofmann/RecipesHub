@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
         contentType: String,
     },
     password: { type: String, required: true, minlength: 6, maxlength: 1024 },
-    categories: { type: Array, default: [{ name: "Hauptmahlzeit", color: '#d16644' }, { name: "Dessert", color: '#468468' }, { name: "Coktail", color: '#99c9ff' }] },
+    categories: { type: Array, default: ["Hauptmahlzeit","Dessert","Coktail"] },
     tags: { type: [String], default: ['vegan', 'vegetarisch', 'alkoholisch', 'hünchen', 'schwein', 'rind'] },
     weekPlan: {
         type: [{

@@ -54,13 +54,11 @@ async function deleteTag(tag) {
 /**
  * It sends a request to the server to add a new category to the database.
  * @param catName - String
- * @param colorCode - #hex
  * @returns { error: null, data: response.data }
  */
-async function addCategory(catName, colorCode) {
+async function addCategory(catName) {
     return await axios.put(IP + "/userdata/newCategory", {
         name: catName,
-        color: colorCode
     }, { withCredentials: true })
         .then((response) => {
             return { error: null, data: response.data }

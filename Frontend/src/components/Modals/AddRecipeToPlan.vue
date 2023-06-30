@@ -38,8 +38,9 @@ export default {
     };
   },
   methods: {
-    async onAddRecipeToDate(){
-      let res = await addRecipeToDate(this.selectedRecipe, this.date);
+    onAddRecipeToDate(){
+      addRecipeToDate(this.selectedRecipe, this.date);
+      this.$emit("done")
     }
   },
   async mounted() {

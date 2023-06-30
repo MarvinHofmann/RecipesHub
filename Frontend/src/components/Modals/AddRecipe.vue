@@ -100,7 +100,7 @@
                       v-model="this.recipeData.category"
                     >
                       <option v-for="option in this.categories">
-                        {{ option.name }}
+                        {{ option }}
                       </option>
                     </select>
                   </div>

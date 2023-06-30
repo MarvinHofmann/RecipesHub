@@ -28,7 +28,7 @@
                     <div class="accordion-body">
                       <div class="row" id="collapseTags">
                         <div class="col-4 p-y-0" v-for="cat in categories">
-                          <p class="mb-1 text-muted">{{ cat.name }}</p>
+                          <p class="mb-1 text-muted">{{ cat }}</p>
                         </div>
                       </div>
                     </div>
@@ -53,18 +53,6 @@
                 <div class="text-danger" v-if="v$.categoryData.name.$error">Dieser Name ist nicht möglich</div>
               </div>
 
-              <div class="col-lg-12 mt-3">
-                <label for="color" class="form-label">Farbe</label>
-                <div class="input-group">
-                  <input
-                    class="form-control form-control-color"
-                    title="Wähle die Farbe deiner Kategorie"
-                    type="color"
-                    v-model="this.categoryData.color"
-                    id="color"
-                  />
-                </div>
-              </div>
             </div>
           </form>
         </div>
@@ -88,7 +76,6 @@ export default {
     return {
       categoryData: {
         name: null,
-        color: "#1cb1e3",
       },
       categories: [],
     };

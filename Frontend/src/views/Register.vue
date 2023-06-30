@@ -24,14 +24,7 @@
               <div class="col-lg-6 mb-3">
                 <label for="vorname" class="form-label">Vorname</label>
                 <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="vorname"
-                    placeholder=""
-                    v-model="this.formRegister.firstName"
-                    :class="{ 'is-invalid': v$.formRegister.firstName.$error }"
-                  />
+                  <input type="text" class="form-control" id="vorname" placeholder="" v-model="this.formRegister.firstName" :class="{ 'is-invalid': v$.formRegister.firstName.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.formRegister.firstName.$error">Vorname fehlt</div>
@@ -40,14 +33,7 @@
               <div class="col-lg-6 mb-3">
                 <label for="nachname" class="form-label">Nachname</label>
                 <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="nachname"
-                    placeholder=""
-                    v-model="this.formRegister.lastName"
-                    :class="{ 'is-invalid': v$.formRegister.lastName.$error }"
-                  />
+                  <input type="text" class="form-control" id="nachname" placeholder="" v-model="this.formRegister.lastName" :class="{ 'is-invalid': v$.formRegister.lastName.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.formRegister.lastName.$error">Nachname fehlt</div>
@@ -59,14 +45,7 @@
               <div class="col-lg-6 mb-3">
                 <label for="username" class="form-label">Username</label>
                 <div class="input-group">
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="username"
-                    placeholder=""
-                    v-model="this.formRegister.username"
-                    :class="{ 'is-invalid': v$.formRegister.username.$error }"
-                  />
+                  <input type="text" class="form-control" id="username" placeholder="" v-model="this.formRegister.username" :class="{ 'is-invalid': v$.formRegister.username.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.formRegister.username.$error">Ungültiger Username</div>
@@ -75,14 +54,7 @@
               <div class="col-lg-6 mb-3">
                 <label for="email" class="form-label">Email</label>
                 <div class="input-group">
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    placeholder=""
-                    v-model="this.formRegister.email"
-                    :class="{ 'is-invalid': v$.formRegister.email.$error }"
-                  />
+                  <input type="email" class="form-control" id="email" placeholder="" v-model="this.formRegister.email" :class="{ 'is-invalid': v$.formRegister.email.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.formRegister.email.$error">Keine gültige Email Adresse.</div>
@@ -94,15 +66,8 @@
               <div class="col-lg-6 mb-3">
                 <label for="password" class="form-label">Passwort</label>
                 <div class="input-group">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="password"
-                    placeholder=""
-                    v-model="this.formRegister.password"
-                    @blur="v$.formRegister.password.$touch"
-                    :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error, 'is-invalid': v$.formRegister.password.$error }"
-                  />
+                  <input type="password" class="form-control" id="password" placeholder="" v-model="this.formRegister.password" @blur="v$.formRegister.password.$touch"
+                    :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error, 'is-invalid': v$.formRegister.password.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.formRegister.password.$error">Passwort muss mindestens 6 Zeichen lang sein.</div>
@@ -112,15 +77,8 @@
               <div class="col-lg-6 mb-3">
                 <label for="passwordre" class="form-label">Passwort Wiederholen</label>
                 <div class="input-group">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="passwordre"
-                    placeholder=""
-                    @blur="v$.formRegister.repeatPassword.$touch"
-                    v-model="this.formRegister.repeatPassword"
-                    :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error }"
-                  />
+                  <input type="password" class="form-control" id="passwordre" placeholder="" @blur="v$.formRegister.repeatPassword.$touch" v-model="this.formRegister.repeatPassword"
+                    :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.formRegister.repeatPassword.$error">Passwörter stimmen nicht überein</div>
@@ -135,10 +93,6 @@
                 </div>
                 <div v-else>Registrieren</div>
               </button>
-            </div>
-            <p class="text-muted text-center mt-2">Oder mit Google anmelden</p>
-            <div class="d-flex justify-content-center">
-              <i class="bi bi-google text-center"></i>
             </div>
             <p class="text-muted text-center mt-2">
               Sie haben bereits einen Account?

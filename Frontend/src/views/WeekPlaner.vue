@@ -7,17 +7,16 @@
     <div class="d-flex justify-content-center mt-3">
       <div class="row w-100">
         <div v-for="day in days" class="col-1 px-0">
-          <div class="card calendarElement">
-            <div class="row mx-1">
-              <p class="col-9 p-0 ps-1 m-0 text-muted">{{ getFormattedDate(day.date) }}</p>
-              <div class="col-3" type="button" @click="this.onHandleEntry(null, day.date, 'addRecipe')"><i class="bi bi-plus-circle"></i></div>
+          <div :class="{ 'currentDay': isCurrentDate(day.date) }" class="card calendarElement">
+            <div class="d-flex justify-content-between">
+              <div class="px-1 text-muted">{{ getFormattedDate(day.date) }}</div>
+              <div class="px-1 text-end bi bi-plus-circle" type="button" @click="this.onHandleEntry(null, day.date, 'addRecipe')"></div>
             </div>
             <div class="card-body px-1">
               <div v-for="recipe in day.recipes" type="button" @click.self="this.$router.push('/rezept/' + recipe.id)">
-                <div class="row mx-1">
-                  <div :style="{ backgroundColor: recipe.color }" class="text-left col-9 float-start" @click="this.onHandleEntry(recipe, null, 'goToElement')">{{ recipe.title }}</div>
-                  <i :style="{ backgroundColor: recipe.color }" type="button" @click="this.onHandleEntry(recipe, null, 'deleteElement')"
-                    class="float-end col-3 text-right text-danger bi bi-trash-fill"></i>
+                <div class="d-flex justify-content-between badge rounded-pill text-bg-secondary w-100">
+                  <div class="text-truncate" @click="this.onHandleEntry(recipe, day.date, 'goToElement')">{{ recipe.title }}</div>
+                  <div class="text-danger bi bi-trash-fill" type="button" @click="this.onHandleEntry(recipe, day.date, 'deleteElement')"></div>
                 </div>
               </div>
             </div>
@@ -26,79 +25,38 @@
       </div>
     </div>
 
-    <div class="row mt-3">
-      <div class="col-lg-12">
-        <button class="btn btn-outline-dark">Einkaufsliste Erstellen</button>
+    <div class="row mb-4">
+      <div class="col-lg-12 mt-3">
+        <ShoppingList></ShoppingList>
       </div>
     </div>
   </div>
-  <AddRecipeToPlan id="addToDate" :date="this.dateToAdd"></AddRecipeToPlan>
+  <AddRecipeToPlan id="addToDate" :date="this.dateToAdd" @done="this.getPlanAfterNew()"></AddRecipeToPlan>
 </template>
 
 <script>
 import Navbar from "../components/Navbar.vue";
 import AddRecipeToPlan from "../components/Modals/AddRecipeToPlan.vue";
 import { Modal } from "bootstrap";
-import { getDates } from "../api/weekPlanHandling"
+import { getDates, deleteRecipeFromDate } from "../api/weekPlanHandling"
+import ShoppingList from "../components/ShoppingList.vue";
 export default {
   components: {
     Navbar,
     AddRecipeToPlan,
+    ShoppingList
   },
   data() {
     return {
       dateToAdd: null,
-      days: [
-        {
-          date: new Date(),
-          recipes: [
-            {
-              title: "Rezept 1",
-              color: "#1e97f3",
-              id: "641ed8f3250b03f73e5e2ca9",
-            },
-          ],
-        },
-        {
-          date: new Date(),
-        },
-        {
-          date: new Date(),
-        },
-        {
-          date: new Date(),
-          recipes: [
-            {
-              title: "Rezept 1",
-              color: "#1a97f3",
-            },
-          ],
-        },
-        {
-          date: new Date(),
-          recipes: [
-            {
-              title: "Rezept 1",
-              color: "#da97f1",
-            },
-          ],
-        },
-        {
-          date: new Date(),
-        },
-        {
-          date: new Date(),
-        },
-      ],
+      days: [],
     };
   },
   methods: {
-    onHandleEntry(recipe, date, mode) {
-      console.log(mode)
+    async onHandleEntry(recipe, date, mode) {
       switch (mode) {
         case "addRecipe":
           if (this.$router.options.history.state.current != "/wochenPlan") return;
-          console.log("Add to ", date);
           const saveModal = document.getElementById("addToDate");
           const modal = new Modal(saveModal);
           this.dateToAdd = date;
@@ -106,24 +64,29 @@ export default {
           break;
 
         case "deleteElement":
-          console.log("DELETE ", recipe);
+          this.days = await deleteRecipeFromDate(recipe, date)
           break;
 
         case "goToElement":
-          console.log("GOTO RECIPE ", recipe);
-          this.$router.push("/rezept/" + recipe.id)
+          this.$router.push("/rezept/" + recipe.recipeID)
           break;
       }
     },
     getFormattedDate(date) {
       return new Date(date).toLocaleDateString("de-DE", { weekday: "short", day: "numeric", month: "numeric" });
     },
+    isCurrentDate(date) {
+      return new Date().toDateString() === new Date(date).toDateString();
+    },
+    async getPlanAfterNew() {
+      // Wait a seccond then load recipes for dates
+      setTimeout(async () => {
+        this.days = await getDates();
+      }, 1000);
+    }
   },
   async mounted() {
-    let dates = await getDates()
-    dates.forEach(date => {
-      console.log(date);
-    });
+    this.days = await getDates();
   }
 };
 </script>
@@ -132,7 +95,7 @@ export default {
 /** lg bootstrap breakpoint */
 @media screen and (min-width: 992px) {
   .col-1 {
-    width: calc(100% / 7);
+    width: calc(100% / 3);
   }
 }
 
@@ -149,21 +112,29 @@ export default {
   }
 }
 
-.text-left {
-  margin-top: 5px;
-  border-top-left-radius: 5%;
-  border-bottom-left-radius: 5%;
-  color: white;
+.badge {
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.text-right {
-  margin-top: 5px;
-  border-top-right-radius: 15%;
-  border-bottom-right-radius: 15%;
-  color: white;
+
+.text-bg-secondary {
+  background-color: transparent !important;
+  color: var(--bs-secondary) !important;
+  border: solid 1px var(--bs-secondary) !important;
+}
+
+.text-bg-secondary:hover {
+  background-color: var(--bs-secondary) !important;
+  color: var(--bs-light) !important;
 }
 
 .calendarElement {
-  height: 150px;
+  height: 250px;
+}
+
+.currentDay {
+  background-color: var(--bs-light);
+  border-color: var(--bs-secondary);
 }
 </style>

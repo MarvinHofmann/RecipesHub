@@ -55,10 +55,10 @@ router.delete("/deleteTag/:name",  async (req, res) => {
 
 /* Endpoint to create a new category in the users document */
 router.put("/newCategory",  async (req, res) => {
-    const { name, color } = req.body;
-    if (!name || !color) return res.status(400).send({ message: "No information send", code: "E1" })
+    const { name } = req.body;
+    if (!name) return res.status(400).send({ message: "No information send", code: "E1" })
 
-    const query = User.updateOne({ _id: req.user }, { $addToSet: { categories: { name: name, color: color } } })
+    const query = User.updateOne({ _id: req.user }, { $addToSet: { categories: name } })
     await query.exec().then(function (updatedElement) {
         return res.status(200).send({ modifiedElements: updatedElement.modifiedCount })
     }).catch(function (err) {
