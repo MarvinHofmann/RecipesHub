@@ -79,7 +79,7 @@
               <a role="button" id="btn" class="nav-link"> {{ this.userStore.user.username }} </a>
             </li>
             <a href="#" class="mt-2 d-block link-dark text-decoration-none dropdown-toggle avatar">
-              <img src="../assets/vue.svg" alt="avatar" width="32" height="32" class="rounded-circle bg-success p-0" />
+              <img :src="'https://gravatar.com/avatar/' + this.userStore.user._id + '?s=400&d=robohash&r=x'" alt="avatar" width="32" height="32" class="rounded-circle bg-success p-0" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end py-1" aria-labelledby="navbarDropdownMenuLink">
               <li>

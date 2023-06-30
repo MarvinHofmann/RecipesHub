@@ -56,7 +56,7 @@
         <div class="tab-pane fade show active mt-4" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
           <div class="row">
             <div class="col-6 d-flex justify-content-center">
-              <img src="../assets/vue.svg" alt="avatar" width="130" height="130" class="rounded-circle bg-success p-0 profilePic" />
+              <img :src="'https://gravatar.com/avatar/' + this.userStore.user._id + '?s=400&d=robohash&r=x'" alt="avatar" width="130" height="130" class="rounded-circle bg-dark p-0 profilePic" />
             </div>
             <div class="col-6">
               <div>{{ this.userStore.user.firstName }} {{ this.userStore.user.lastName }}</div>
