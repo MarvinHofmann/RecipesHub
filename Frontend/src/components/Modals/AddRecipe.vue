@@ -1,18 +1,11 @@
 <template>
   <!-- Modal -->
-  <div
-    ref="addModal"
-    class="modal modal-xl fade"
-    id="addRecipeModal"
-    tabindex="-1"
-    aria-labelledby="addRecipeModalLabel"
-    aria-hidden="true"
-    role="dialog"
-  >
+  <div ref="addOrEditModal" class="modal modal-xl fade" id="addOrEditRecipeModal" tabindex="-1" aria-labelledby="addOrEditRecipeModal" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addRecipeModalLabel">Rezept Erstellen</h1>
+          <h1 v-if="this.mode == 'EDIT'" class="modal-title fs-5" id="addOrEditRecipeModal">Rezept Bearbeiten</h1>
+          <h1 v-else class="modal-title fs-5" id="addOrEditRecipeModal">Rezept Erstellen</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -24,13 +17,7 @@
                 <div class="col-lg-6">
                   <label for="title" class="form-label">Titel</label>
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="this.recipeData.title"
-                      id="title"
-                      :class="{ 'is-invalid': v$.recipeData.title.$error }"
-                    />
+                    <input class="form-control" type="text" v-model="this.recipeData.title" id="title" :class="{ 'is-invalid': v$.recipeData.title.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.recipeData.title.$error">Titel des Rezepts Benötigt</div>
@@ -49,13 +36,7 @@
                 <div class="col-lg-6">
                   <label for="time" class="form-label">Benötigte Zeit</label>
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="number"
-                      v-model="this.recipeData.cookingTime"
-                      id="time"
-                      :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }"
-                    />
+                    <input class="form-control" type="number" v-model="this.recipeData.cookingTime" id="time" :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.recipeData.cookingTime.$error">Die ungefähre Dauer der Zubereitung in Minuten</div>
@@ -78,13 +59,7 @@
                 <div class="col-lg-6">
                   <label for="description" class="form-label">Beschreibung</label>
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="text"
-                      v-model="this.recipeData.description"
-                      id="description"
-                      :class="{ 'is-invalid': v$.recipeData.description.$error }"
-                    />
+                    <input class="form-control" type="text" v-model="this.recipeData.description" id="description" :class="{ 'is-invalid': v$.recipeData.description.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.recipeData.description.$error">Eine kurze Beschreibung deines Gerichts</div>
@@ -93,12 +68,7 @@
                 <div class="col-lg-6">
                   <label for="category" class="form-label">Kategorie</label>
                   <div class="input-group">
-                    <select
-                      :class="{ 'is-invalid': v$.recipeData.category.$error }"
-                      class="form-select"
-                      id="category"
-                      v-model="this.recipeData.category"
-                    >
+                    <select :class="{ 'is-invalid': v$.recipeData.category.$error }" class="form-select" id="category" v-model="this.recipeData.category">
                       <option v-for="option in this.categories">
                         {{ option }}
                       </option>
@@ -117,14 +87,7 @@
                     <label id="portionsInline"> Portionen: </label>
                   </div>
                   <div class="col-2" :class="{ 'col-2': v$.recipeData.portions.$error }">
-                    <input
-                      type="number"
-                      min="1"
-                      v-model="this.recipeData.portions"
-                      id="portions"
-                      class="form-control"
-                      :class="{ 'is-invalid': v$.recipeData.portions.$error }"
-                    />
+                    <input type="number" min="1" v-model="this.recipeData.portions" id="portions" class="form-control" :class="{ 'is-invalid': v$.recipeData.portions.$error }" />
                   </div>
                   <div class="col-5">
                     <div class="text-danger" v-if="v$.recipeData.portions.$error">Die Minimale menge an Portionen muss 1 sein</div>
@@ -205,8 +168,8 @@
           </form>
         </div>
         <div class="modal-footer">
-          <div v-if="this.success" class="alert alert-success w-100">Das Rezept wurde erstellt</div>
-          <div v-if="this.failed" class="alert alert-danger w-100">Das Rezept konnte nicht erstellt werden</div>
+          <div v-if="this.success" class="alert alert-success w-100">{{ this.successMessage }}</div>
+          <div v-if="this.failed" class="alert alert-danger w-100">{{ this.errorMessage }}</div>
           <div class="actions">
             <button v-show="!this.success" type="button" class="btn btn-outline-dark" @click="this.onSaveRecipe()">Speichern</button>
             <button v-show="this.success" type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Schließen</button>
@@ -221,10 +184,11 @@
 import { useVuelidate } from "@vuelidate/core";
 import { minLength, helpers, required, minValue } from "@vuelidate/validators";
 import { useAuthStore } from "../../stores/auth.store";
-import { postAddRecipe, uploadRecipeImage } from "../../api/recipeHandling";
+import { postAddRecipe, uploadRecipeImage, updateRecipe } from "../../api/recipeHandling";
 import { getCategories, getTags } from "../../api/userdataHandling";
 import { Modal } from "bootstrap";
 export default {
+  props: ["mode", "currentData"],
   setup() {
     return { v$: useVuelidate(), userStore: useAuthStore() };
   },
@@ -261,6 +225,8 @@ export default {
       selectedFile: null,
       fileError: false,
       sizeError: false,
+      successMessage: "",
+      errorMessage: ""
     };
   },
   validations() {
@@ -336,14 +302,25 @@ export default {
     async onSaveRecipe() {
       this.v$.$touch();
       if (this.v$.$invalid) return;
-      let response = await postAddRecipe(this.recipeData);
+      let response = {}
+      if (this.mode == "EDIT") {
+        response = await updateRecipe(this.recipeData);
+        this.successMessage = "Das Rezept wurde erfolgreich bearbeitet."
+      } else {
+        response = await postAddRecipe(this.recipeData);
+        this.successMessage = "Das Rezept wurde erfolgreich angelegt."
+      }
       if (response.error) {
         this.failed = true;
         console.log("Error while creating");
+        this.errorMessage = "Fehler bei der Aktion."
         return;
       }
       if (this.selectedFile) this.uploadFile(response.data.id);
       this.success = true;
+      setTimeout(() => {
+        this.success = null
+      }, 8000);
       this.v$.$reset();
       this.$refs.recipeData.reset();
     },
@@ -384,6 +361,10 @@ export default {
   async mounted() {
     this.tags = await getTags();
     this.categories = await getCategories();
+    if (this.mode == "EDIT") {
+      this.recipeData = this.currentData
+      console.log(this.currentData);
+    }
   },
   beforeUnmount() {
     const saveModal = document.getElementById("addRecipeModal");

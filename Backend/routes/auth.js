@@ -2,7 +2,8 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs')
 const User = require('../models/userSchema')
 const jwt = require('jsonwebtoken')
-const passport = require("passport")
+const passport = require("passport");
+const { Recipe } = require('../models/recipeSchema');
 
 /**
  * Endpoint to register a user with its credentials
@@ -53,9 +54,7 @@ router.post('/login', async (req, res, next) => {
                 async (error) => {
                     if (error) return next(error);
                     const { username, password, rememberMe } = req.body
-                    const sessionToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET)
                     const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET);
-                    let jwtOptions = {};
                     let cookieOptions = {
                         httpOnly: true,
                         secure: process.env.NODE_ENV === "production",
@@ -63,11 +62,10 @@ router.post('/login', async (req, res, next) => {
                     // Set expiring date of jwt token and the cookie to 30d
                     if (rememberMe) {
                         cookieOptions.maxAge = 2592000000
-                        jwtOptions = { expiresIn: 2592000000 };
                     }
                     res.cookie("access_token", token, cookieOptions)
                     user.password = undefined
-                    res.status(200).send({ user: user, sessionToken: sessionToken })
+                    res.status(200).send({ user: user, sessionToken: token })
                 }
             );
         } catch (error) {
@@ -120,6 +118,9 @@ router.put("/changePW",  passport.authenticate('jwt', { session: false }), async
 router.delete("/delete",  passport.authenticate('jwt', { session: false }), async (req, res) => {
     const user = await User.findOne({ "_id": req.userID }).exec();
     if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
+
+    // Delete all Recipes of the User
+    await Recipe.deleteMany({userID: req.userID}).exec();
 
     await User.deleteOne({ "_id": req.userID }).then(function () {
         res.clearCookie("access_token")

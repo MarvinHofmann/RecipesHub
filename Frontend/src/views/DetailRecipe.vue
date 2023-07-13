@@ -58,7 +58,7 @@
                 </button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100" @click="this.onEditRecipe()"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#editRecipeModal" type="button"><i class="bi bi-pencil-square"></i></button>
               </div>
               <div class="col-2 px-1 mt-3">
                 <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#sureDeleteRecipe">
@@ -158,10 +158,12 @@
     </div>
   </div>
   <DeleteRecipe id="sureDeleteRecipe" :deleteText="'Wollen Sie das Rezept wirklich löschen?'" @delete="this.onDeleteRecipe()"></DeleteRecipe>
+  <AddEditRecipe id="editRecipeModal" :mode="'EDIT'" :currentData="this.recipeData"></AddEditRecipe>
 </template>
 
 <script>
 import Navbar from "../components/Navbar.vue";
+import AddEditRecipe from "../components/Modals/AddRecipe.vue";
 import { getRecipeWithID, deleteRecipe, downloadPDF } from "../api/recipeHandling";
 import Alert from "../components/Alert.vue";
 import DeleteRecipe from "../components/Modals/SureDelete.vue";
@@ -171,6 +173,7 @@ export default {
     Navbar,
     Alert,
     DeleteRecipe,
+    AddEditRecipe
   },
   data() {
     return {

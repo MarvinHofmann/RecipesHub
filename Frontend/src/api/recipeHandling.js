@@ -130,4 +130,17 @@ async function downloadPDF(recipeID, portions) {
         })
 }
 
-export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe, uploadRecipeImage, downloadPDF }
+async function updateRecipe(recipeData) {
+    return await axios.post(IP + "/recipes/updateRecipe", {
+        recipeData: recipeData
+    }, { withCredentials: true })
+        .then((response) => { // Return Code 2xx
+            return { error: null, data: response.data }
+        })
+        .catch((error) => {
+            console.log(error);
+            return { error: "Beim Hinzufügen ist ein Fehler aufgetreten", data: null }
+        })
+}
+
+export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe, uploadRecipeImage, downloadPDF, updateRecipe }
