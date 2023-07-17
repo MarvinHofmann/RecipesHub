@@ -134,7 +134,7 @@ export default {
 }
 
 .currentDay {
-  background-color: var(--bs-light);
-  border-color: var(--bs-secondary);
+  background-color: rgba(25,135,84, 0.1);
+  border-color: var(--bs-success);
 }
 </style>
