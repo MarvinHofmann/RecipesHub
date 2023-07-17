@@ -1,6 +1,6 @@
 <template>
   <Navbar></Navbar>
-  <div class="container mt-5">
+  <div class="container mt-3">
     <h3 class="mb-0">
       Dein Persönlicher Wochenplan
     </h3>
