@@ -1,6 +1,6 @@
 <template>
   <Navbar></Navbar>
-  <div class="container">
+  <div class="container pb-5">
     <!-- Hero Section, visible if user just Logged In-->
     <Transition name="fade">
       <div class="row mx-0 mt-3" v-if="this.justLoggedIn">
