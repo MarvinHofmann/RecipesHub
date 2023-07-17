@@ -47,7 +47,8 @@
             <!--Action Buttons-->
             <div class="row">
               <div class="col-6 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100" @click="this.onAddToList()">Auf die Einkaufsliste</button>
+                <button v-if="this.addedToList == false" class="btn btn-outline-dark w-100" @click="this.onAddToList()">Auf die Einkaufsliste</button>
+                <button v-else class="btn btn-success w-100 bi bi-check"></button>
               </div>
               <div class="col-2 px-1 mt-3">
                 <button class="btn btn-outline-dark w-100" @click="this.onDownloadPDF()">
@@ -183,6 +184,7 @@ export default {
       loading: false,
       loadingDownload: false,
       portions: 0,
+      addedToList: false
     };
   },
   methods: {
@@ -205,6 +207,10 @@ export default {
       this.recipeData.ingredients.forEach(element => {
         addToList(element)
       });
+      this.addedToList = true;
+      setTimeout(() => {
+        this.addedToList = false;
+      }, 3000);
     },
     /**
      * fires if user Downloads the Recipe

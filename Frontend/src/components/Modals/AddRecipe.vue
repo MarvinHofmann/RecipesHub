@@ -15,7 +15,7 @@
               <!-- Row Name / Quelle -->
               <div class="row mt-2">
                 <div class="col-lg-6">
-                  <label for="title" class="form-label">Titel</label>
+                  <label for="title" class="form-label">Titel<d class="text-danger">*</d></label>
                   <div class="input-group">
                     <input class="form-control" type="text" v-model="this.recipeData.title" id="title" :class="{ 'is-invalid': v$.recipeData.title.$error }" />
                   </div>
@@ -34,7 +34,7 @@
               <!-- Row Zeit / Bilder -->
               <div class="row mt-3">
                 <div class="col-lg-6">
-                  <label for="time" class="form-label">Benötigte Zeit</label>
+                  <label for="time" class="form-label">Benötigte Zeit<d class="text-danger">*</d></label>
                   <div class="input-group">
                     <input class="form-control" type="number" v-model="this.recipeData.cookingTime" id="time" :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }" />
                   </div>
@@ -57,7 +57,7 @@
               <!-- Row Beschreibung / Kategorie -->
               <div class="row mt-3">
                 <div class="col-lg-6">
-                  <label for="description" class="form-label">Beschreibung</label>
+                  <label for="description" class="form-label">Beschreibung<d class="text-danger">*</d></label>
                   <div class="input-group">
                     <input class="form-control" type="text" v-model="this.recipeData.description" id="description" :class="{ 'is-invalid': v$.recipeData.description.$error }" />
                   </div>
@@ -66,7 +66,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                  <label for="category" class="form-label">Kategorie</label>
+                  <label for="category" class="form-label">Kategorie<d class="text-danger">*</d></label>
                   <div class="input-group">
                     <select :class="{ 'is-invalid': v$.recipeData.category.$error }" class="form-select" id="category" v-model="this.recipeData.category">
                       <option v-for="option in this.categories">
@@ -79,12 +79,12 @@
                 </div>
               </div>
 
-              <h5 class="mt-3">Zutaten</h5>
+              <h5 class="mt-3">Zutaten<d class="text-danger">*</d></h5>
               <div class="mt-2">
                 <!-- Portionsangaben -->
                 <div class="row g-3 align-items-center">
                   <div class="col-2 me-2">
-                    <label id="portionsInline"> Portionen: </label>
+                    <label id="portionsInline"> Portionen:</label>
                   </div>
                   <div class="col-2" :class="{ 'col-2': v$.recipeData.portions.$error }">
                     <input type="number" min="1" v-model="this.recipeData.portions" id="portions" class="form-control" :class="{ 'is-invalid': v$.recipeData.portions.$error }" />
@@ -132,7 +132,7 @@
                 </div>
               </div>
 
-              <h5 class="mt-3">Zubereitung</h5>
+              <h5 class="mt-3">Zubereitung<d class="text-danger">*</d></h5>
               <div class="mt-2">
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.recipeData.steps.$error">Bitte überprüfe die Schritte auf vollständigkeit</div>
@@ -157,7 +157,7 @@
                 </div>
               </div>
 
-              <h5 class="mt-3 mb-0">Tags</h5>
+              <h5 class="mt-3 mb-0">Tags<d class="text-danger">*</d></h5>
               <p class="text-muted mb-2">Wähle Tags, die dein Gericht am besten beschreiben.</p>
               <p class="text-danger" v-if="v$.recipeData.tags.$error">Wähle mindestens ein Tag um dein Gericht zu beschreiben</p>
               <div class="form-check form-check-inline mb-2" v-for="tag in this.tags">

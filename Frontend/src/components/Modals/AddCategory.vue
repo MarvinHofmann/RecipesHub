@@ -39,7 +39,7 @@
 
             <div class="row mt-3">
               <div class="col-lg-12">
-                <label for="catName" class="form-label">Name</label>
+                <label for="catName" class="form-label">Name<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input
                     class="form-control"

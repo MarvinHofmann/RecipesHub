@@ -93,7 +93,7 @@ router.put("/changePW",  passport.authenticate('jwt', { session: false }), async
     if (newPassword.length < 6 || !oldPassword || !newPassword) return res.status(400).json({ message: "False Information" })
 
     //get user PW
-    const userPW = await User.findOne({ _id: req.userID }, { password: 1 }).exec();
+    const userPW = await User.findOne({ _id: req.user }, { password: 1 }).exec();
     if (!userPW) return res.status(400).send({ message: "Cant find user", code: "E1" });
 
     //check if password is correct
@@ -104,7 +104,7 @@ router.put("/changePW",  passport.authenticate('jwt', { session: false }), async
     const salt = await bcrypt.genSalt(6)
     const hashPassword = await bcrypt.hash(newPassword, salt)
 
-    const query = User.updateOne({ _id: req.userID }, { password: hashPassword })
+    const query = User.updateOne({ _id: req.user }, { password: hashPassword })
     await query.exec().then(function (result) {
         return res.status(200).send(result)
     }).catch(function (err) {
@@ -116,13 +116,13 @@ router.put("/changePW",  passport.authenticate('jwt', { session: false }), async
  * Deletes the user, that sends the request
  */
 router.delete("/delete",  passport.authenticate('jwt', { session: false }), async (req, res) => {
-    const user = await User.findOne({ "_id": req.userID }).exec();
+    const user = await User.findOne({ "_id": req.user }).exec();
     if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
 
     // Delete all Recipes of the User
-    await Recipe.deleteMany({userID: req.userID}).exec();
+    await Recipe.deleteMany({userID: req.user}).exec();
 
-    await User.deleteOne({ "_id": req.userID }).then(function () {
+    await User.deleteOne({ "_id": req.user }).then(function () {
         res.clearCookie("access_token")
         res.status(200).send({ message: "User deleted" })
     }).catch(function (error) {

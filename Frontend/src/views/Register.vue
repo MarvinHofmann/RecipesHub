@@ -22,7 +22,7 @@
             <!-- Row1 Vorname | Name -->
             <div class="row">
               <div class="col-lg-6 mb-3">
-                <label for="vorname" class="form-label">Vorname</label>
+                <label for="vorname" class="form-label">Vorname<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="vorname" placeholder="" v-model="this.formRegister.firstName" :class="{ 'is-invalid': v$.formRegister.firstName.$error }" />
                 </div>
@@ -31,7 +31,7 @@
               </div>
 
               <div class="col-lg-6 mb-3">
-                <label for="nachname" class="form-label">Nachname</label>
+                <label for="nachname" class="form-label">Nachname<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="nachname" placeholder="" v-model="this.formRegister.lastName" :class="{ 'is-invalid': v$.formRegister.lastName.$error }" />
                 </div>
@@ -43,7 +43,7 @@
             <!-- Row2 Username | Email -->
             <div class="row">
               <div class="col-lg-6 mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label for="username" class="form-label">Username<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input type="text" class="form-control" id="username" placeholder="" v-model="this.formRegister.username" :class="{ 'is-invalid': v$.formRegister.username.$error }" />
                 </div>
@@ -52,7 +52,7 @@
               </div>
 
               <div class="col-lg-6 mb-3">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">Email<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input type="email" class="form-control" id="email" placeholder="" v-model="this.formRegister.email" :class="{ 'is-invalid': v$.formRegister.email.$error }" />
                 </div>
@@ -64,7 +64,7 @@
             <!-- Row2 Passwort | Passwort Wiederholen -->
             <div class="row">
               <div class="col-lg-6 mb-3">
-                <label for="password" class="form-label">Passwort</label>
+                <label for="password" class="form-label">Passwort<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input type="password" class="form-control" id="password" placeholder="" v-model="this.formRegister.password" @blur="v$.formRegister.password.$touch"
                     :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error, 'is-invalid': v$.formRegister.password.$error }" />
@@ -75,7 +75,7 @@
               </div>
 
               <div class="col-lg-6 mb-3">
-                <label for="passwordre" class="form-label">Passwort Wiederholen</label>
+                <label for="passwordre" class="form-label">Passwort Wiederholen<d class="text-danger">*</d></label>
                 <div class="input-group">
                   <input type="password" class="form-control" id="passwordre" placeholder="" @blur="v$.formRegister.repeatPassword.$touch" v-model="this.formRegister.repeatPassword"
                     :class="{ 'is-invalid': v$.formRegister.repeatPassword.$error }" />

@@ -236,6 +236,7 @@ import { deleteUser, changePassword } from "../api/userHandling";
 import { changeEmail, changeFirstName, changeLastname, changeUsername } from "../api/userdataHandling";
 import { useAuthStore } from "../stores/auth.store";
 import Alert from "./Alert.vue";
+import { useThrottledRefHistory } from "@vueuse/core";
 export default {
   components: {
     DeleteAccount,
@@ -309,15 +310,19 @@ export default {
       switch (field) {
         case "firstName":
           res = await changeFirstName(this.userdata.firstName);
+          this.userStore.user.firstName = this.userdata.firstName;
           break;
         case "lastName":
           res = await changeLastname(this.userdata.lastName);
+          this.userStore.user.lastName = this.userdata.lastName;
           break;
         case "email":
           res = await changeEmail(this.userdata.email);
+          this.userStore.user.email = this.userdata.email;
           break;
         case "username":
           res = await changeUsername(this.userdata.username);
+          this.userStore.user.username = this.userdata.username;
           break;
       }
       if (res.error) {
@@ -351,6 +356,8 @@ export default {
       this.$refs.pwAlert.showAlert();
       this.passwordChange = this.getInitialPasswordData();
       this.v$.$reset();
+      this.userStore.logout();
+      this.$router.push("/login")
     },
     /**
      * If userdata isnt in edit mode or nothing changed the offcanvas settings
