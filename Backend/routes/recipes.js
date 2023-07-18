@@ -34,7 +34,7 @@ router.post("/updateRecipe", async (req, res) => {
     if (!req.body.recipeData) return res.status(400).send({ message: "No information send", code: "E1" })
     // Create final recipe
     req.body.recipeData.lastModified = Date.now()
-    await Recipe.updateOne({_id: req.body.recipeData._id }, req.body.recipeData ).then(function (recipe) {
+    await Recipe.updateOne({ _id: req.body.recipeData._id }, req.body.recipeData).then(function (recipe) {
         return res.status(201).send({ message: "Recipe Updated", id: recipe._id })
     }).catch((err) => {
         console.error(err);
@@ -117,10 +117,15 @@ router.get("/pdf/:id/:portions", async (req, res) => {
         recipe.ingredients.forEach(ingredient => {
             ingredient.amount = ((ingredient.amount / recipe.portions) * req.params.portions).toFixed(2)
         });
-        recipe.portions = req.params.portions
-        const createdPDF = await pdfCreation(recipe)
-        res.contentType("application/pdf");
-        res.status(200).send(createdPDF)
+        try {
+            recipe.portions = req.params.portions
+            const createdPDF = await pdfCreation(recipe)
+            res.contentType("application/pdf");
+            res.status(200).send(createdPDF)
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error);
+        }
     }).catch(function (err) {
         return res.status(500).send({ message: "Error while searching for Document", code: "E3", error: err });
     });

@@ -44,7 +44,6 @@ export const useAuthStore = defineStore('store', {
                 this.token = response.data.sessionToken
                 localStorage.setItem('USER', JSON.stringify(this.user));
                 localStorage.setItem('TOKEN', this.token)
-                console.log(this.user, this.token);
                 //await new Promise(r => setTimeout(r, 2000));
             }
             return response

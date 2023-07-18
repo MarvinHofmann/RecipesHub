@@ -217,7 +217,6 @@ export default {
      */
     async onDownloadPDF() {
       this.loadingDownload = true;
-      console.log("Download PDF");
       let res = await downloadPDF(this.recipeData._id,this.recipeData.portions);
       if (res.error) {
         this.loadingDownload = false;

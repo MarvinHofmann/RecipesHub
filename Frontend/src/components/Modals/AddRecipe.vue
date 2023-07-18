@@ -267,7 +267,6 @@ export default {
         amount: null,
         unit: "Gramm",
       });
-      console.log(this.recipeData.ingredients);
     },
     /**
      * Remove index from Array
@@ -285,7 +284,6 @@ export default {
         number: this.recipeData.steps.length + 1,
         description: null,
       });
-      console.log(this.recipeData.ingredients);
     },
     /**
      * Remove step with index
@@ -330,7 +328,6 @@ export default {
      */
     onFileChange(e) {
       const selectedFile = e.target.files[0];
-      this.selectedFile = selectedFile;
       console.log(this.selectedFile.size);
       this.sizeError = false;
       this.fileError = false;
@@ -363,7 +360,6 @@ export default {
     this.categories = await getCategories();
     if (this.mode == "EDIT") {
       this.recipeData = this.currentData
-      console.log(this.currentData);
     }
   },
   beforeUnmount() {
