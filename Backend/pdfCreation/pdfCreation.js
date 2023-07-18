@@ -25,6 +25,7 @@ module.exports = async function createRecipePDF(recipe) {
     }
 
     const browser = await puppeteer.launch({
+        executablePath: "/usr/src/app/node_modules/puppeteer-core/.local-chromium/linux-1045629",
         args: ['--no-sandbox'],
         headless: true
     });
