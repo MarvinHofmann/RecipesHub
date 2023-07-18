@@ -136,7 +136,7 @@
   <section class="d-flex justify-content-center justify-content-lg-between p-0 border-bottom"></section>
   <Alert ref="alert" :message="'Alert Message'"></Alert>
   <Settings></Settings>
-  <AddRecipe @save="this.onAddRecipe()" id="addRecipeModal"></AddRecipe>
+  <AddRecipe :mode="'ADD'" @save="this.onAddRecipe()" id="addRecipeModal"></AddRecipe>
   <AddCategory id="addCategoryModal"></AddCategory>
   <AddTag id="addTagModal"></AddTag>
   <DeleteCategory id="deleteCategoryModal"></DeleteCategory>

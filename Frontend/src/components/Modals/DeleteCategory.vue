@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
           <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0"  @click="this.onDeleteCategory()">Löschen</button>
         </div>
       </div>

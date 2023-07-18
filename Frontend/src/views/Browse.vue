@@ -58,7 +58,7 @@
       <RecipeCard v-for="item in filteredList" :recipe-name="item.title" :category="item.category" :tags="item.tags" :duration="item.cookingTime" :recipeID="item._id" :image="item.imgSrc"></RecipeCard>
     </div>
   </div>
-  <AddRecipe id="addRecipeModal"></AddRecipe>
+  <AddRecipe mode="'ADD'" id="addRecipeModal"></AddRecipe>
 </template>
 
 <script>
