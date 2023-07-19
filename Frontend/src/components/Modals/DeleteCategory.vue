@@ -32,14 +32,14 @@ import { deleteCategory, getCategories } from "../../api/userdataHandling";
 export default {
   data() {
     return {
-      cantegories: [],
+      categories: [],
       searchTerm: "",
       selectedItems: [],
     };
   },
   computed: {
     filteredData() {
-      return this.cantegories.filter((entry) => {
+      return this.categories.filter((entry) => {
         return entry.toLowerCase().includes(this.searchTerm.toLocaleLowerCase());
       });
     },
@@ -54,21 +54,21 @@ export default {
     addToDelete(category) {
       // individually search index, because filteredData could return a shorter list
       // with a wrong index in terms of the whole array
-      for (let i = 0; i < this.tags.length; i++) {
-        if (this.cantegories[i] == category) {
+      for (let i = 0; i < this.categories.length; i++) {
+        if (this.categories[i] == category) {
           this.selectedItems.push(category);
-          this.tags.splice(i, 1);
+          this.terms.splice(i, 1);
           return;
         }
       }
     },
     removeSelected(selected, index) {
-      this.tags.push(selected);
+      this.terms.push(selected);
       this.selectedItems.splice(index, 1);
     },
   },
   async mounted() {
-    this.cantegories = await getCategories();
+    this.categories = await getCategories();
   },
 };
 </script>
