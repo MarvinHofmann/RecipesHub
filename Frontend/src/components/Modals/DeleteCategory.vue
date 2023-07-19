@@ -47,23 +47,23 @@ export default {
   methods: {
     async onDeleteCategory() {
       this.selectedItems.forEach(element => {
+        console.log(element)
         deleteCategory(element)
       });
       this.selectedItems = []
     },
     addToDelete(category) {
       // individually search index, because filteredData could return a shorter list
-      // with a wrong index in terms of the whole array
       for (let i = 0; i < this.categories.length; i++) {
         if (this.categories[i] == category) {
           this.selectedItems.push(category);
-          this.terms.splice(i, 1);
+          this.categories.splice(i, 1);
           return;
         }
       }
     },
     removeSelected(selected, index) {
-      this.terms.push(selected);
+      this.categories.push(selected);
       this.selectedItems.splice(index, 1);
     },
   },

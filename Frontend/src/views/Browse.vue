@@ -44,12 +44,17 @@
       </div>
     </div>
 
-    <div class="col-lg-12 mt-3" v-if="this.numberOfRecipes == 0">
+    <div class="col-lg-12 mt-3" v-if="this.numberOfRecipes == 0 && this.loading == false">
       <div class="card text-center">
         <div class="card-body">
           <h2>Noch keine Rezepte erstellt, jetzt neues Rezept erstellen</h2>
           <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#addRecipeModal" type="button">Rezept erstellen</button>
         </div>
+      </div>
+    </div>
+    <div v-if="this.loading" class="text-center mt-3">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
     </div>
 
@@ -84,6 +89,7 @@ export default {
       loadedCategories: [],
       recipesList: [],
       filteredList: [],
+      loading: false,
     };
   },
   methods: {
@@ -118,18 +124,15 @@ export default {
     },
   },
   async mounted() {
+    this.loading = true;
     let res = await getAllRecipes();
-    if (res.error) {
-      // Show error
-      return;
-    }
     this.recipesList = res.data;
     this.filteredList = res.data;
     this.numberOfRecipes = res.data.length;
-
     this.loadedTags = await getTags();
     this.loadedCategories = await getCategories();
-  },
+    this.loading = false;
+  }
 };
 </script>
 

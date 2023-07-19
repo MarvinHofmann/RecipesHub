@@ -72,9 +72,9 @@ router.delete("/deleteCategory/:name",  async (req, res) => {
     const name = req.params.name;
     if (!name) return res.status(400).send({ message: "No information send", code: "E1" });
 
-    const query = User.updateOne({ "_id": req.user, }, { $pull: { 'categories': {name: name} } })
+    const query = User.updateOne({ "_id": req.user, }, { $pull: { 'categories': name } })
     await query.exec().then(async function (result) {
-        if (result.deletedCount < 1) return res.status(404).send({ message: "Category not found, nothing deleted", code: "E2" });
+        if (result.modifiedCount < 1) return res.status(404).send({ message: "Category not found, nothing deleted", code: "E2" });
         const query = User.findOne({ _id: req.user }, { _id: 0, categories: 1 })
         await query.exec().then(function (catList) {
             return res.status(200).send(catList)
