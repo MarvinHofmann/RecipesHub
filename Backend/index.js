@@ -19,9 +19,9 @@ dotenv.config();
 
 //Init Cors
 let cors = require('cors');
-app.use(cors({ credentials: true, origin: ['http://localhost:5173', 'http://192.168.0.85:5173', 'http://192.168.0.138', "http://zimmermatic", "http://recipeshub.de", "http://recipeshub.de"] }));
+app.use(cors({ credentials: true, origin: ['http://localhost:5173', 'http://192.168.0.85:5173', 'http://192.168.0.138', "http://zimmermatic", "http://recipeshub.de", "https://recipeshub.de"] }));
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", 'http://localhost:5173', 'http://192.168.0.85:5173', "http://192.168.0.138", "http://zimmermatic", "http://recipeshub.de", "http://recipeshub.de");
+  res.header("Access-Control-Allow-Origin", 'http://localhost:5173', 'http://192.168.0.85:5173', "http://192.168.0.138", "http://zimmermatic", "http://recipeshub.de", "https://recipeshub.de");
   res.header("Access-Control-Allow-Credentials", true);
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header("Access-Control-Allow-Headers", 'Origin,X-Requested-With,Content-Type,Accept,content-type,application/json');
