@@ -30,16 +30,20 @@
                 <p class="mb-0 text-muted">Kategorie</p>
                 <p class="mb-0">{{ this.recipeData.category }}</p>
               </div>
+              <div class="col-lg-4 col-md-4 col-6 mt-2">
+                <p class="mb-0 text-muted">Zuletzt bearbeitet</p>
+                <p class="mb-0">{{ new Date(this.recipeData.lastModified).toLocaleDateString() }}</p>
+              </div>
+              <div class="col-lg-12 mt-2">
+                <p class="mb-0 text-muted">Beschreibung</p>
+                <p class="mb-0">{{ this.recipeData.description }}</p>
+              </div>
               <div class="col-lg-12 mt-2">
                 <p class="mb-0 text-muted">Quelle</p>
                 <p class="mb-0 text-truncate" @click="this.truncated = !this.truncated" v-if="this.truncated">
                   {{ this.recipeData.source }}
                 </p>
                 <p class="mb-0 text" @click="this.truncated = !this.truncated" v-else>{{ this.recipeData.source }}</p>
-              </div>
-              <div class="col-lg-12 mt-2">
-                <p class="mb-0 text-muted">Beschreibung</p>
-                <p class="mb-0">{{ this.recipeData.description }}</p>
               </div>
             </div>
           </div>
@@ -79,15 +83,7 @@
       </div>
       <div class="col-6">
         <div class="col-lg-2 col-md-4 col-6">
-          <input
-            type="number"
-            min="1"
-            max="200"
-            :value="this.recipeData.portions"
-            id="portions"
-            class="form-control"
-            @change="onPortionChange($event)"
-          />
+          <input type="number" min="1" max="200" :value="this.recipeData.portions" id="portions" class="form-control" @change="onPortionChange($event)" />
         </div>
       </div>
     </div>
@@ -119,25 +115,13 @@
           <div class="accordion">
             <div class="accordion-item" v-for="(step, index) in this.recipeData.steps" :key="index" :id="'stepAccordion' + index">
               <h2 class="accordion-header" id="headingStep">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  :data-bs-target="'#collapse_step' + index"
-                  aria-expanded="true"
-                  :aria-controls="'collapse_step' + index"
-                >
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="'#collapse_step' + index" aria-expanded="true"
+                  :aria-controls="'collapse_step' + index">
                   <div class="text-muted">{{ step.number }}. {{ step.title }}<b></b></div>
                 </button>
               </h2>
 
-              <div
-                :id="'collapse_step' + index"
-                class="accordion-collapse collapse show"
-                aria-expanded="false"
-                aria-labelledby="headingSteep"
-                :data-bs-parent="'#stepAccordion' + index"
-              >
+              <div :id="'collapse_step' + index" class="accordion-collapse collapse show" aria-expanded="false" aria-labelledby="headingSteep" :data-bs-parent="'#stepAccordion' + index">
                 <div class="accordion-body">
                   <p class="">{{ step.description }}</p>
                 </div>
@@ -217,7 +201,7 @@ export default {
      */
     async onDownloadPDF() {
       this.loadingDownload = true;
-      let res = await downloadPDF(this.recipeData._id,this.recipeData.portions);
+      let res = await downloadPDF(this.recipeData._id, this.recipeData.portions);
       if (res.error) {
         this.loadingDownload = false;
         return;
@@ -237,9 +221,12 @@ export default {
      * @param {*} event @change Event of the Input
      */
     onPortionChange(event) {
+      if (event.target.value <= 1) {
+        event.target.value = 1
+      }
       let portions = event.target.value;
       let initPortions = this.recipeData.portions;
-      this.recipeData.portions = event.target.value;
+      this.recipeData.portions = portions;
       this.recipeData.ingredients.forEach((ingredient) => {
         ingredient.amount = ((ingredient.amount / initPortions) * portions).toFixed(2);
       });
