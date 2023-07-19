@@ -11,9 +11,9 @@ module.exports = async function createRecipePDF(recipe) {
         fromat: 'A4',
         displayHeaderFooter: true,
         headerTemplate: "<p></p>",
-        footerTemplate: // Display RecipeHub and Page Number automatically in footer
+        footerTemplate: // Display RecipesHub and Page Number automatically in footer
             "<div style=\"text-align: left;font-size: 10px; opacity: 0.5; margin-top: 10px; margin-left:1cm\">" +
-            "RecipeHub</div>" +
+            "RecipesHub</div>" +
             "<div style=\"text-align: right;width: 297mm;font-size: 10px; opacity: 0.5; margin-top: 10px;\">" +
             "Seite <span style=\"margin-right: 1cm\"><span class=\"pageNumber\"></span> von <span class=\"totalPages\">" +
             "</span></span></div>",
