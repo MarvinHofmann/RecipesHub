@@ -35,7 +35,7 @@ router.post("/updateRecipe", async (req, res) => {
     // Create final recipe
     req.body.recipeData.lastModified = Date.now()
     await Recipe.updateOne({ _id: req.body.recipeData._id }, req.body.recipeData).then(function (recipe) {
-        return res.status(201).send({ message: "Recipe Updated", id: recipe._id })
+        return res.status(201).send({ message: "Recipe Updated", id: req.body.recipeData._id })
     }).catch((err) => {
         console.error(err);
         return res.status(500).send({ message: "Error while editing Recipe", code: "E2", error: err })

@@ -327,8 +327,7 @@ export default {
      * @param {*} e event
      */
     onFileChange(e) {
-      const selectedFile = e.target.files[0];
-      console.log(this.selectedFile.size);
+      this.selectedFile = e.target.files[0];
       this.sizeError = false;
       this.fileError = false;
       let acceptedTypes = ["image/jpeg", "image/png"];
