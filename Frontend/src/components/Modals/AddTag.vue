@@ -106,7 +106,7 @@ export default {
   async mounted() {
     this.tags = await getTags();
     setInterval(async () => {
-      //this.tags = await getTags();
+      this.tags = await getTags();
     }, 10000);
   },
 };
