@@ -60,7 +60,6 @@ import { required } from "@vuelidate/validators";
 import { addCategory, getCategories } from "../../api/userdataHandling";
 export default {
   name: "AddCategory",
-  props: ["update"],
   setup() {
     return { v$: useVuelidate() };
   },
@@ -97,9 +96,9 @@ export default {
   },
   async mounted() {
     this.categories = await getCategories();
-    setInterval(async () => {
-      this.categories = await getCategories();
-    }, 10000);
+    //setInterval(async () => {
+    //  this.categories = await getCategories();
+    //}, 10000);
   },
 };
 </script>

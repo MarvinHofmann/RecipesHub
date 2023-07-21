@@ -45,10 +45,6 @@ export default {
   },
   async mounted() {
     let res = await getAllRecipes();
-    if (res.error) {
-      // Show error
-      return;
-    }
     this.recipes = res.data;
   },
 };
