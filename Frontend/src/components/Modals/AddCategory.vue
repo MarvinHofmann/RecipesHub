@@ -13,18 +13,13 @@
               <div class="accordion" id="tagAccordion">
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
-                    <button
-                      class="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                      aria-expanded="true" aria-controls="collapseOne">
                       Deine Kategorien
                     </button>
                   </h2>
-                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#tagAccordion">
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                    data-bs-parent="#tagAccordion">
                     <div class="accordion-body">
                       <div class="row" id="collapseTags">
                         <div class="col-4 p-y-0" v-for="cat in categories">
@@ -41,13 +36,8 @@
               <div class="col-lg-12">
                 <label for="catName" class="form-label">Name<d class="text-danger">*</d></label>
                 <div class="input-group">
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="this.categoryData.name"
-                    id="catName"
-                    :class="{ 'is-invalid': v$.categoryData.name.$error }"
-                  />
+                  <input class="form-control" type="text" v-model="this.categoryData.name" id="catName"
+                    :class="{ 'is-invalid': v$.categoryData.name.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.categoryData.name.$error">Dieser Name ist nicht möglich</div>
@@ -69,6 +59,8 @@ import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { addCategory, getCategories } from "../../api/userdataHandling";
 export default {
+  name: "AddCategory",
+  props: ["update"],
   setup() {
     return { v$: useVuelidate() };
   },
@@ -105,6 +97,9 @@ export default {
   },
   async mounted() {
     this.categories = await getCategories();
+    setInterval(async () => {
+      this.categories = await getCategories();
+    }, 10000);
   },
 };
 </script>

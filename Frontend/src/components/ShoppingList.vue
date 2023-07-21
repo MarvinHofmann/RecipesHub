@@ -3,7 +3,8 @@
         <h5>Einkaufsliste</h5>
         <div class="hide-overflow">
             <div class="ms-2 form-check" v-for="(item, index) in this.shoppingList">
-                <input class="form-check-input" type="checkbox" value="" :id="'formCheckShopping' + index" v-model="this.shoppingList[index]" @click="this.onDeleteElementFromList(item.name, item.unit)" />
+                <input class="form-check-input" type="checkbox" value="" :id="'formCheckShopping' + index"
+                    v-model="this.shoppingList[index]" @click="this.onDeleteElementFromList(item.name, item.unit)" />
                 <label class="form-check-label" :for="'formCheckShopping' + index" :ref="'label' + index">
                     {{ item.name }}
                     <div class="text-muted d-inline">{{ item.amount }} {{ item.unit }}</div>
@@ -25,7 +26,8 @@
                 <option>Packung</option>
                 <option>Stück</option>
             </select>
-            <button class="btn btn-outline-success" type="button" @click="this.onAddToShoppingList()"><i class="bi bi-bag-plus"></i></button>
+            <button class="btn btn-outline-success" type="button" @click="this.onAddToShoppingList()"><i
+                    class="bi bi-bag-plus"></i></button>
         </div>
     </div>
 </template>
@@ -57,8 +59,6 @@ export default {
     },
     async mounted() {
         this.shoppingList = await getList();
-        console.log(this.shoppingList);
-
     }
 }
 </script>

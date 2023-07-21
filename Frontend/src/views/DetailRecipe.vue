@@ -240,7 +240,7 @@ export default {
       return;
     }
     this.recipeData = res.data;
-    this.imgSrc = res.data.imgSrc;
+    this.imgSrc = res.data.imgSrc + '?cache=' + Math.random();
     this.loading = false;
   },
 };

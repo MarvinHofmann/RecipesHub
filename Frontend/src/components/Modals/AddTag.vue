@@ -68,6 +68,7 @@ import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { addTag, getTags } from "../../api/userdataHandling";
 export default {
+  name: "AddTag",
   setup() {
     return { v$: useVuelidate() };
   },
@@ -104,6 +105,9 @@ export default {
   },
   async mounted() {
     this.tags = await getTags();
+    setInterval(async () => {
+      this.tags = await getTags();
+    }, 10000);
   },
 };
 </script>

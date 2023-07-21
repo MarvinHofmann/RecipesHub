@@ -1,7 +1,7 @@
 <template>
   <div class="col-xxl-3 col-lg-6 col-md-6 mb-4">
     <div class="card h-100" @click="this.onClickRecipe">
-      <img class="card-img-top" :src="this.imgSrc" @error="this.imgSrc = '../../public/placeholder.png'" alt="..." />
+      <img class="card-img-top" :src="setImgSrc()" @error="this.imgSrc = '../../public/placeholder.png'" alt="..." />
       <div class="card-body">
         <h5 class="card-title">{{ this.recipeName }}</h5>
         <p class="card-text mb-1">{{ this.category }}</p>
@@ -53,9 +53,13 @@ export default {
     onClickRecipe() {
       this.$router.push("/rezept/" + this.recipeID);
     },
+    setImgSrc(){
+      this.imgSrc = this.image  + '?cache=' + Math.random();
+      return this.imgSrc
+    }
   },
   mounted() {
-    this.imgSrc = this.image;
+    this.setImgSrc();
   },
 };
 </script>

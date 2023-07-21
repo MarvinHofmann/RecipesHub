@@ -30,6 +30,7 @@
 <script>
 import { deleteCategory, getCategories } from "../../api/userdataHandling";
 export default {
+  name: "DeleteCategory",
   data() {
     return {
       categories: [],
@@ -69,6 +70,9 @@ export default {
   },
   async mounted() {
     this.categories = await getCategories();
+    setInterval(async () => {
+      this.categories = await getCategories();
+    }, 10000);
   },
 };
 </script>

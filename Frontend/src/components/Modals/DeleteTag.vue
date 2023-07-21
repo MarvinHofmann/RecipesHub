@@ -30,6 +30,7 @@
 <script>
 import { deleteTag, getTags } from "../../api/userdataHandling";
 export default {
+  name: "DeleteTag",
   data() {
     return {
       tags: [],
@@ -69,6 +70,9 @@ export default {
   },
   async mounted() {
     this.tags = await getTags();
+    setInterval(async () => {
+      this.tags = await getTags();
+    }, 10000);
   },
 };
 </script>
