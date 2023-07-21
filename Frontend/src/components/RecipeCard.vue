@@ -54,7 +54,7 @@ export default {
       this.$router.push("/rezept/" + this.recipeID);
     },
     setImgSrc(){
-      this.imgSrc = this.image//  + '?cache=' + Math.random();
+      this.imgSrc = this.image;
       return this.imgSrc
     }
   },

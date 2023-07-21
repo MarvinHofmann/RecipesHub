@@ -70,9 +70,9 @@ export default {
   },
   async mounted() {
     this.tags = await getTags();
-    //setInterval(async () => {
-    //  this.tags = await getTags();
-    //}, 10000);
+    setInterval(async () => {
+      this.tags = await getTags();
+    }, 10000);
   },
 };
 </script>

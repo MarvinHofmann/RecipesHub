@@ -96,9 +96,9 @@ export default {
   },
   async mounted() {
     this.categories = await getCategories();
-    //setInterval(async () => {
-    //  this.categories = await getCategories();
-    //}, 10000);
+    setInterval(async () => {
+      this.categories = await getCategories();
+    }, 10000);
   },
 };
 </script>
