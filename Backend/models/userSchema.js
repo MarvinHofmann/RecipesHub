@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
     },
     registrationDate: { type: Date, default: Date.now() },
     password: { type: String, required: true, minlength: 6, maxlength: 1024 },
-    categories: { type: Array, default: ["Hauptmahlzeit","Dessert","Coktail"] },
-    tags: { type: [String], default: ['vegan', 'vegetarisch', 'alkoholisch', 'hünchen', 'schwein', 'rind'] },
+    categories: { type: Array, default: ["Hauptmahlzeit","Nachtisch","Cocktail"] },
+    tags: { type: [String], default: ['vegan', 'vegetarisch', 'alkoholisch', 'Hühnchen', 'Schwein', 'Rind'] },
     weekPlan: {
         type: [{
             title: { type: String, required: true },

@@ -2,7 +2,7 @@
   <Navbar></Navbar>
   <div class="container mt-3">
     <h3 class="mb-0">
-      Dein Persönlicher Wochenplan
+      Dein persönlicher Wochenplan
     </h3>
     <div class="d-flex justify-content-center mt-3">
       <div class="row w-100">
