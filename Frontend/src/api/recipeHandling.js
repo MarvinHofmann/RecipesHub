@@ -24,7 +24,7 @@ async function postAddRecipe(recipeData) {
         })
         .catch((error) => {
             console.log(error);
-            return { error: "Beim Hinzufügen ist ein Fehler aufgetreten", data: null }
+            return { error: "Beim hinzufügen ist ein Fehler aufgetreten", data: null }
         })
 }
 

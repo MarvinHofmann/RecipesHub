@@ -65,7 +65,7 @@ async function addCategory(catName) {
         })
         .catch((error) => {
             console.log(error);
-            return { error: "Fehler beim Hinzufügen der Kategorie", data: null }
+            return { error: "Fehler beim hinzufügen der Kategorie", data: null }
         })
 }
 
