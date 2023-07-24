@@ -1,12 +1,5 @@
 <template>
-  <div
-    ref="offcanvas"
-    class="offcanvas offcanvas-end"
-    tabindex="-1"
-    id="offcanvasSettings"
-    aria-labelledby="offcanvasSettingsLabel"
-    data-bs-backdrop="static"
-  >
+  <div ref="offcanvas" class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSettings" aria-labelledby="offcanvasSettingsLabel" data-bs-backdrop="static">
     <div class="offcanvas-header">
       <h5 id="offcanvasSettingsLabel">Einstellungen</h5>
       <button type="button" class="btn-close text-reset" @click="this.closeSettings()" aria-label="Close"></button>
@@ -14,40 +7,13 @@
     <div class="offcanvas-body pt-0">
       <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-          <button
-            class="nav-link active"
-            id="nav-home-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-home"
-            type="button"
-            role="tab"
-            aria-controls="nav-home"
-            aria-selected="true"
-          >
+          <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">
             Profil
           </button>
-          <button
-            class="nav-link"
-            id="nav-profile-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-profile"
-            type="button"
-            role="tab"
-            aria-controls="nav-profile"
-            aria-selected="false"
-          >
+          <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">
             Daten ändern
           </button>
-          <button
-            class="nav-link"
-            id="nav-contact-tab"
-            data-bs-toggle="tab"
-            data-bs-target="#nav-contact"
-            type="button"
-            role="tab"
-            aria-controls="nav-contact"
-            aria-selected="false"
-          >
+          <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">
             Passwort ändern
           </button>
         </div>
@@ -77,14 +43,9 @@
                 <div class="col-lg-12">
                   <label for="firstName" class="form-label">Vorname</label>
                   <div class="input-group">
-                    <input class="form-control" aria-describedby="bFirstName" type="text" v-model="v$.userdata.firstName.$model" id="firstName" />
-                    <button
-                      @click="onChangeUserdata('firstName')"
-                      :disabled="v$.userdata.firstName.$error || this.userdata.firstName == null"
-                      class="btn btn-outline-success"
-                      type="button"
-                      id="bFirstName"
-                    >
+                    <input class="form-control" aria-describedby="bFirstName" type="text" v-model="v$.userdata.firstName.$model" id="firstName" :placeholder="this.userStore.user.firstName" />
+                    <button @click="onChangeUserdata('firstName')" :disabled="v$.userdata.firstName.$error || this.userdata.firstName == null" class="btn btn-outline-success" type="button"
+                      id="bFirstName">
                       Ändern
                     </button>
                   </div>
@@ -95,14 +56,8 @@
                 <div class="col-lg-12">
                   <label for="nachname" class="form-label">Nachname</label>
                   <div class="input-group">
-                    <input v-model="v$.userdata.lastName.$model" type="text" class="form-control" id="nachname" />
-                    <button
-                      @click="onChangeUserdata('lastName')"
-                      :disabled="v$.userdata.lastName.$error || this.userdata.lastName == null"
-                      class="btn btn-outline-success"
-                      type="button"
-                      id="blastName"
-                    >
+                    <input v-model="v$.userdata.lastName.$model" type="text" class="form-control" id="nachname" :placeholder="this.userStore.user.lastName" />
+                    <button @click="onChangeUserdata('lastName')" :disabled="v$.userdata.lastName.$error || this.userdata.lastName == null" class="btn btn-outline-success" type="button" id="blastName">
                       Ändern
                     </button>
                   </div>
@@ -114,20 +69,8 @@
                 <div class="col-lg-12">
                   <label for="email" class="form-label">Email</label>
                   <div class="input-group">
-                    <input
-                      :class="{ 'is-invalid': v$.userdata.email.$error }"
-                      v-model="v$.userdata.email.$model"
-                      type="text"
-                      class="form-control"
-                      id="email"
-                    />
-                    <button
-                      @click="onChangeUserdata('email')"
-                      :disabled="v$.userdata.email.$error || this.userdata.email == null"
-                      class="btn btn-outline-success"
-                      type="button"
-                      id="bEmail"
-                    >
+                    <input :class="{ 'is-invalid': v$.userdata.email.$error }" v-model="v$.userdata.email.$model" type="email" class="form-control" id="email" :placeholder="this.userStore.user.email" />
+                    <button @click="onChangeUserdata('email')" :disabled="v$.userdata.email.$error || this.userdata.email == null" class="btn btn-outline-success" type="button" id="bEmail">
                       Ändern
                     </button>
                   </div>
@@ -141,14 +84,8 @@
                 <div class="col-lg-12">
                   <label for="username" class="form-label">Username</label>
                   <div class="input-group">
-                    <input v-model="v$.userdata.username.$model" type="text" class="form-control" id="username" />
-                    <button
-                      @click="onChangeUserdata('username')"
-                      :disabled="v$.userdata.username.$error || this.userdata.username == null"
-                      class="btn btn-outline-success"
-                      type="button"
-                      id="bUsername"
-                    >
+                    <input v-model="v$.userdata.username.$model" type="text" class="form-control" id="username" :placeholder="this.userStore.user.username" />
+                    <button @click="onChangeUserdata('username')" :disabled="v$.userdata.username.$error || this.userdata.username == null" class="btn btn-outline-success" type="button" id="bUsername">
                       Ändern
                     </button>
                   </div>
@@ -168,13 +105,7 @@
                 <div class="col-lg-12">
                   <label for="oldPassword" class="form-label">Aktuelles Passwort</label>
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="password"
-                      v-model="this.passwordChange.currentPassword"
-                      id="oldPassword"
-                      :class="{ 'is-invalid': v$.passwordChange.currentPassword.$error }"
-                    />
+                    <input class="form-control" type="password" v-model="this.passwordChange.currentPassword" id="oldPassword" :class="{ 'is-invalid': v$.passwordChange.currentPassword.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.passwordChange.currentPassword.$error">Neues Passwort eingeben</div>
@@ -187,13 +118,7 @@
                 <div class="col-lg-6">
                   <label for="newPassword" class="form-label">Neues Passwort</label>
                   <div class="input-group">
-                    <input
-                      class="form-control"
-                      type="password"
-                      v-model="this.passwordChange.newPassword"
-                      id="newPassword"
-                      :class="{ 'is-invalid': v$.passwordChange.newPassword.$error }"
-                    />
+                    <input class="form-control" type="password" v-model="this.passwordChange.newPassword" id="newPassword" :class="{ 'is-invalid': v$.passwordChange.newPassword.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.passwordChange.newPassword.$error">Passwörter stimmen nicht überein</div>
@@ -201,13 +126,7 @@
                 <div class="col-lg-6">
                   <label for="rePassword" class="form-label">Passwort wiederholen</label>
                   <div class="input-group">
-                    <input
-                      :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }"
-                      v-model="this.passwordChange.repeatPassword"
-                      type="password"
-                      class="form-control"
-                      id="rePassword"
-                    />
+                    <input :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }" v-model="this.passwordChange.repeatPassword" type="password" class="form-control" id="rePassword" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.passwordChange.repeatPassword.$error">Passwörter stimmen nicht überein</div>
@@ -327,7 +246,7 @@ export default {
       }
       if (res.error) {
         this.userDataAlert = { message: res.error, type: "alert-danger" };
-      }else{
+      } else {
         this.userDataAlert = { message: "Daten erfolgreich geändert", type: "alert-success" };
       }
       this.v$.$reset();

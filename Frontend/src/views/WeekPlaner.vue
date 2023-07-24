@@ -2,31 +2,32 @@
   <Navbar></Navbar>
   <div class="container mt-3">
     <h3 class="mb-0">
-      Dein persönlicher Wochenplan
+      Deine persönliche Übersicht
     </h3>
-    <div class="d-flex justify-content-center mt-3">
-      <div class="row w-100">
-        <div v-for="day in days" class="col-1 px-0">
-          <div :class="{ 'currentDay': isCurrentDate(day.date) }" class="card calendarElement">
-            <div class="d-flex justify-content-between">
-              <div class="px-1 text-muted">{{ getFormattedDate(day.date) }}</div>
-              <div class="px-1 text-end bi bi-plus-circle" type="button" @click="this.onHandleEntry(null, day.date, 'addRecipe')"></div>
-            </div>
-            <div class="card-body px-1">
-              <div v-for="recipe in day.recipes" type="button" @click.self="this.$router.push('/rezept/' + recipe.id)">
-                <div class="d-flex justify-content-between badge rounded-pill text-bg-secondary w-100">
-                  <div class="text-truncate" @click="this.onHandleEntry(recipe, day.date, 'goToElement')">{{ recipe.title }}</div>
-                  <div class="text-danger bi bi-trash-fill" type="button" @click="this.onHandleEntry(recipe, day.date, 'deleteElement')"></div>
+    <div class="row mb-4">
+      <div class="col-lg-6">
+        <div class="d-flex justify-content-center mt-3">
+          <div class="row w-100">
+            <div v-for="day in days" class="col-1 px-0">
+              <div :class="{ 'currentDay': isCurrentDate(day.date) }" class="card calendarElement">
+                <div class="d-flex justify-content-between">
+                  <div class="px-1 text-muted">{{ getFormattedDate(day.date) }}</div>
+                  <div class="px-1 text-end bi bi-plus-circle" type="button" @click="this.onHandleEntry(null, day.date, 'addRecipe')"></div>
+                </div>
+                <div class="card-body px-1">
+                  <div v-for="recipe in day.recipes" type="button" @click.self="this.$router.push('/rezept/' + recipe.id)">
+                    <div class="d-flex justify-content-between badge rounded-pill text-bg-secondary w-100">
+                      <div class="text-truncate" @click="this.onHandleEntry(recipe, day.date, 'goToElement')">{{ recipe.title }}</div>
+                      <div class="text-danger bi bi-trash-fill" type="button" @click="this.onHandleEntry(recipe, day.date, 'deleteElement')"></div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="row mb-4">
-      <div class="col-lg-12 mt-3">
+      <div class="col-lg-6 mt-3">
         <ShoppingList></ShoppingList>
       </div>
     </div>
@@ -134,7 +135,7 @@ export default {
 }
 
 .currentDay {
-  background-color: rgba(25,135,84, 0.1);
-  border-color: var(--bs-success);
+  background-color: rgba(51, 131, 236, 0.2);
+  border-color: rgba(15, 107, 228, 1);
 }
 </style>

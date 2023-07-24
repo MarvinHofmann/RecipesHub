@@ -1,5 +1,5 @@
 <template>
-    <div class="card card-body h-100">
+    <div class="card card-body">
         <h5>Einkaufsliste</h5>
         <div class="hide-overflow">
             <div class="ms-2 form-check" v-for="(item, index) in this.shoppingList">
@@ -65,7 +65,6 @@ export default {
 
 <style scoped>
 .hide-overflow {
-    max-height: 200px;
     overflow-y: scroll;
 }
 

@@ -13,7 +13,7 @@
 
     <div class="row">
       <div class="col-md-6 mt-3">
-        <ShoppingList></ShoppingList>
+        <ShoppingList class="h-100" style="max-height: 250px;"></ShoppingList>
       </div>
       <div class="col-md-6 mt-3">
         <div class="card card-body h-100" type="button" @click="this.$router.push('/wochenPlan')">
@@ -41,7 +41,7 @@
     </div>
 
     <div class="float-end mt-0">
-      <button class="btn btn-outline-dark" @click="this.$router.push('/browse')">Alle Browse</button>
+      <button class="btn btn-outline-dark" @click="this.$router.push('/browse')">Alle Anzeigen</button>
     </div>
   </div>
 </template>

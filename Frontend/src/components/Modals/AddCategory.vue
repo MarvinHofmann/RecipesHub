@@ -47,7 +47,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
           <button type="button" class="btn btn-outline-dark" @click="this.onAddCategory()">Speichern</button>
         </div>
       </div>

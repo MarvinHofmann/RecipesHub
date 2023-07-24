@@ -4,7 +4,7 @@
   <div class="container">
     <div class="row">
       <div class="col-6 mt-3">
-        <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addRecipeModal" type="button">Rezept
+        <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal" type="button">Rezept
           erstellen</button>
       </div>
       <div class="col-6 mt-3">
@@ -54,7 +54,7 @@
       <div class="card text-center">
         <div class="card-body">
           <h2>Noch keine Rezepte erstellt, jetzt neues Rezept erstellen</h2>
-          <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#addRecipeModal"
+          <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal"
             type="button">Rezept erstellen</button>
         </div>
       </div>
@@ -72,7 +72,7 @@
         :duration="item.cookingTime" :recipeID="item._id" :image="item.imgSrc"></RecipeCard>
     </div>
   </div>
-  <AddRecipe @finished="fetchData()" mode="'ADD'" id="addRecipeModal"></AddRecipe>
+  <AddRecipe @finished="fetchData()" mode="'ADD'" id="addOrEditRecipeModal"></AddRecipe>
 </template>
 
 <script>
@@ -133,6 +133,7 @@ export default {
       }
     },
     async fetchData() {
+      
       this.loadAnimation();
       this.loading = true;
       let res = await getAllRecipes();
