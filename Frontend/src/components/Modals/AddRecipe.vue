@@ -150,7 +150,7 @@
                       <button type="button" class="btn btn-danger" @click="removeStep(index)"><i class="bi bi-x-lg"></i></button>
                     </div>
                     <div class="col-lg-11 ps-lg-1 pe-lg-1 mt-lg-3 mt-2 titleTop">
-                      <input v-model="step.title" placeholder="Names des Schrittes" class="form-control rounded-0 rounded-top" type="text" />
+                      <input v-model="step.title" placeholder="Name des Schrittes" class="form-control rounded-0 rounded-top" type="text" />
                     </div>
                     <div class="col-lg-12 pe-lg-1 mt-1">
                       <textarea rows="3" v-model="step.description" placeholder="Beschreibung" class="form-control rounded-0 rounded-bottom" />
