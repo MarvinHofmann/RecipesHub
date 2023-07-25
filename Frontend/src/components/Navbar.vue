@@ -31,7 +31,7 @@
             <li class="nav-item ">
               <div class="row">
                 <div class="col-6">
-                  <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="nav-link" type="button">
+                  <div data-bs-toggle="modal" data-bs-target="#addCategory" class="nav-link" type="button">
                     Kategorie erstellen
                   </div>
                 </div>
@@ -83,7 +83,7 @@
                 <h6 class="dropdown-header pb-0">Kategorien</h6>
               </li>
               <li>
-                <div data-bs-toggle="modal" data-bs-target="#addCategoryModal" class="dropdown-item" type="button">
+                <div data-bs-toggle="modal" data-bs-target="#addCategory" class="dropdown-item" type="button">
                   <i class="dropdown-icon bi bi-clipboard-plus"></i> Kategorie erstellen
                 </div>
               </li>
@@ -130,7 +130,7 @@
 
   <Alert ref="alert" :message="'Alert Message'"></Alert>
   <Settings></Settings>
-  <AddCategory id="addCategoryModal"></AddCategory>
+  <AddCategory id="addCategory"></AddCategory>
   <DeleteCategory id="adeleteCategoryModal"></DeleteCategory>
   <AddTag id="addTagModal"></AddTag>
   <DeleteTag id="deleteTagModal"></DeleteTag>

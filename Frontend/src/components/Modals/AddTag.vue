@@ -1,6 +1,6 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="addTag" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
+  <div class="modal fade" id="addTagModal" tabindex="-1" aria-labelledby="addTagModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -56,7 +56,7 @@
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
           <button type="button" class="btn btn-outline-dark" @click="this.onAddTag()">Speichern</button>
         </div>
       </div>
@@ -67,6 +67,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { addTag, getTags } from "../../api/userdataHandling";
+import { Modal } from "bootstrap";
 export default {
   name: "AddTag",
   setup() {
@@ -95,6 +96,11 @@ export default {
       this.v$.$reset();
       this.tagData.name = null;
     },
+    setListener(myModal) {
+      myModal._element.addEventListener("shown.bs.modal", async (event) => {
+        this.tags = await getTags();
+      });
+    },
   },
   validations() {
     return {
@@ -105,9 +111,9 @@ export default {
   },
   async mounted() {
     this.tags = await getTags();
-    setInterval(async () => {
-      this.tags = await getTags();
-    }, 10000);
+    const modal = new Modal(document.getElementById("addTagModal"));
+    this.setListener(modal);
+    this.bsModal = modal;
   },
 };
 </script>

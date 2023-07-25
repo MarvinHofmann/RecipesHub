@@ -1,6 +1,6 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="deleteCat" tabindex="-1" aria-labelledby="deleteCatModalLabel" aria-hidden="true">
+  <div class="modal fade" id="adeleteCategoryModal" tabindex="-1" aria-labelledby="deleteCatModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -20,8 +20,8 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
-          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0"  @click="this.onDeleteCategory()">Löschen</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0" data-bs-dismiss="modal" @click="this.onDeleteCategory()">Löschen</button>
         </div>
       </div>
     </div>
@@ -29,6 +29,7 @@
 </template>
 <script>
 import { deleteCategory, getCategories } from "../../api/userdataHandling";
+import { Modal } from "bootstrap";
 export default {
   name: "DeleteCategory",
   data() {
@@ -36,6 +37,7 @@ export default {
       categories: [],
       searchTerm: "",
       selectedItems: [],
+      bsModal: null
     };
   },
   computed: {
@@ -48,7 +50,6 @@ export default {
   methods: {
     async onDeleteCategory() {
       this.selectedItems.forEach(element => {
-        console.log(element)
         deleteCategory(element)
       });
       this.selectedItems = []
@@ -67,12 +68,17 @@ export default {
       this.categories.push(selected);
       this.selectedItems.splice(index, 1);
     },
+    setListener(myModal) {
+      myModal._element.addEventListener("shown.bs.modal", async (event) => {
+        this.categories = await getCategories();
+      });
+    },
   },
   async mounted() {
     this.categories = await getCategories();
-    setInterval(async () => {
-      this.categories = await getCategories();
-    }, 10000);
+    const modal = new Modal(document.getElementById("adeleteCategoryModal"))
+    this.setListener(modal)
+    this.bsModal = modal;
   },
 };
 </script>

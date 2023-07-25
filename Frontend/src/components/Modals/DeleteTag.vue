@@ -1,6 +1,6 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="deleteTag" tabindex="-1" aria-labelledby="deleteTagModalLabel" aria-hidden="true">
+  <div class="modal fade" id="deleteTagModal" tabindex="-1" aria-labelledby="deleteTagModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
           <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0"  @click="this.onDeleteTag()">Löschen</button>
         </div>
       </div>
@@ -29,6 +29,7 @@
 </template>
 <script>
 import { deleteTag, getTags } from "../../api/userdataHandling";
+import { Modal } from "bootstrap";
 export default {
   name: "DeleteTag",
   data() {
@@ -36,6 +37,7 @@ export default {
       tags: [],
       searchTerm: "",
       selectedItems: [],
+      bsModal: null
     };
   },
   computed: {
@@ -67,12 +69,17 @@ export default {
       this.tags.push(selected);
       this.selectedItems.splice(index, 1);
     },
+    setListener(myModal) {
+      myModal._element.addEventListener("shown.bs.modal", async (event) => {
+        this.tags = await getTags();
+      });
+    },
   },
   async mounted() {
     this.tags = await getTags();
-    setInterval(async () => {
-      this.tags = await getTags();
-    }, 10000);
+    const modal = new Modal(document.getElementById("deleteTagModal"));
+    this.setListener(modal);
+    this.bsModal = modal;
   },
 };
 </script>

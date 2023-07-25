@@ -107,28 +107,4 @@ router.delete("/recipe/:id", async (req, res) => {
     });
 });
 
-
-const pdfCreation = require("../pdfCreation/pdfCreation")
-
-router.get("/pdf/:id/:portions", async (req, res) => {
-    const query = Recipe.findOne({ _id: req.params.id, userID: req.user }, { images: 0 })
-    await query.lean().then(async function (recipe) {
-        if (!recipe) return res.status(404).send({ message: "No Recipe with that id", code: "E2" });
-        recipe.ingredients.forEach(ingredient => {
-            ingredient.amount = ((ingredient.amount / recipe.portions) * req.params.portions).toFixed(2)
-        });
-        try {
-            recipe.portions = req.params.portions
-            const createdPDF = await pdfCreation(recipe)
-            res.contentType("application/pdf");
-            res.status(200).send(createdPDF)
-        } catch (error) {
-            console.log(error);
-            res.status(500).send(error);
-        }
-    }).catch(function (err) {
-        return res.status(500).send({ message: "Error while searching for Document", code: "E3", error: err });
-    });
-});
-
 module.exports = router

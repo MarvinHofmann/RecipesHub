@@ -6,10 +6,10 @@
       <Alert ref="alert" :message="'Das Rezept konnte nicht gelöscht werden.'"></Alert>
     </div>
     <!-- Recipe Header Image and Meta Data -->
-    <div class="row">
+    <div class="row" id="element-to-print">
       <div class="col-lg-6">
         <div class="card h-100 p-0 border-0">
-          <img :src="this.imgSrc" class="recipeImage img-fluid" @error="this.imgSrc = '../../public/placeholder.png'" />
+          <img :src="this.imgSrc" class="recipeImage img-fluid" :class="{noPrint: !this.printImage}"  @error="this.imgSrc = '../../public/placeholder.png'" />
         </div>
       </div>
       <div class="col-lg-6">
@@ -55,15 +55,12 @@
                 <button v-else class="btn btn-success w-100 bi bi-check"></button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100" @click="this.onDownloadPDF()">
-                  <i class="bi bi-cloud-download fs-6" v-if="!this.loadingDownload"></i>
-                  <div class="spinner-border spinner-border-sm" role="status" v-else>
-                    <span class="visually-hidden">Loading...</span>
-                  </div>
+                <button class="btn btn-outline-dark w-100" @click="this.exportToPDF()">
+                  <i class="bi bi-cloud-download fs-6"></i>
                 </button>
               </div>
               <div class="col-2 px-1 mt-3">
-                <button class="btn btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#editRecipeModal" type="button"><i class="bi bi-pencil-square"></i></button>
+                <button class="btn btn-outline-dark w-100" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal" type="button"><i class="bi bi-pencil-square"></i></button>
               </div>
               <div class="col-2 px-1 mt-3">
                 <button class="btn btn-outline-danger w-100" data-bs-toggle="modal" data-bs-target="#sureDeleteRecipe">
@@ -143,13 +140,13 @@
     </div>
   </div>
   <DeleteRecipe id="sureDeleteRecipe" :deleteText="'Wollen Sie das Rezept wirklich löschen?'" @delete="this.onDeleteRecipe()"></DeleteRecipe>
-  <AddEditRecipe id="editRecipeModal" :mode="'EDIT'" :currentData="this.recipeData"></AddEditRecipe>
+  <AddEditRecipe id="addOrEditRecipeModal" :mode="'EDIT'" :currentData="this.recipeData"></AddEditRecipe>
 </template>
 
 <script>
 import Navbar from "../components/Navbar.vue";
 import AddEditRecipe from "../components/Modals/AddRecipe.vue";
-import { getRecipeWithID, deleteRecipe, downloadPDF } from "../api/recipeHandling";
+import { getRecipeWithID, deleteRecipe } from "../api/recipeHandling";
 import Alert from "../components/Alert.vue";
 import DeleteRecipe from "../components/Modals/SureDelete.vue";
 import { addToList } from "../api/shoppingListHandling";
@@ -166,9 +163,9 @@ export default {
       imgSrc: "http://via.placeholder.com/640x360",
       truncated: true,
       loading: false,
-      loadingDownload: false,
       portions: 0,
-      addedToList: false
+      addedToList: false,
+      printImage: true
     };
   },
   methods: {
@@ -179,9 +176,6 @@ export default {
       } else {
         this.$router.push(this.$router.options.history.state.back);
       }
-    },
-    onEditRecipe() {
-      console.log("Edit Recipe");
     },
     /**
      * Sends the ingredients of the recipe to the backend and
@@ -194,26 +188,7 @@ export default {
       this.addedToList = true;
       setTimeout(() => {
         this.addedToList = false;
-      }, 3000);
-    },
-    /**
-     * fires if user Downloads the Recipe
-     */
-    async onDownloadPDF() {
-      this.loadingDownload = true;
-      let res = await downloadPDF(this.recipeData._id, this.recipeData.portions);
-      if (res.error) {
-        this.loadingDownload = false;
-        return;
-      }
-      // Create fake button and trigger it to download the file as PDF with the recipe name as pdf name
-      const fileURL = window.URL.createObjectURL(new Blob([res.data], { type: "application/pdf" }));
-      const fileLink = document.createElement("a");
-      fileLink.href = fileURL;
-      fileLink.setAttribute("download", this.recipeData.title + ".pdf");
-      document.body.appendChild(fileLink);
-      fileLink.click();
-      this.loadingDownload = false;
+      }, 1000);
     },
     /**
      * Recalculates the quantities of the ingredients
@@ -230,6 +205,9 @@ export default {
       this.recipeData.ingredients.forEach((ingredient) => {
         ingredient.amount = ((ingredient.amount / initPortions) * portions).toFixed(2);
       });
+    },
+    exportToPDF() {
+      window.print();
     },
   },
   async mounted() {
@@ -304,4 +282,12 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(1px);
 }
+@media print
+{
+    .noPrint
+    {
+        display: none !important;
+    }
+}
+
 </style>

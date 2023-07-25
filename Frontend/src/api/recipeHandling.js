@@ -113,23 +113,6 @@ async function uploadRecipeImage(formData) {
 }
 
 
-
-/**
- * It downloads a PDF file from the server and returns it.
- * @param recipeID - the ID of the recipe to download
- * @returns a promise.
- */
-async function downloadPDF(recipeID, portions) {
-    return await axios.get(IP + "/recipes/pdf/" + recipeID + "/" + portions, { responseType: 'blob', withCredentials: true })
-        .then((response) => {
-            return { error: null, data: response.data }
-        })
-        .catch((error) => {
-            console.log(error);
-            return { error: "Fehler beim Laden des Rezepts", data: null }
-        })
-}
-
 async function updateRecipe(recipeData) {
     return await axios.post(IP + "/recipes/updateRecipe", {
         recipeData: recipeData
@@ -143,4 +126,4 @@ async function updateRecipe(recipeData) {
         })
 }
 
-export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe, uploadRecipeImage, downloadPDF, updateRecipe }
+export { postAddRecipe, getRecipeWithID, getAllRecipes, getRandomRecipes, deleteRecipe, uploadRecipeImage, updateRecipe }

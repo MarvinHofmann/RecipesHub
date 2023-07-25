@@ -1,11 +1,11 @@
 <template>
   <!-- Modal -->
-  <div ref="addOrEditRecipeModal" class="modal modal-xl fade" id="addOrEditRecipeModal" tabindex="-1" aria-labelledby="addOrEditRecipeModal" aria-hidden="true" role="dialog">
+  <div ref="addOrEditRecipeModal" class="modal modal-xl fade" id="addOrEditRecipeModal" tabindex="-1" aria-labelledby="addOrEditRecipeModalLabel" aria-hidden="true" role="dialog">
     <div class="modal-dialog modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 v-if="this.mode == 'EDIT'" class="modal-title fs-5" id="addOrEditRecipeModal">Rezept bearbeiten</h1>
-          <h1 v-else class="modal-title fs-5" id="addOrEditRecipeModal">Rezept erstellen</h1>
+          <h1 v-if="this.mode == 'EDIT'" class="modal-title fs-5" id="addOrEditRecipeModalLabel">Rezept bearbeiten</h1>
+          <h1 v-else class="modal-title fs-5" id="addOrEditRecipeModalLabel">Rezept erstellen</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">

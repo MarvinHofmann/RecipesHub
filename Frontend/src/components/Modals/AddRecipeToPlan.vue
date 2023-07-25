@@ -18,7 +18,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Schließen</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
           <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal"
             @click="this.onAddRecipeToDate()">Speichern</button>
         </div>
