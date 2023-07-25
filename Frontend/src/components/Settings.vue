@@ -103,9 +103,9 @@
             <div class="mb-3">
               <div class="row">
                 <div class="col-lg-12">
-                  <label for="oldPassword" class="form-label">Aktuelles Passwort</label>
+                  <label for="current-password" class="form-label">Aktuelles Passwort</label>
                   <div class="input-group">
-                    <input class="form-control" type="password" v-model="this.passwordChange.currentPassword" id="oldPassword" :class="{ 'is-invalid': v$.passwordChange.currentPassword.$error }" />
+                    <input class="form-control" type="password" v-model="this.passwordChange.currentPassword" id="current-password" :class="{ 'is-invalid': v$.passwordChange.currentPassword.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.passwordChange.currentPassword.$error">Neues Passwort eingeben</div>
@@ -116,17 +116,17 @@
               <!-- New Password / Repeat -->
               <div class="row">
                 <div class="col-lg-6">
-                  <label for="newPassword" class="form-label">Neues Passwort</label>
+                  <label for="new-password" class="form-label">Neues Passwort</label>
                   <div class="input-group">
-                    <input class="form-control" type="password" v-model="this.passwordChange.newPassword" id="newPassword" :class="{ 'is-invalid': v$.passwordChange.newPassword.$error }" />
+                    <input class="form-control" type="password" v-model="this.passwordChange.newPassword" id="new-password" :class="{ 'is-invalid': v$.passwordChange.newPassword.$error }" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.passwordChange.newPassword.$error">Passwörter stimmen nicht überein</div>
                 </div>
                 <div class="col-lg-6">
-                  <label for="rePassword" class="form-label">Passwort wiederholen</label>
+                  <label for="repeat-password" class="form-label">Passwort wiederholen</label>
                   <div class="input-group">
-                    <input :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }" v-model="this.passwordChange.repeatPassword" type="password" class="form-control" id="rePassword" />
+                    <input :class="{ 'is-invalid': v$.passwordChange.repeatPassword.$error }" v-model="this.passwordChange.repeatPassword" type="password" class="form-control" id="password" />
                   </div>
                   <!-- error message -->
                   <div class="text-danger" v-if="v$.passwordChange.repeatPassword.$error">Passwörter stimmen nicht überein</div>

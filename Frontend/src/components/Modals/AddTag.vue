@@ -79,6 +79,7 @@ export default {
         name: null,
       },
       tags: [],
+      bsModal: null
     };
   },
   methods: {
@@ -90,11 +91,13 @@ export default {
       if (this.v$.$invalid) return;
       let res = await addTag(this.tagData.name);
       if (res.error) {
-        console.log("Fehler beim hinzufügen der Kategorie");
+        this.tags = await getTags();
+        return
       }
       this.tags = await getTags();
       this.v$.$reset();
       this.tagData.name = null;
+      this.bsModal.hide()
     },
     setListener(myModal) {
       myModal._element.addEventListener("shown.bs.modal", async (event) => {

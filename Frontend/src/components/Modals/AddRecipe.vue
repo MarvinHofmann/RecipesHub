@@ -26,7 +26,7 @@
                 <div class="col-lg-6">
                   <label for="source" class="form-label">Quelle</label>
                   <div class="input-group">
-                    <input v-model="this.recipeData.source" type="text" class="form-control" id="source" />
+                    <input placeholder="Eigenes Rezept" v-model="this.recipeData.source" type="text" class="form-control" id="source" />
                   </div>
                 </div>
               </div>
@@ -34,7 +34,7 @@
               <!-- Row Zeit / Bilder -->
               <div class="row mt-3">
                 <div class="col-lg-6">
-                  <label for="time" class="form-label">Benötigte Zeit<d class="text-danger">*</d></label>
+                  <label for="time" class="form-label">Benötigte Zeit <d class="text-muted">(in Minuten)</d><d class="text-danger">*</d></label>
                   <div class="input-group">
                     <input class="form-control" type="number" v-model="this.recipeData.cookingTime" id="time" :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }" />
                   </div>
@@ -324,7 +324,6 @@ export default {
       }
       if (response.error) {
         this.failed = true;
-        console.log("Error while creating");
         this.errorMessage = "Fehler bei der Aktion."
         return;
       }

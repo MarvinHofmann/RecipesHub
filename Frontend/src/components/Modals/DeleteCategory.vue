@@ -53,6 +53,7 @@ export default {
         deleteCategory(element)
       });
       this.selectedItems = []
+      this.bsModal.hide()
     },
     addToDelete(category) {
       // individually search index, because filteredData could return a shorter list

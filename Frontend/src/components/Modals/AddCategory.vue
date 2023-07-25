@@ -80,7 +80,6 @@ export default {
       let res = await addCategory(this.categoryData.name, this.categoryData.color);
       if (res.error) {
         this.categories = await getCategories();
-        console.log("Fehler beim hinzufügen der Kategorie");
         return;
       }
       this.v$.$reset();
@@ -90,7 +89,6 @@ export default {
     },
 
     setListener(myModal) {
-      console.log(myModal);
       myModal._element.addEventListener("shown.bs.modal", async (event) => {
         this.categories = await getCategories();
       });
