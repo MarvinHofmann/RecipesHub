@@ -40,10 +40,15 @@
       <SceletonCard v-for="item in 4" />
     </div>
 
+    <div class="float-start">
+      <button class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal" type="button">Rezept
+        erstellen</button>
+    </div>
     <div class="float-end mt-0">
       <button class="btn btn-outline-dark" @click="this.$router.push('/browse')">Alle Anzeigen</button>
     </div>
   </div>
+<AddRecipe mode="'ADD'" id="addOrEditRecipeModal"></AddRecipe>
 </template>
 
 <script>
@@ -54,6 +59,7 @@ import { getRandomRecipes } from "../api/recipeHandling";
 import SceletonCard from "../components/SceletonCard.vue";
 import ShoppingList from "../components/ShoppingList.vue";
 import { getTodaysPlan } from "../api/weekPlanHandling"
+import AddRecipe from "../components/Modals/AddRecipe.vue";
 export default {
   setup() {
     return { userStore: useAuthStore() };
@@ -62,7 +68,8 @@ export default {
     Navbar,
     RecipeCard,
     SceletonCard,
-    ShoppingList
+    ShoppingList,
+    AddRecipe
   },
   data() {
     return {

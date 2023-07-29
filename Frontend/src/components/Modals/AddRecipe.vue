@@ -34,7 +34,9 @@
               <!-- Row Zeit / Bilder -->
               <div class="row mt-3">
                 <div class="col-lg-6">
-                  <label for="time" class="form-label">Benötigte Zeit <d class="text-muted">(in Minuten)</d><d class="text-danger">*</d></label>
+                  <label for="time" class="form-label">Benötigte Zeit <d class="text-muted">(in Minuten)</d>
+                    <d class="text-danger">*</d>
+                  </label>
                   <div class="input-group">
                     <input class="form-control" type="number" v-model="this.recipeData.cookingTime" id="time" :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }" />
                   </div>
@@ -188,9 +190,6 @@
       </div>
     </div>
   </div>
-  <button class="btn btn-outline-secondary d-none" type="button" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal"
-            id="work_around_button" @click="open_modal">Wählen</button>
-
 </template>
 
 <script>
@@ -240,7 +239,8 @@ export default {
       fileError: false,
       sizeError: false,
       successMessage: "",
-      errorMessage: ""
+      errorMessage: "",
+      bsModal: null
     };
   },
   validations() {
@@ -330,11 +330,7 @@ export default {
       if (this.selectedFile) this.uploadFile(response.data.id);
       this.success = true;
       this.$emit('finished')
-      setTimeout(() => {
-        let button = document.getElementById("work_around_button");
-        button.click()
-        this.resetModal()
-      }, 2000);
+      this.resetModal()
     },
     /**
      * Fired if user selects a file
@@ -371,20 +367,23 @@ export default {
      * Deletes all Information written into the Modal
      * after that it disposes the modal from DOM
      */
-    async resetModal(){
+    async resetModal() {
+      this.bsModal.hide()
       this.v$.$reset();
       Object.assign(this.$data, this.$options.data())
-      const saveModal = document.getElementById("addOrEditRecipeModal");
-      const modal = new Modal(saveModal);
-      modal.dispose();
-      const modalBackdrops = document.getElementsByClassName("modal-backdrop");
-      while (modalBackdrops.length > 0) {
-        modalBackdrops[0].parentNode.removeChild(modalBackdrops[0]);
-      }
       // Reloads deleted Tags and Categories
       this.tags = await getTags();
       this.categories = await getCategories();
-    }
+    },
+    setListener(myModal) {
+      myModal._element.addEventListener("shown.bs.modal", async (event) => {
+        this.tags = await getTags();
+        this.categories = await getCategories();
+        if (this.mode == "EDIT") {
+          this.recipeData = this.currentData
+        }
+      });
+    },
   },
   async mounted() {
     this.tags = await getTags();
@@ -392,6 +391,9 @@ export default {
     if (this.mode == "EDIT") {
       this.recipeData = this.currentData
     }
+    const modal = new Modal(document.getElementById("addOrEditRecipeModal"));
+    this.setListener(modal);
+    this.bsModal = modal;
   },
 };
 </script>

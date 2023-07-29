@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const multer = require("multer");
 const { Recipe } = require("../models/recipeSchema")
-const { User } = require("../models/userSchema")
 
 const upload = multer({ storage: multer.memoryStorage() });
 
