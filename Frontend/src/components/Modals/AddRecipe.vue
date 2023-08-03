@@ -41,8 +41,7 @@
                     <input class="form-control" type="number" v-model="this.recipeData.cookingTime" id="time" :class="{ 'is-invalid': v$.recipeData.cookingTime.$error }" />
                   </div>
                   <!-- error message -->
-                  <div class="text-danger" v-if="v$.recipeData.cookingTime.$error">Die ungefähre Dauer der Zubereitung in
-                    Minuten</div>
+                  <div class="text-danger" v-if="v$.recipeData.cookingTime.$error">Die ungefähre Dauer der Zubereitung in Minuten</div>
                 </div>
 
                 <div class="col-lg-6">
@@ -51,8 +50,7 @@
                     <input type="file" class="form-control" id="images" ref="file" accept="image/*" @change="onFileChange($event)" />
                   </div>
                   <!-- error message -->
-                  <div class="text-danger" v-if="this.fileError">Bitte lade nur .png oder .jpeg Dateien hoch oder lasse
-                    das Feld frei</div>
+                  <div class="text-danger" v-if="this.fileError">Bitte lade nur .png oder .jpeg Dateien hoch oder lasse das Feld frei</div>
                   <!-- error message -->
                   <div class="text-danger" v-if="this.sizeError">Das Bild ist zu groß (max. 2mb)</div>
                 </div>
@@ -66,8 +64,7 @@
                     <input class="form-control" type="text" v-model="this.recipeData.description" id="description" :class="{ 'is-invalid': v$.recipeData.description.$error }" />
                   </div>
                   <!-- error message -->
-                  <div class="text-danger" v-if="v$.recipeData.description.$error">Eine kurze Beschreibung deines Gerichts
-                  </div>
+                  <div class="text-danger" v-if="v$.recipeData.description.$error">Eine kurze Beschreibung deines Gerichts</div>
                 </div>
 
                 <div class="col-lg-6">
@@ -96,14 +93,12 @@
                     <input type="number" min="1" v-model="this.recipeData.portions" id="portions" class="form-control" :class="{ 'is-invalid': v$.recipeData.portions.$error }" />
                   </div>
                   <div class="col-5">
-                    <div class="text-danger" v-if="v$.recipeData.portions.$error">Die Minimale menge an Portionen muss 1
-                      sein</div>
+                    <div class="text-danger" v-if="v$.recipeData.portions.$error">Die Minimale menge an Portionen muss 1 sein</div>
                   </div>
                 </div>
 
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.recipeData.ingredients.$error">Bitte überprüfe die Zutaten auf
-                  vollständigkeit</div>
+                <div class="text-danger" v-if="v$.recipeData.ingredients.$error">Bitte überprüfe die Zutaten auf vollständigkeit</div>
                 <div v-for="(ingredient, index) in this.recipeData.ingredients" :key="index">
                   <div class="row">
                     <div class="col-lg-5 mt-2 pe-lg-1">
@@ -144,8 +139,7 @@
               </h5>
               <div class="mt-2">
                 <!-- error message -->
-                <div class="text-danger" v-if="v$.recipeData.steps.$error">Bitte überprüfe die Schritte auf
-                  vollständigkeit</div>
+                <div class="text-danger" v-if="v$.recipeData.steps.$error">Bitte überprüfe die Schritte auf vollständigkeit</div>
                 <div v-for="(step, index) in this.recipeData.steps" :key="index">
                   <div class="row">
                     <div class="col-lg-1 pe-0 mt-3">
@@ -170,8 +164,7 @@
               <h5 class="mt-3 mb-0">Tags<d class="text-danger">*</d>
               </h5>
               <p class="text-muted mb-2">Wähle Tags, die dein Gericht am besten beschreiben.</p>
-              <p class="text-danger" v-if="v$.recipeData.tags.$error">Wähle mindestens ein Tag um dein Gericht zu
-                beschreiben</p>
+              <p class="text-danger" v-if="v$.recipeData.tags.$error">Wähle mindestens ein Tag um dein Gericht zu beschreiben</p>
               <div class="form-check form-check-inline mb-2" v-for="tag in this.tags">
                 <input class="form-check-input" type="checkbox" :value="tag" v-model="this.recipeData.tags" :id="tag" />
                 <label class="form-check-label" :for="tag"> {{ tag }} </label>
@@ -240,7 +233,7 @@ export default {
       sizeError: false,
       successMessage: "",
       errorMessage: "",
-      bsModal: null
+      bsModal: null,
     };
   },
   validations() {
@@ -314,23 +307,23 @@ export default {
     async onSaveRecipe() {
       this.v$.$touch();
       if (this.v$.$invalid) return;
-      let response = {}
+      let response = {};
       if (this.mode == "EDIT") {
         response = await updateRecipe(this.recipeData);
-        this.successMessage = "Das Rezept wurde erfolgreich bearbeitet."
+        this.successMessage = "Das Rezept wurde erfolgreich bearbeitet.";
       } else {
         response = await postAddRecipe(this.recipeData);
-        this.successMessage = "Das Rezept wurde erfolgreich angelegt."
+        this.successMessage = "Das Rezept wurde erfolgreich angelegt.";
       }
       if (response.error) {
         this.failed = true;
-        this.errorMessage = "Fehler bei der Aktion."
+        this.errorMessage = "Fehler bei der Aktion.";
         return;
       }
       if (this.selectedFile) this.uploadFile(response.data.id);
       this.success = true;
-      this.$emit('finished')
-      this.resetModal()
+      this.$emit("finished");
+      this.resetModal();
     },
     /**
      * Fired if user selects a file
@@ -368,9 +361,9 @@ export default {
      * after that it disposes the modal from DOM
      */
     async resetModal() {
-      this.bsModal.hide()
+      this.bsModal.hide();
       this.v$.$reset();
-      Object.assign(this.$data, this.$options.data())
+      Object.assign(this.$data, this.$options.data());
       // Reloads deleted Tags and Categories
       this.tags = await getTags();
       this.categories = await getCategories();
@@ -380,7 +373,7 @@ export default {
         this.tags = await getTags();
         this.categories = await getCategories();
         if (this.mode == "EDIT") {
-          this.recipeData = this.currentData
+          this.recipeData = this.currentData;
         }
       });
     },
@@ -389,7 +382,7 @@ export default {
     this.tags = await getTags();
     this.categories = await getCategories();
     if (this.mode == "EDIT") {
-      this.recipeData = this.currentData
+      this.recipeData = this.currentData;
     }
     const modal = new Modal(document.getElementById("addOrEditRecipeModal"));
     this.setListener(modal);

@@ -9,7 +9,7 @@
     <div class="row" id="element-to-print">
       <div class="col-lg-6">
         <div class="card h-100 p-0 border-0">
-          <img :src="this.imgSrc" class="recipeImage img-fluid" :class="{noPrint: !this.printImage}"  @error="this.imgSrc = '../../public/placeholder.png'" />
+          <img :src="this.imgSrc" class="recipeImage img-fluid" :class="{ noPrint: !this.printImage }" @error="this.imgSrc = '../../public/placeholder.png'" />
         </div>
       </div>
       <div class="col-lg-6">
@@ -282,12 +282,10 @@ input[type="number"]::-webkit-outer-spin-button {
   background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(1px);
 }
-@media print
-{
-    .noPrint
-    {
-        display: none !important;
-    }
-}
 
+@media print {
+  .noPrint {
+    display: none !important;
+  }
+}
 </style>

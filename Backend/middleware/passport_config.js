@@ -1,14 +1,12 @@
-// passport login middleware
 const passport = require("passport")
 const localStrategy = require("passport-local").Strategy
 const JWTstrategy = require('passport-jwt').Strategy;
 const User = require('../models/userSchema')
 
 /**
- * Extracts the cookie names access_token from the request cookies and
- * returns the token
- * @param {*} req http request
- * @returns access_token from tokens
+ * Extracts the "access_token" cookie from the request and returns the token.
+ * @param {Object} req - The HTTP request object.
+ * @returns {String|null} - The "access_token" from the cookies, or null if not found.
  */
 const cookieExtractor = req => {
     const token = req.cookies.access_token;
@@ -16,7 +14,14 @@ const cookieExtractor = req => {
     return token
 }
 
+/**
+ * Initializes passport authentication strategies: "login" and "jwt".
+ * The "login" strategy uses the localStrategy to authenticate users with a username and password.
+ * The "jwt" strategy uses the JWTstrategy to authenticate users based on the "access_token" cookie.
+ * @function init
+ */
 function init() {
+    // "login" strategy
     passport.use('login',
         new localStrategy({
             usernameField: 'username',
@@ -29,12 +34,12 @@ function init() {
                 if (!validate) return done(null, false, { message: 'Wrong Password' });
                 return done(null, user, { message: 'Logged in Successfully' });
             } catch (error) {
-                console.log("Error while Login ",  error);
                 return done(error);
             }
         }
         )
     );
+    // "jwt" strategy
     passport.use('jwt',
         new JWTstrategy({
             secretOrKey: process.env.JWT_SECRET,
@@ -44,7 +49,6 @@ function init() {
                 try {
                     return done(null, token._id);
                 } catch (error) {
-                    console.log("Error while verifying JWT ",  err);
                     done(error);
                 }
             }
@@ -52,7 +56,3 @@ function init() {
     );
 }
 module.exports = init;
-
-
-
-

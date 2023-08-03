@@ -6,7 +6,12 @@ const passport = require("passport");
 const { Recipe } = require('../models/recipeSchema');
 
 /**
- * Endpoint to register a user with its credentials
+ * POST endpoint to register a new user with the provided credentials.
+ * @function
+ * @name POST/register
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the username of the newly registered user.
  */
 router.post("/register", async function (req, res) {
     const { username, firstName, lastName, email, password } = req.body
@@ -37,10 +42,16 @@ router.post("/register", async function (req, res) {
     res.status(201).send(username)
 });
 
+
 /**
- * Endpoint to login, if user is authenticated with the password the function
- * returns a JWT token within a httpOnly cookie. Cookie maxAge and JWT token expiring time
- * are set to session if the user not pressed "remember me". Otherwise it will be set to 30d
+ * POST endpoint to log in a user and generate a JWT token within a httpOnly cookie.
+ * The token's expiration time can be set to session or 30 days based on the "remember me" option.
+ * @function
+ * @name POST/login
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @param {function} next - Express next middleware function.
+ * @returns {Object} - Success status, user data, and the JWT token as a session cookie.
  */
 router.post('/login', async (req, res, next) => {
     passport.authenticate('login', async (err, user, info) => {
@@ -76,8 +87,14 @@ router.post('/login', async (req, res, next) => {
 }
 );
 
+
 /**
- * Deletes the httpOnly Cookie with the name access_token
+ * GET endpoint to log out a user by clearing the httpOnly cookie.
+ * @function
+ * @name GET/logout
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and a message confirming successful logout.
  */
 router.get("/logout", async (req, res) => {
     res.clearCookie("access_token")
@@ -86,9 +103,14 @@ router.get("/logout", async (req, res) => {
 
 
 /**
- * Updates the userPW in DB
+ * PUT endpoint to change the password of the user.
+ * @function
+ * @name PUT/changePW
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the updated user data.
  */
-router.put("/changePW",  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.put("/changePW", passport.authenticate('jwt', { session: false }), async (req, res) => {
     const { oldPassword, newPassword } = req.body
     if (newPassword.length < 6 || !oldPassword || !newPassword) return res.status(400).json({ message: "False Information" })
 
@@ -112,15 +134,21 @@ router.put("/changePW",  passport.authenticate('jwt', { session: false }), async
     });
 });
 
+
 /**
- * Deletes the user, that sends the request
+ * DELETE endpoint to delete the authenticated user and associated recipes from the database.
+ * @function
+ * @name DELETE/delete
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and a message confirming successful user deletion.
  */
-router.delete("/delete",  passport.authenticate('jwt', { session: false }), async (req, res) => {
+router.delete("/delete", passport.authenticate('jwt', { session: false }), async (req, res) => {
     const user = await User.findOne({ "_id": req.user }).exec();
     if (!user) return res.status(400).send({ message: "No User with that id", code: "E1" });
 
     // Delete all Recipes of the User
-    await Recipe.deleteMany({userID: req.user}).exec();
+    await Recipe.deleteMany({ userID: req.user }).exec();
 
     await User.deleteOne({ "_id": req.user }).then(function () {
         res.clearCookie("access_token")

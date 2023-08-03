@@ -5,7 +5,12 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const BASEURL = process.env.IMAGES_URL
 
 /**
- * Endpoint to create a Recipe
+ * POST endpoint to add a new recipe to the user's collection.
+ * @function
+ * @name POST/addRecipe
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the ID of the created recipe.
  */
 router.post("/addRecipe", async (req, res) => {
     if (!req.body) return res.status(400).send({ message: "No information send", code: "E1" })
@@ -30,6 +35,14 @@ router.post("/addRecipe", async (req, res) => {
 })
 
 
+/**
+ * POST endpoint to update an existing recipe in the user's collection.
+ * @function
+ * @name POST/updateRecipe
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the ID of the updated recipe.
+ */
 router.post("/updateRecipe", async (req, res) => {
     if (!req.body.recipeData) return res.status(400).send({ message: "No information send", code: "E1" })
     // Create final recipe
@@ -44,7 +57,12 @@ router.post("/updateRecipe", async (req, res) => {
 
 
 /**
- * Returns four random recipes useing the sample method of mongodb
+ * GET endpoint to retrieve four random recipes from the user's collection.
+ * @function
+ * @name GET/randomRecipes
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - An array of four random recipes.
  */
 router.get("/randomRecipes", async (req, res) => {
     const query = Recipe.aggregate([{ $match: { userID: new ObjectId(req.user) } }, { $sample: { size: 4 } }])
@@ -59,8 +77,14 @@ router.get("/randomRecipes", async (req, res) => {
     });
 });
 
+
 /**
- * Returns the complete documnent of the recipe with the given id
+ * GET endpoint to retrieve a specific recipe with the given ID from the user's collection.
+ * @function
+ * @name GET/recipe/:id
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - The complete document of the requested recipe.
  */
 router.get("/recipe/:id", async (req, res) => {
     // Validate given Object ID
@@ -75,8 +99,14 @@ router.get("/recipe/:id", async (req, res) => {
     });
 });
 
+
 /**
- * Returns all Recipes in the DB, only with the title, id, categories, tags and cookingTime
+ * GET endpoint to retrieve all recipes from the user's collection, containing only essential information (title, id, categories, tags, and cookingTime).
+ * @function
+ * @name GET/allRecipes
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - An array of recipes with essential information.
  */
 router.get("/allRecipes", async (req, res) => {
     const query = Recipe.find({ userID: req.user }, { title: 1, _id: 1, category: 1, tags: 1, cookingTime: 1 })
@@ -91,8 +121,14 @@ router.get("/allRecipes", async (req, res) => {
     });
 });
 
+
 /**
- * Deletes a Recipe with the given ID
+ * DELETE endpoint to delete a recipe with the given ID from the user's collection.
+ * @function
+ * @name DELETE/recipe/:id
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status message after deleting the recipe.
  */
 router.delete("/recipe/:id", async (req, res) => {
     // Validate given Object ID

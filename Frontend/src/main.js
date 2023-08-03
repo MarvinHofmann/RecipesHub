@@ -18,4 +18,3 @@ const recipesHub = createApp(App);
 recipesHub.use(pinia)
 recipesHub.use(router);
 recipesHub.mount('#app');
-

@@ -3,6 +3,15 @@ const User = require('../models/userSchema')
 const { Recipe } = require("../models/recipeSchema")
 const ObjectId = require('mongoose').Types.ObjectId;
 
+
+/**
+ * GET endpoint to retrieve the week plan for the authenticated user.
+ * @function
+ * @name GET/plan
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - An array of objects containing the date and recipes for each day of the week plan.
+ */
 router.get("/plan", async (req, res) => {
     const query = User.findOne({ _id: req.user }, { _id: 0, weekPlan: 1 })
     const curr = new Date; // get current date
@@ -30,6 +39,15 @@ router.get("/plan", async (req, res) => {
     });
 });
 
+
+/**
+ * GET endpoint to retrieve the recipes planned for the current day.
+ * @function
+ * @name GET/today
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - An array of objects containing the recipes planned for today.
+ */
 router.get("/today", async (req, res) => {
     const query = User.findOne({ _id: req.user }, { _id: 0, weekPlan: 1 })
     let todaysRecipes = []
@@ -49,6 +67,14 @@ router.get("/today", async (req, res) => {
 });
 
 
+/**
+ * POST endpoint to add a new recipe to the user's week plan.
+ * @function
+ * @name POST/newWeekEvent
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status if the recipe is added to the week plan.
+ */
 router.post("/newWeekEvent", async (req, res) => {
     const { recipeID, date } = req.body
     if (!recipeID || !date) return res.status(400).send({ message: "No information send", code: "E1" })
@@ -64,6 +90,15 @@ router.post("/newWeekEvent", async (req, res) => {
     });
 });
 
+
+/**
+ * POST endpoint to delete a recipe from the user's week plan.
+ * @function
+ * @name POST/deleteWeekEvent
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status if the recipe is deleted from the week plan.
+ */
 router.post("/deleteWeekEvent", async (req, res) => {
     const { recipeID, date } = req.body;
     if (!recipeID || !date) return res.status(400).send({ message: "No information send", code: "E1" })

@@ -21,7 +21,9 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
-          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0" data-bs-dismiss="modal" @click="this.onDeleteCategory()">Löschen</button>
+          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0" data-bs-dismiss="modal" @click="this.onDeleteCategory()">
+            Löschen
+          </button>
         </div>
       </div>
     </div>
@@ -37,7 +39,7 @@ export default {
       categories: [],
       searchTerm: "",
       selectedItems: [],
-      bsModal: null
+      bsModal: null,
     };
   },
   computed: {
@@ -49,11 +51,11 @@ export default {
   },
   methods: {
     async onDeleteCategory() {
-      this.selectedItems.forEach(element => {
-        deleteCategory(element)
+      this.selectedItems.forEach((element) => {
+        deleteCategory(element);
       });
-      this.selectedItems = []
-      this.bsModal.hide()
+      this.selectedItems = [];
+      this.bsModal.hide();
     },
     addToDelete(category) {
       // individually search index, because filteredData could return a shorter list
@@ -77,8 +79,8 @@ export default {
   },
   async mounted() {
     this.categories = await getCategories();
-    const modal = new Modal(document.getElementById("adeleteCategoryModal"))
-    this.setListener(modal)
+    const modal = new Modal(document.getElementById("adeleteCategoryModal"));
+    this.setListener(modal);
     this.bsModal = modal;
   },
 };

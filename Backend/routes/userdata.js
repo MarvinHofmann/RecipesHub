@@ -1,7 +1,14 @@
 const router = require('express').Router();
 const User = require('../models/userSchema')
 
-/* Returns the tags of the user, requested it */
+/**
+ * GET endpoint to retrieve the tags of the authenticated user.
+ * @function
+ * @name GET/tags
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - An array containing the tags of the user.
+ */
 router.get("/tags", async (req, res) => {
     const query = User.findOne({ _id: req.user }, { _id: 0, tags: 1 })
     await query.exec().then(function (tags) {
@@ -12,7 +19,15 @@ router.get("/tags", async (req, res) => {
     });
 });
 
-/* Returns the categories of the user, requested it */
+
+/**
+ * GET endpoint to retrieve the categories of the authenticated user.
+ * @function
+ * @name GET/categories
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - An array containing the categories of the user.
+ */
 router.get("/categories", async (req, res) => {
     const query = User.findOne({ _id: req.user }, { _id: 0, categories: 1 })
     await query.exec().then(function (categories) {
@@ -23,8 +38,16 @@ router.get("/categories", async (req, res) => {
     });
 });
 
-/* Endpoint to create a new tag in the users document */
-router.put("/newTag",  async (req, res) => {
+
+/**
+ * PUT endpoint to create a new tag in the user's document.
+ * @function
+ * @name PUT/newTag
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the count of modified elements.
+ */
+router.put("/newTag", async (req, res) => {
     const tagName = req.body.tag;
     if (!tagName) return res.status(400).send({ message: "No information send", code: "E1" })
 
@@ -36,8 +59,16 @@ router.put("/newTag",  async (req, res) => {
     });
 })
 
-/* Endpoint to delete a tag in the users document */
-router.delete("/deleteTag/:name",  async (req, res) => {
+
+/**
+ * DELETE endpoint to delete a tag, given in the url, from the user's document.
+ * @function
+ * @name DELETE/deleteTag/:name
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the updated tag list.
+ */
+router.delete("/deleteTag/:name", async (req, res) => {
     const name = req.params.name;
     if (!name) return res.status(400).send({ message: "No information send", code: "E1" });
 
@@ -53,8 +84,16 @@ router.delete("/deleteTag/:name",  async (req, res) => {
     });
 })
 
-/* Endpoint to create a new category in the users document */
-router.put("/newCategory",  async (req, res) => {
+
+/**
+ * PUT endpoint to create a new category in the user's document.
+ * @function
+ * @name PUT/newCategory
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the count of modified elements.
+ */
+router.put("/newCategory", async (req, res) => {
     const { name } = req.body;
     if (!name) return res.status(400).send({ message: "No information send", code: "E1" })
 
@@ -67,8 +106,15 @@ router.put("/newCategory",  async (req, res) => {
 })
 
 
-/* Endpoint to delete a category in the users document */
-router.delete("/deleteCategory/:name",  async (req, res) => {
+/**
+ * DELETE endpoint to delete a category from the user's document.
+ * @function
+ * @name DELETE/deleteCategory/:name
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the updated category list.
+ */
+router.delete("/deleteCategory/:name", async (req, res) => {
     const name = req.params.name;
     if (!name) return res.status(400).send({ message: "No information send", code: "E1" });
 
@@ -84,8 +130,16 @@ router.delete("/deleteCategory/:name",  async (req, res) => {
     });
 })
 
-/* A router that is used to update the username of the user. */
-router.put("/change/username",  async (req, res) => {
+
+/**
+ * PUT endpoint to update the username of the user.
+ * @function
+ * @name PUT/change/username
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the count of modified elements.
+ */
+router.put("/change/username", async (req, res) => {
     const { username } = req.body;
     if (!username) return res.status(400).send({ message: "No information send", code: "E1" })
 
@@ -103,8 +157,15 @@ router.put("/change/username",  async (req, res) => {
 })
 
 
-/* Updating the first name of the user. */
-router.put("/change/firstName",  async (req, res) => {
+/**
+ * PUT endpoint to update the first name of the user.
+ * @function
+ * @name PUT/change/firstName
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the count of modified elements.
+ */
+router.put("/change/firstName", async (req, res) => {
     const { firstName } = req.body;
     if (!firstName) return res.status(400).send({ message: "No information send", code: "E1" })
 
@@ -117,8 +178,15 @@ router.put("/change/firstName",  async (req, res) => {
 })
 
 
-/* A router that is used to update the last name of the user. */
-router.put("/change/lastName",  async (req, res) => {
+/**
+ * PUT endpoint to update the last name of the user.
+ * @function
+ * @name PUT/change/lastName
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the count of modified elements.
+ */
+router.put("/change/lastName", async (req, res) => {
     const { lastName } = req.body;
     if (!lastName) return res.status(400).send({ message: "No information send", code: "E1" })
 
@@ -131,8 +199,15 @@ router.put("/change/lastName",  async (req, res) => {
 })
 
 
-/* A router that is used to update the email of the user. */
-router.put("/change/email",  async (req, res) => {
+/**
+ * PUT endpoint to update the email of the user.
+ * @function
+ * @name PUT/change/email
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and the count of modified elements.
+ */
+router.put("/change/email", async (req, res) => {
     const { email } = req.body;
     if (!email) return res.status(400).send({ message: "No information send", code: "E1" })
 

@@ -48,7 +48,7 @@
       <button class="btn btn-outline-dark" @click="this.$router.push('/browse')">Alle Anzeigen</button>
     </div>
   </div>
-<AddRecipe mode="'ADD'" id="addOrEditRecipeModal"></AddRecipe>
+  <AddRecipe mode="'ADD'" id="addOrEditRecipeModal"></AddRecipe>
 </template>
 
 <script>

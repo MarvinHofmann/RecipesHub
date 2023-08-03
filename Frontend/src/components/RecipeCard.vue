@@ -53,10 +53,10 @@ export default {
     onClickRecipe() {
       this.$router.push("/rezept/" + this.recipeID);
     },
-    setImgSrc(){
+    setImgSrc() {
       this.imgSrc = this.image;
-      return this.imgSrc
-    }
+      return this.imgSrc;
+    },
   },
   mounted() {
     this.setImgSrc();
@@ -80,6 +80,7 @@ export default {
   cursor: pointer;
   box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
+
 .card-img-top {
   width: 100%;
   height: 20vh;

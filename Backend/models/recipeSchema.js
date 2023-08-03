@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const fs = require("fs")
 const path = require('path');
 
+/**
+ * Mongoose schema defining the structure of the "recipe" collection in the database.
+ * @typedef {Object} RecipeSchema
+ */
 const recipeSchema = new mongoose.Schema({
     title: { type: String, required: true },
     description: { type: String, required: true },
@@ -36,6 +40,10 @@ const recipeSchema = new mongoose.Schema({
     userID: { type: mongoose.ObjectId, required: true }
 });
 
+/**
+ * Mongoose model for the "recipe" collection using the defined recipeSchema.
+ * @typedef {Object} RecipeModel
+ */
 const Recipe = mongoose.model("recipe", recipeSchema)
 
 module.exports = { Recipe }

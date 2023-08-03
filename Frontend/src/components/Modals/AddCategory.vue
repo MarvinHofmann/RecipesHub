@@ -39,13 +39,12 @@
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.categoryData.name.$error">Dieser Name ist nicht möglich</div>
               </div>
-
             </div>
           </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" @click="this.refreshedOnce = false">Schließen</button>
-          <button type="button" class="btn btn-outline-dark" @click="this.onAddCategory() ">Speichern</button>
+          <button type="button" class="btn btn-outline-dark" @click="this.onAddCategory()">Speichern</button>
         </div>
       </div>
     </div>
@@ -55,7 +54,7 @@
 import { useVuelidate } from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
 import { addCategory, getCategories } from "../../api/userdataHandling";
-import { Modal } from 'bootstrap'
+import { Modal } from "bootstrap";
 export default {
   name: "AddCategory",
   setup() {
@@ -85,7 +84,7 @@ export default {
       this.v$.$reset();
       this.categoryData.name = null;
       this.categories = await getCategories();
-      this.bsModal.hide()
+      this.bsModal.hide();
     },
 
     setListener(myModal) {

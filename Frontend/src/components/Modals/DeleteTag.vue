@@ -21,7 +21,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Schließen</button>
-          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0"  @click="this.onDeleteTag()">Löschen</button>
+          <button type="button" class="btn btn-outline-dark" :disabled="this.selectedItems.length == 0" @click="this.onDeleteTag()">Löschen</button>
         </div>
       </div>
     </div>
@@ -37,7 +37,7 @@ export default {
       tags: [],
       searchTerm: "",
       selectedItems: [],
-      bsModal: null
+      bsModal: null,
     };
   },
   computed: {
@@ -49,11 +49,11 @@ export default {
   },
   methods: {
     async onDeleteTag() {
-      this.selectedItems.forEach(element => {
-          deleteTag(element)
+      this.selectedItems.forEach((element) => {
+        deleteTag(element);
       });
-      this.selectedItems = []
-      this.bsModal.hide()
+      this.selectedItems = [];
+      this.bsModal.hide();
     },
     addToDelete(tag) {
       // individually search index, because filteredData could return a shorter list

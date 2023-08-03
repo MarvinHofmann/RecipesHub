@@ -13,14 +13,7 @@
               <div class="accordion" id="tagAccordion">
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
-                    <button
-                      class="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                       Deine Tags
                     </button>
                   </h2>
@@ -41,13 +34,7 @@
               <div class="col-lg-12">
                 <label for="tagName" class="form-label">Name<d class="text-danger">*</d></label>
                 <div class="input-group">
-                  <input
-                    class="form-control"
-                    type="text"
-                    v-model="this.tagData.name"
-                    id="tagName"
-                    :class="{ 'is-invalid': v$.tagData.name.$error }"
-                  />
+                  <input class="form-control" type="text" v-model="this.tagData.name" id="tagName" :class="{ 'is-invalid': v$.tagData.name.$error }" />
                 </div>
                 <!-- error message -->
                 <div class="text-danger" v-if="v$.tagData.name.$error">Dieser Tag Name ist nicht möglich</div>
@@ -79,7 +66,7 @@ export default {
         name: null,
       },
       tags: [],
-      bsModal: null
+      bsModal: null,
     };
   },
   methods: {
@@ -92,12 +79,12 @@ export default {
       let res = await addTag(this.tagData.name);
       if (res.error) {
         this.tags = await getTags();
-        return
+        return;
       }
       this.tags = await getTags();
       this.v$.$reset();
       this.tagData.name = null;
-      this.bsModal.hide()
+      this.bsModal.hide();
     },
     setListener(myModal) {
       myModal._element.addEventListener("shown.bs.modal", async (event) => {

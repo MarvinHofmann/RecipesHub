@@ -5,6 +5,14 @@ const { Recipe } = require("../models/recipeSchema")
 const upload = multer({ storage: multer.memoryStorage() });
 
 
+/**
+ * PUT endpoint to add an image to a recipe in the database.
+ * @function
+ * @name PUT/addRecipeImage
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - Success status and updated recipe data after adding the image.
+ */
 router.put("/addRecipeImage", [upload.single("image")], async (req, res) => {
     const recipeID = req.body.recipeID
     if (!recipeID) return res.status(400).send({ message: "No information send", code: "E1" })
@@ -24,6 +32,15 @@ router.put("/addRecipeImage", [upload.single("image")], async (req, res) => {
     });
 })
 
+
+/**
+ * GET endpoint to retrieve the image of a specific recipe from the database.
+ * @function
+ * @name GET/recipeImage/:id
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} - The image data of the requested recipe.
+ */
 router.get("/recipeImage/:id", async (req, res) => {
     const query = Recipe.findOne({ _id: req.params.id }, { images: 1, _id: 0 })
     await query.exec().then(function (result) {

@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
+
+
+/**
+ * Mongoose schema defining the structure of the "user" collection in the database.
+ * @typedef {Object} UserSchema
+ */
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -20,7 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     registrationDate: { type: Date, default: Date.now() },
     password: { type: String, required: true, minlength: 6, maxlength: 1024 },
-    categories: { type: Array, default: ["Hauptmahlzeit","Nachtisch","Cocktail"] },
+    categories: { type: Array, default: ["Hauptmahlzeit", "Nachtisch", "Cocktail"] },
     tags: { type: [String], default: ['vegan', 'vegetarisch', 'alkoholisch', 'Hühnchen', 'Schwein', 'Rind'] },
     weekPlan: {
         type: [{
@@ -39,11 +45,23 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-userSchema.methods.isValidPassword = async function(password) {
+
+/**
+ * Method to check if a provided password matches the user's stored password.
+ * @function
+ * @name isValidPassword
+ * @param {string} password - The password to be checked for validation.
+ * @returns {boolean} - Returns true if the provided password matches the user's stored password; otherwise, false.
+ */
+userSchema.methods.isValidPassword = async function (password) {
     const user = this;
     const compare = await bcrypt.compare(password, user.password);
     return compare;
-  }
+}
 
+/**
+ * Mongoose model for the "user" collection using the defined userSchema.
+ * @typedef {Object} UserModel
+ */
 const User = mongoose.model("user", userSchema)
 module.exports = User

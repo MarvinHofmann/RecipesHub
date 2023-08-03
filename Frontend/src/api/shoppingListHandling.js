@@ -18,7 +18,7 @@ async function addToList(listElement) {
         "name": listElement.name,
         "amount": listElement.amount,
         "unit": listElement.unit
-    },{ withCredentials: true })
+    }, { withCredentials: true })
         .then((response) => {
             return response.data.shoppingList
         })

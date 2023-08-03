@@ -10,8 +10,7 @@
       <div class="col-6 mt-3">
         <div class="float-end">
           <p class="d-none d-xs-none d-sm-inline-block me-2 p-0 m-0">{{ this.numberOfRecipes }} Rezepte</p>
-          <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse"
-            aria-expanded="false" aria-controls="filterCollapse">
+          <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
             Filter Anzeigen
           </button>
         </div>
@@ -26,10 +25,8 @@
             <div class="col-lg-6">
               <h6 class="mb-1">Tags</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="(tag, index) in loadedTags"
-                  @change="this.filterList()">
-                  <input class="form-check-input" type="checkbox" :value="tag" v-model="this.filter.tags"
-                    :id="tag + index" />
+                <div class="form-check form-check-inline mb-2" v-for="(tag, index) in loadedTags" @change="this.filterList()">
+                  <input class="form-check-input" type="checkbox" :value="tag" v-model="this.filter.tags" :id="tag + index" />
                   <label class="form-check-label" :for="tag + index"> {{ tag }} </label>
                 </div>
               </form>
@@ -37,10 +34,8 @@
             <div class="col-lg-6 border-left">
               <h6 class="mb-1">Kategorie</h6>
               <form class="mt-1">
-                <div class="form-check form-check-inline mb-2" v-for="(category, index) in loadedCategories"
-                  @change="this.filterList()">
-                  <input class="form-check-input" type="checkbox" :value="category" v-model="this.filter.categories"
-                    :id="category + index" />
+                <div class="form-check form-check-inline mb-2" v-for="(category, index) in loadedCategories" @change="this.filterList()">
+                  <input class="form-check-input" type="checkbox" :value="category" v-model="this.filter.categories" :id="category + index" />
                   <label class="form-check-label" :for="category + index"> {{ category }} </label>
                 </div>
               </form>
@@ -54,22 +49,19 @@
       <div class="card text-center">
         <div class="card-body">
           <h2>Noch keine Rezepte erstellt, jetzt neues Rezept erstellen</h2>
-          <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal"
-            type="button">Rezept erstellen</button>
+          <button class="btn btn-outline-dark mt-2" data-bs-toggle="modal" data-bs-target="#addOrEditRecipeModal" type="button">Rezept erstellen</button>
         </div>
       </div>
     </div>
     <div v-if="this.loading" class="text-center mt-3">
       <div class="progress" style="height: 5px;">
-        <div class="progress-bar bg-dark" role="progressbar" :style="'width: ' + percent + '%;'" :aria-valuenow="percent"
-          aria-valuemin="0" aria-valuemax="100"></div>
+        <div class="progress-bar bg-dark" role="progressbar" :style="'width: ' + percent + '%;'" :aria-valuenow="percent" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
     </div>
 
     <!-- Recipes Card dynamically created -->
     <div class="row mt-3">
-      <RecipeCard v-for="item in filteredList" :recipe-name="item.title" :category="item.category" :tags="item.tags"
-        :duration="item.cookingTime" :recipeID="item._id" :image="item.imgSrc"></RecipeCard>
+      <RecipeCard v-for="item in filteredList" :recipe-name="item.title" :category="item.category" :tags="item.tags" :duration="item.cookingTime" :recipeID="item._id" :image="item.imgSrc"></RecipeCard>
     </div>
   </div>
   <AddRecipe @finished="fetchData()" mode="'ADD'" id="addOrEditRecipeModal"></AddRecipe>
@@ -133,7 +125,7 @@ export default {
       }
     },
     async fetchData() {
-      
+
       this.loadAnimation();
       this.loading = true;
       let res = await getAllRecipes();

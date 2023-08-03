@@ -250,8 +250,8 @@ export default {
         this.userDataAlert = { message: "Daten erfolgreich geändert", type: "alert-success" };
       }
       this.v$.$reset();
-      this.$refs.changeData.reset()
-      this.userdata = this.getInitialUserdata()
+      this.$refs.changeData.reset();
+      this.userdata = this.getInitialUserdata();
       this.$refs.userDataAlert.showAlert();
     },
     /**
@@ -276,7 +276,7 @@ export default {
       this.passwordChange = this.getInitialPasswordData();
       this.v$.$reset();
       this.userStore.logout();
-      this.$router.push("/login")
+      this.$router.push("/login");
     },
     /**
      * If userdata isnt in edit mode or nothing changed the offcanvas settings

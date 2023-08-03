@@ -55,7 +55,7 @@ export default {
       setTimeout(() => (this.show = false), this.ttl);
     },
   },
-  async mounted() {},
+  async mounted() { },
 };
 </script>
 

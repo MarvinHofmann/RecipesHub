@@ -5,8 +5,7 @@
         <img src="../assets/logo.png" height="30" />
         RecipesHub
       </a>
-      <button class="navbar-toggler toggle-button" type="button" data-bs-toggle="collapse"
-        data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+      <button class="navbar-toggler toggle-button" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
         aria-label="Toggle navigation">
         <i class="bi bi-list toggle-icon"></i>
       </button>
@@ -27,45 +26,35 @@
 
           <!-- Nav elements only visible if collapsed otherwise in dropdown-->
           <div class="d-lg-none">
-            <hr class="m-0">
-            <li class="nav-item ">
-              <div class="row">
-                <div class="col-6">
-                  <div data-bs-toggle="modal" data-bs-target="#addCategory" class="nav-link" type="button">
-                    Kategorie erstellen
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div data-bs-toggle="modal" data-bs-target="#adeleteCategoryModal" class="nav-link" type="button">
-                    Kategorie löschen
-                  </div>
-                </div>
-              </div>
-            </li>
-            <li class="nav-item ">
-              <div class="row">
-                <div class="col-6">
-                  <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="nav-link" type="button">
-                    Tag erstellen
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div data-bs-toggle="modal" data-bs-target="#deleteTagModal" class="nav-link" type="button">
-                    Tag löschen
-                  </div>
-                </div>
-              </div>
-            </li>
-            <hr class="m-0">
+            <hr class="m-0" />
             <li class="nav-item">
-              <div class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
-                aria-controls="offcanvasSettings">
+              <div class="row">
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#addCategory" class="nav-link" type="button">Kategorie erstellen</div>
+                </div>
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#adeleteCategoryModal" class="nav-link" type="button">Kategorie löschen</div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item">
+              <div class="row">
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#addTagModal" class="nav-link" type="button">Tag erstellen</div>
+                </div>
+                <div class="col-6">
+                  <div data-bs-toggle="modal" data-bs-target="#deleteTagModal" class="nav-link" type="button">Tag löschen</div>
+                </div>
+              </div>
+            </li>
+            <hr class="m-0" />
+            <li class="nav-item">
+              <div class="nav-link" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
                 <i class="dropdown-icon bi bi-gear"></i>Einstellungen
               </div>
             </li>
             <li>
-              <a id="btn" class="nav-link pt-0" type="button" @click="onLogout"><i
-                  class="dropdown-icon bi bi-box-arrow-in-left"></i> Ausloggen </a>
+              <a id="btn" class="nav-link pt-0" type="button" @click="onLogout"><i class="dropdown-icon bi bi-box-arrow-in-left"></i> Ausloggen </a>
             </li>
           </div>
         </ul>
@@ -75,8 +64,7 @@
               <a role="button" id="btn" class="nav-link"> {{ this.userStore.user.username }} </a>
             </li>
             <a href="#" class="mt-2 d-block link-dark text-decoration-none dropdown-toggle avatar">
-              <img :src="'https://gravatar.com/avatar/' + this.userStore.user._id + '?s=400&d=robohash&r=x'" alt="avatar"
-                width="32" height="32" class="rounded-circle bg-success p-0" />
+              <img :src="'https://gravatar.com/avatar/' + this.userStore.user._id + '?s=400&d=robohash&r=x'" alt="avatar" width="32" height="32" class="rounded-circle bg-success p-0" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end py-1" aria-labelledby="navbarDropdownMenuLink">
               <li>
@@ -110,15 +98,13 @@
                 <hr class="dropdown-divider m-0" />
               </li>
               <li>
-                <div class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"
-                  aria-controls="offcanvasSettings">
+                <div class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings">
                   <i class="dropdown-icon bi bi-gear"></i>
                   Einstellungen
                 </div>
               </li>
               <li>
-                <a id="btn" class="dropdown-item" type="button" @click="onLogout"><i
-                    class="dropdown-icon bi bi-box-arrow-left"></i> Ausloggen </a>
+                <a id="btn" class="dropdown-item" type="button" @click="onLogout"><i class="dropdown-icon bi bi-box-arrow-left"></i> Ausloggen </a>
               </li>
             </ul>
           </ul>

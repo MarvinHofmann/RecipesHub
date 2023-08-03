@@ -54,6 +54,7 @@ export default {};
 .bi {
   margin-right: 5px;
 }
+
 .footer {
   color: #212529;
 }

@@ -11,7 +11,6 @@ axios.interceptors.response.use(
         }
     },
     error => {
-        console.log("ERR", error);
         if (error.response && error.response.status) {
             switch (error.response.status) {
                 case 401:
